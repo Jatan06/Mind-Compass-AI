@@ -1,6 +1,7 @@
 import logging
 from datetime import timedelta
 import secrets
+import random
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.conf import settings
@@ -134,18 +135,36 @@ class AuthService:
                 if not name:
                     name = "Mock Google User"
             else:
-                from google.oauth2 import id_token
-                from google.auth.transport import requests as google_requests
-                # Verify token with official Google verification APIs
-                idinfo = id_token.verify_oauth2_token(
-                    google_token, 
-                    google_requests.Request(), 
-                    settings.GOOGLE_OAUTH_CLIENT_ID or None
-                )
-                email = idinfo.get('email')
-                name = idinfo.get('name', 'Google User')
+                try:
+                    from google.oauth2 import id_token
+                    from google.auth.transport import requests as google_requests
+                    # 1. Verify token as ID token
+                    idinfo = id_token.verify_oauth2_token(
+                        google_token, 
+                        google_requests.Request(), 
+                        settings.GOOGLE_OAUTH_CLIENT_ID or None
+                    )
+                    email = idinfo.get('email')
+                    name = idinfo.get('name', 'Google User')
+                except Exception:
+                    # 2. Fallback to Google UserInfo API for access_token
+                    import requests as py_requests
+                    resp = py_requests.get(
+                        'https://www.googleapis.com/oauth2/v3/userinfo',
+                        headers={'Authorization': f'Bearer {google_token}'},
+                        timeout=5
+                    )
+                    if resp.status_code == 200:
+                        user_data = resp.json()
+                        email = user_data.get('email')
+                        name = user_data.get('name', 'Google User')
+                    else:
+                        raise ValidationError({"token": ["Invalid or expired Google token."]})
+
                 if not email:
                     raise ValidationError({"google": ["OAuth payload lacks email address."]})
+        except ValidationError:
+            raise
         except Exception as e:
             log_security_event("GOOGLE_AUTH_FAILURE", details=f"Token verification failed: {str(e)}")
             raise ValidationError({"token": [f"Google token verification failed: {str(e)}"]})
@@ -231,7 +250,7 @@ class AuthService:
         return val_token.user
 
     @classmethod
-    def send_password_reset_email(cls, email_address):
+    def send_password_reset_otp(cls, email_address):
         email_address = clean_input(email_address, lowercase=True)
         if not email_address:
             raise ValidationError({"email": ["Email address is required."]})
@@ -239,31 +258,107 @@ class AuthService:
         try:
             user = User.objects.get(email=email_address)
         except User.DoesNotExist:
-            # Part 4 - Check user exists and raise validation warning.
             raise ValidationError({"email": ["No active account registered with this email address."]})
             
         # Invalidate old active reset tokens
         PasswordResetToken.objects.filter(user=user, is_used=False).update(is_used=True)
         
+        # Generate 6-digit numeric OTP and secure token string
+        otp_code = f"{random.randint(100000, 999999)}"
         token_str = secrets.token_urlsafe(32)
-        expiry = timezone.now() + timedelta(hours=2) # 2-hour expiration window
+        expiry = timezone.now() + timedelta(minutes=10) # 10-minute OTP expiration window
         
         reset_token = PasswordResetToken.objects.create(
             user=user,
             token=token_str,
+            otp_code=otp_code,
             expires_at=expiry
         )
         
-        reset_link = f"http://localhost:5173/reset-password?token={token_str}"
-        print(f"[MAIL MOCK] Password Reset Link for {user.email}: {reset_link}")
-        log_security_event("PASSWORD_RESET_REQUESTED", user.id, f"Issued password reset token.")
+        print(f"\n=======================================================")
+        print(f"[OTP MAIL DISPATCH] Password Reset 6-Digit OTP for {user.email}: [{otp_code}]")
+        print(f"=======================================================\n")
         
-        return reset_token
+        # Dispatch real email via Django send_mail (uses configured EMAIL_BACKEND / SMTP)
+        try:
+            from django.core.mail import send_mail
+            subject = "MindCompass - Password Reset Verification Code"
+            
+            plain_message = (
+                f"Hello {user.username},\n\n"
+                f"Your 6-digit password reset verification code is: {otp_code}\n\n"
+                f"This code will expire in 10 minutes. If you did not request a password reset, please ignore this message.\n\n"
+                f"Best regards,\n"
+                f"The MindCompass Team"
+            )
+            
+            html_message = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; rounded: 12px; background-color: #ffffff;">
+                <h2 style="color: #0f172a; margin-top: 0;">MindCompass Verification Code</h2>
+                <p style="color: #475569; font-size: 15px;">Hello <strong>{user.username}</strong>,</p>
+                <p style="color: #475569; font-size: 15px;">Use the verification code below to reset your password:</p>
+                
+                <div style="background-color: #f1f5f9; border-radius: 12px; padding: 18px; text-align: center; margin: 24px 0;">
+                    <span style="font-size: 32px; font-weight: 800; tracking: 6px; color: #4f46e5; letter-spacing: 6px;">{otp_code}</span>
+                </div>
+                
+                <p style="color: #64748b; font-size: 13px;">This code will expire in <strong>10 minutes</strong>. If you did not request a password reset, please ignore this email.</p>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+                <p style="color: #94a3b8; font-size: 12px; text-align: center; margin: 0;">&copy; MindCompass AI. All rights reserved.</p>
+            </div>
+            """
+            
+            send_mail(
+                subject=subject,
+                message=plain_message,
+                html_message=html_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+        except Exception as mail_err:
+            print(f"[MAIL ERROR] Failed to deliver SMTP email to {user.email}: {mail_err}")
+
+        log_security_event("PASSWORD_RESET_OTP_SENT", user.id, f"Issued 6-digit password reset OTP: {otp_code}")
+        
+        return reset_token, otp_code
 
     @classmethod
-    def reset_password(cls, token_str, new_password, new_password_confirm=None):
-        if not token_str:
-            raise ValidationError({"token": ["Reset token is required."]})
+    def verify_password_reset_otp(cls, email_address, otp_code):
+        email_address = clean_input(email_address, lowercase=True)
+        if not email_address:
+            raise ValidationError({"email": ["Email address is required."]})
+        if not otp_code:
+            raise ValidationError({"otp": ["6-digit OTP is required."]})
+
+        try:
+            user = User.objects.get(email=email_address)
+        except User.DoesNotExist:
+            raise ValidationError({"email": ["No account associated with this email."]})
+
+        try:
+            reset_token = PasswordResetToken.objects.filter(
+                user=user,
+                otp_code=str(otp_code).strip(),
+                is_used=False
+            ).latest('created_at')
+        except PasswordResetToken.DoesNotExist:
+            raise ValidationError({"otp": ["Invalid 6-digit code. Please check and try again."]})
+
+        if reset_token.is_expired():
+            raise ValidationError({"otp": ["OTP has expired. Please request a new code."]})
+
+        reset_token.is_verified = True
+        reset_token.save()
+
+        log_security_event("PASSWORD_RESET_OTP_VERIFIED", user.id, f"Successfully verified OTP.")
+        return reset_token.token
+
+    @classmethod
+    def reset_password_with_otp(cls, email_address, otp_code, new_password, new_password_confirm=None):
+        email_address = clean_input(email_address, lowercase=True)
+        if not email_address:
+            raise ValidationError({"email": ["Email address is required."]})
         if not new_password:
             raise ValidationError({"password": ["New password is required."]})
         if not new_password_confirm:
@@ -271,26 +366,33 @@ class AuthService:
             
         if new_password != new_password_confirm:
             raise ValidationError({"password_confirm": ["Passwords do not match."]})
-            
+
         try:
-            reset_token = PasswordResetToken.objects.get(token=token_str, is_used=False)
+            user = User.objects.get(email=email_address)
+        except User.DoesNotExist:
+            raise ValidationError({"email": ["No account associated with this email."]})
+
+        try:
+            reset_token = PasswordResetToken.objects.filter(
+                user=user,
+                otp_code=str(otp_code).strip(),
+                is_verified=True,
+                is_used=False
+            ).latest('created_at')
         except PasswordResetToken.DoesNotExist:
-            raise ValidationError({"token": ["Invalid or already used password reset token."]})
-            
+            raise ValidationError({"otp": ["OTP verification expired or invalid. Please request a new OTP."]})
+
         if reset_token.is_expired():
-            raise ValidationError({"token": ["Password reset token has expired."]})
-            
-        user = reset_token.user
-        
-        # Enforce all password rules
+            raise ValidationError({"otp": ["Password reset window expired. Please request a new code."]})
+
+        # Enforce password strength rules
         validate_password_strength(new_password, user.username, user.email)
         
         user.set_password(new_password)
         user.save()
         
-        # Invalidate current token
         reset_token.is_used = True
         reset_token.save()
         
-        log_security_event("PASSWORD_RESET_SUCCESS", user.id, f"Password successfully reset via token.")
+        log_security_event("PASSWORD_RESET_SUCCESS", user.id, f"Password successfully reset via OTP.")
         return user

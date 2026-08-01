@@ -4,6 +4,16 @@ from users.views import ProfileView
 from insights.views import ProgressTrackView
 from activities.views import ActivityFeedbackView
 
+
+def api_health(request):
+    return JsonResponse({
+        "status": "ok",
+        "service": "MindCompass API",
+        "version": "1.0.0",
+        "docs": "https://github.com/Jatan06/Mind-Compass-AI"
+    })
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     

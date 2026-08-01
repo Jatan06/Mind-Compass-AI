@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     FiHeart,
@@ -16,9 +16,31 @@ import { Button } from '../components/Button';
 import { FeatureCard } from '../components/FeatureCard';
 import { Accordion } from '../components/Accordion';
 import { HeroIllustration } from '../components/HeroIllustration';
+import { useApp } from '../context/AppContext';
 
 export const LandingPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { token } = useApp();
+
+    // Auto-redirect authenticated users directly to /app when visiting root landing page
+    useEffect(() => {
+        if (token && !location.hash) {
+            navigate('/app', { replace: true });
+        }
+    }, [token, location, navigate]);
+
+    useEffect(() => {
+        if (location.hash) {
+            const targetId = location.hash.replace('#', '');
+            const elem = document.getElementById(targetId);
+            if (elem) {
+                setTimeout(() => {
+                    elem.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }, [location]);
 
     const features = [
         {

@@ -99,30 +99,20 @@ class LoginView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         refresh_token = request.data.get('refresh')
-        if not refresh_token:
-            return Response({
-                "success": False,
-                "message": "Logout failed",
-                "errors": {"refresh": ["Refresh token is required."]}
-            }, status=status.HTTP_400_BAD_REQUEST)
-            
-        try:
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response({
-                "success": True,
-                "message": "Successfully logged out."
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": "Logout failed",
-                "errors": {"refresh": [f"Invalid refresh token: {str(e)}"]}
-            }, status=status.HTTP_400_BAD_REQUEST)
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception:
+                pass  # Token was already blacklisted or expired
+        return Response({
+            "success": True,
+            "message": "Successfully logged out."
+        }, status=status.HTTP_200_OK)
 
 class GoogleLoginView(APIView):
     permission_classes = [AllowAny]
@@ -156,10 +146,10 @@ class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         try:
-            AuthService.send_password_reset_email(email)
+            _, otp_code = AuthService.send_password_reset_otp(email)
             return Response({
                 "success": True,
-                "message": "If user account matches, a password reset link has been dispatched."
+                "message": f"A 6-digit verification code has been dispatched to {email}."
             }, status=status.HTTP_200_OK)
         except ValidationError as e:
             return validation_error_response(e, "Forgot password request failed")
@@ -170,19 +160,42 @@ class ForgotPasswordView(APIView):
                 "errors": {"non_field_errors": [str(e)]}
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class VerifyResetOTPView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        otp = request.data.get('otp')
+        try:
+            reset_token = AuthService.verify_password_reset_otp(email, otp)
+            return Response({
+                "success": True,
+                "message": "OTP verified successfully.",
+                "token": reset_token
+            }, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            return validation_error_response(e, "OTP verification failed")
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": "An unexpected error occurred verifying OTP.",
+                "errors": {"non_field_errors": [str(e)]}
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ResetPasswordView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        token = request.data.get('token')
+        email = request.data.get('email')
+        otp = request.data.get('otp')
         password = request.data.get('password')
         password_confirm = request.data.get('password_confirm')
 
         try:
-            AuthService.reset_password(token, password, password_confirm)
+            AuthService.reset_password_with_otp(email, otp, password, password_confirm)
             return Response({
                 "success": True,
-                "message": "Password has been reset successfully."
+                "message": "Password has been reset successfully. You can now log in with your new password."
             }, status=status.HTTP_200_OK)
         except ValidationError as e:
             return validation_error_response(e, "Password reset failed")

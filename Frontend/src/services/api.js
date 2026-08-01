@@ -73,6 +73,7 @@ export const authAPI = {
     logout: (refresh) => api.post('/api/auth/logout/', { refresh }),
     googleLogin: (payload) => api.post('/api/auth/google-login/', payload),
     forgotPassword: (email) => api.post('/api/auth/forgot-password/', { email }),
+    verifyResetOTP: (email, otp) => api.post('/api/auth/verify-reset-otp/', { email, otp }),
     resetPassword: (payload) => api.post('/api/auth/reset-password/', payload),
     verifyEmail: (token) => api.get(`/api/auth/verify-email/?token=${token}`),
     resendVerification: (email) => api.post('/api/auth/resend-verification/', { email }),

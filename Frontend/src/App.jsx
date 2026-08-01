@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingPage } from './pages/LandingPage';
@@ -17,6 +17,16 @@ import { Profile } from './pages/Profile';
 import { OnboardingAssessment } from './pages/OnboardingAssessment';
 import { AppProvider } from './context/AppContext';
 
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 const Layout = () => {
     return (
         <div className="flex flex-col min-h-screen bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light transition-colors duration-300">
@@ -33,6 +43,7 @@ function App() {
     return (
         <AppProvider>
             <Router>
+                <ScrollToTop />
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<LandingPage />} />

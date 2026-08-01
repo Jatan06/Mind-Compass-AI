@@ -42,19 +42,31 @@ export const Footer = () => {
                         </h4>
                         <ul className="space-y-2.5">
                             <li>
-                                <a href="#features" className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
+                                <Link to="/#features" onClick={() => {
+                                    if (window.location.pathname === '/') {
+                                        document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                }} className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
                                     Features
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#about" className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
+                                <Link to="/#about" onClick={() => {
+                                    if (window.location.pathname === '/') {
+                                        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                }} className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
                                     About Us
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#faq" className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
+                                <Link to="/#faq" onClick={() => {
+                                    if (window.location.pathname === '/') {
+                                        document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                }} className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
                                     FAQ
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -76,14 +88,20 @@ export const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#" className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
+                                <button
+                                    onClick={() => alert('Privacy Policy:\n\nMindCompass protects your privacy. All your journals, mood logs, and personal details are encrypted and never sold or shared with third parties.')}
+                                    className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors text-left cursor-pointer"
+                                >
                                     Privacy Policy
-                                </a>
+                                </button>
                             </li>
                             <li>
-                                <a href="#" className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors">
+                                <button
+                                    onClick={() => alert('Terms of Service:\n\nMindCompass provides self-care and tracking tools for wellness. It is not a replacement for medical diagnosis or clinical therapy.')}
+                                    className="text-sm text-text-dark/80 dark:text-text-light/80 hover:text-primary dark:hover:text-accent transition-colors text-left cursor-pointer"
+                                >
                                     Terms of Service
-                                </a>
+                                </button>
                             </li>
                         </ul>
                     </div>

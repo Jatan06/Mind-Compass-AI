@@ -15,12 +15,17 @@ class ProfileView(APIView):
         from django.utils.dateparse import parse_date
         client_today = parse_date(today_str) if today_str else None
         
-        from insights.services import InsightsService
-        InsightsService.get_user_progress(request.user, today=client_today)
-        
-        profile.refresh_from_db()
-        serializer = UserProfileSerializer(profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        from mood.services import MoodService
+        from ml.services.mood_predictor import MoodPredictorService
+
+        profile.streak = MoodService.calculate_streak(request.user, today=client_today)
+        profile.save()
+
+        data = UserProfileSerializer(profile).data
+        data["username"] = request.user.username
+        data["email"] = request.user.email
+        data["predicted_mood"] = MoodPredictorService.predict_next_day_mood(request.user)
+        return Response(data, status=status.HTTP_200_OK)
 
     def put(self, request):
         profile, _ = UserProfile.objects.get_or_create(user=request.user)
