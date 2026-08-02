@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", "Inter", "system-ui", sans-serif;
+
+  --color-primary: #1E352F;
+  --color-primary-hover: #162824;
+  --color-secondary: #94A89A;
+  --color-secondary-hover: #7E9484;
+  --color-accent: #EADEC9;
+  --color-accent-hover: #DFD3BE;
+
+  --color-bg-light: #FAF7F0;
+  --color-bg-dark: #121615;
+
+  --color-card-light: #FFFFFF;
+  --color-card-dark: #1D2321;
+
+  --color-text-light: #FAF7F0;
+  --color-text-dark: #1F2B27;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Smooth theme transition */
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+  font-family: var(--font-sans);
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94A89A;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7E9484;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1D2321;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #162824;
+}
+
+/* Scroll behave smooth */
+html {
+  scroll-behavior: smooth;
+}
