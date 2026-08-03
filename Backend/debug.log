@@ -11377,3 +11377,11 @@ INFO 2026-08-03 21:11:27,202 autoreload 30156 17112 B:\Work\Coding Projects\Web 
 INFO 2026-08-03 21:11:31,294 autoreload 3696 17028 Watching for file changes with StatReloader
 INFO 2026-08-03 21:13:49,641 autoreload 3696 17028 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\config\urls.py changed, reloading.
 INFO 2026-08-03 21:13:52,403 autoreload 13700 16440 Watching for file changes with StatReloader
+INFO 2026-08-03 22:34:25,106 autoreload 25160 11952 Watching for file changes with StatReloader
+INFO 2026-08-03 22:34:57,945 utils 25160 31680 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8e449933-c64a-411f-ae8e-0e4d11b55202 | Details: User alex_student logged in successfully.
+WARNING 2026-08-03 22:59:42,713 log 25160 33420 Bad Request: /api/auth/logout/
+INFO 2026-08-03 22:59:48,382 utils 25160 33420 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 85e1ba0c-a40c-4701-a39f-21579ecf47be | Details: Logged in user jane.doe via Google OAuth.
+INFO 2026-08-03 23:30:17,392 autoreload 25160 11952 C:\Users\HP\Documents\mindCompass\Backend\authentication\models.py changed, reloading.
+INFO 2026-08-03 23:30:20,817 autoreload 1104 10640 Watching for file changes with StatReloader
+INFO 2026-08-03 23:34:03,754 autoreload 1104 10640 C:\Users\HP\Documents\mindCompass\Backend\config\__init__.py changed, reloading.
+INFO 2026-08-03 23:34:05,978 autoreload 34088 26256 Watching for file changes with StatReloader
