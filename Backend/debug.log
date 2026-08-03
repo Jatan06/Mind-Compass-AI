@@ -11373,3 +11373,7 @@ LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
 
 INFO 2026-08-03 20:55:25,835 utils 30156 18084 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: ANONYMOUS | Details: Attempted username/email: alex_student (User not found)
 WARNING 2026-08-03 20:55:25,836 log 30156 18084 Bad Request: /api/auth/login/
+INFO 2026-08-03 21:11:27,202 autoreload 30156 17112 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\authentication\views.py changed, reloading.
+INFO 2026-08-03 21:11:31,294 autoreload 3696 17028 Watching for file changes with StatReloader
+INFO 2026-08-03 21:13:49,641 autoreload 3696 17028 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\config\urls.py changed, reloading.
+INFO 2026-08-03 21:13:52,403 autoreload 13700 16440 Watching for file changes with StatReloader
