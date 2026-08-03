@@ -10492,3 +10492,884 @@ WARNING 2026-08-02 13:08:30,248 log 5792 21296 Unauthorized: /api/profile/
 INFO 2026-08-02 13:10:04,906 utils 5792 21296 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8e449933-c64a-411f-ae8e-0e4d11b55202 | Details: User alex_student logged in successfully.
 INFO 2026-08-02 13:16:33,889 utils 5792 27176 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8e449933-c64a-411f-ae8e-0e4d11b55202 | Details: User alex_student logged in successfully.
 WARNING 2026-08-02 13:17:28,686 log 5792 27176 Not Found: /api/assessment/
+INFO 2026-08-03 20:52:26,956 autoreload 30156 17112 Watching for file changes with StatReloader
+INFO 2026-08-03 20:53:27,495 utils 30156 27880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6022452d-f889-4d0a-9fbd-ff087775cbad | Details: User jatan logged in successfully.
+ERROR 2026-08-03 20:53:28,533 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:53:29,631 log 30156 27880 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+ERROR 2026-08-03 20:53:32,595 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:53:33,225 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:53:34,247 log 30156 18084 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+ERROR 2026-08-03 20:53:35,445 log 30156 27880 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+INFO 2026-08-03 20:54:25,322 utils 30156 27880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6022452d-f889-4d0a-9fbd-ff087775cbad | Details: User jatan logged in successfully.
+ERROR 2026-08-03 20:54:25,905 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:54:26,725 log 30156 27880 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+ERROR 2026-08-03 20:54:28,120 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:54:28,538 log 30156 27880 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\users\views.py", line 19, in get
+    InsightsService.get_user_progress(request.user, today=client_today)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 187, in get_user_progress
+    score_w3 = cls._calculate_wellness_for_range(user, w3_start, w3_end)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\insights\services.py", line 144, in _calculate_wellness_for_range
+    total_recs = recs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "recommendation_recommenda...
+                                          ^
+
+ERROR 2026-08-03 20:54:29,928 log 30156 18084 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+ERROR 2026-08-03 20:54:30,382 log 30156 18084 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedTable: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 26, in get
+    yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1145, in first
+    for obj in queryset[:1]:
+               ~~~~~~~~^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: relation "recommendation_recommendation" does not exist
+LINE 1: ..."recommendation_recommendation"."updated_at" FROM "recommend...
+                                                             ^
+
+INFO 2026-08-03 20:55:25,835 utils 30156 18084 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: ANONYMOUS | Details: Attempted username/email: alex_student (User not found)
+WARNING 2026-08-03 20:55:25,836 log 30156 18084 Bad Request: /api/auth/login/
