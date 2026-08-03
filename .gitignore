@@ -1,0 +1,79 @@
+# ===================================================
+# Mind Compass AI - Root Git Ignore Configuration
+# ===================================================
+
+# Environment & Secret Files
+.env
+.env.*
+!.env.example
+*.env
+Backend/.env
+Frontend/.env
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+Backend/.venv/
+
+# Django Runtime & Database Logs
+*.log
+*.sqlite3
+*.sqlite3-journal
+Backend/debug.log
+Backend/db.sqlite3
+Backend/staticfiles/
+Backend/media/
+celerybeat-schedule
+celerybeat.pid
+
+# MLflow & ML Artifacts
+mlruns/
+Backend/mlruns/
+*.joblib
+*.pkl
+
+# Node / Frontend
+node_modules/
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.vite/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# IDE & System Files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
