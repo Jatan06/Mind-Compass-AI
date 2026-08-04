@@ -231,9 +231,9 @@ class AIServicesTestCase(APITestCase):
         self.assertEqual(alerts.count(), 2)
 
     def test_mood_prediction_training_and_inference(self):
-        # Seed several logs to simulate training data
+        # Seed several logs to simulate training data (must be >= 7 for Stage 2 prediction)
         today = timezone.localdate()
-        for idx in range(5):
+        for idx in range(8):
             MoodLog.objects.create(
                 user=self.user,
                 date=today - timezone.timedelta(days=idx+1),
@@ -250,14 +250,16 @@ class AIServicesTestCase(APITestCase):
         from ai.prediction.services import MoodPredictionService
         pred = MoodPredictionService.predict(self.user)
         
+        self.assertTrue(pred.get("has_prediction"))
         self.assertIn("predicted_mood", pred)
         self.assertIn("confidence", pred)
-        self.assertGreater(len(pred["reasons"]), 0)
+        self.assertTrue(pred.get("why"))
         
         # Verify database record saved
         saved = MoodPrediction.objects.filter(user=self.user).first()
         self.assertIsNotNone(saved)
         self.assertEqual(saved.predicted_mood, pred["predicted_mood"])
+        self.assertGreater(len(saved.reasons), 0)
 
     def test_adaptive_recommendation_scoring(self):
         # Create mock TherapyActivity entries if they don't exist

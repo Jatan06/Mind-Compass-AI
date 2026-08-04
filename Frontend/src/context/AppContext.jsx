@@ -7,8 +7,6 @@ export const AppProvider = ({ children }) => {
     // Session State
     const [token, setToken] = useState(() => localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || null);
     const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token') || null);
-    const [token, setToken] = useState(() => localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || null);
-    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token') || null);
     const [authLoading, setAuthLoading] = useState(true);
 
     // User Profile settings loaded from Django User profile object
@@ -43,18 +41,6 @@ export const AppProvider = ({ children }) => {
                 }
             }
         } catch (e) { }
-        return false;
-    });
-    const [isOnboarded, setIsOnboarded] = useState(() => {
-        const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-        if (storedUser) {
-            try {
-                const parsed = JSON.parse(storedUser);
-                return parsed.profile?.is_onboarded || false;
-            } catch (e) {
-                return false;
-            }
-        }
         return false;
     });
     const [streak, setStreak] = useState(0);

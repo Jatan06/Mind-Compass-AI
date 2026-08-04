@@ -17,7 +17,6 @@ class ProfileView(APIView):
         
         from mood.services import MoodService
         from ai.prediction.services import MoodPredictionService
-        from ai.prediction.services import MoodPredictionService
         from insights.services import InsightsService
 
         # Recalculate wellness score and streak dynamically
@@ -32,7 +31,6 @@ class ProfileView(APIView):
             data["predicted_mood"] = pred.get("predicted_mood")
         except Exception:
             data["predicted_mood"] = None
-        data["predicted_mood"] = MoodPredictionService.predict(request.user)
         return Response(data, status=status.HTTP_200_OK)
 
     def put(self, request):

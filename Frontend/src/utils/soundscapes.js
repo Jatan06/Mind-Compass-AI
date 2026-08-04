@@ -193,18 +193,18 @@ class CategorySoundEngine {
     stop() {
         this.isPlaying = false;
         this._timers.forEach(id => {
-            try { clearInterval(id); } catch (_) {}
-            try { clearTimeout(id); } catch (_) {}
+            try { clearInterval(id); } catch (_) { }
+            try { clearTimeout(id); } catch (_) { }
         });
         this._timers = [];
         if (this._stopTimeout) { clearTimeout(this._stopTimeout); this._stopTimeout = null; }
         if (this.masterVol) {
-            try { this.masterVol.volume.rampTo(-Infinity, 0.5); } catch (_) {}
+            try { this.masterVol.volume.rampTo(-Infinity, 0.5); } catch (_) { }
         }
         const nodesToDispose = [...this._nodes];
         this._nodes = [];
         setTimeout(() => {
-            nodesToDispose.forEach(n => { try { n.dispose(); } catch (_) {} });
+            nodesToDispose.forEach(n => { try { n.dispose(); } catch (_) { } });
             this.masterVol = null;
         }, 700);
     }
@@ -226,22 +226,22 @@ class CategorySoundEngine {
         this.masterVol = this._reg(new Tone.Volume(this._linToDB(this.volume)).toDestination());
 
         switch (sound.soundType) {
-            case 'breath_swell':      this._genBreathSwell(); break;
-            case 'singing_bowl':      this._genSingingBowl(); break;
-            case 'stream_chimes':     this._genStreamChimes(); break;
-            case 'rain_ocean':        this._genRainOcean(); break;
-            case 'piano_arpeggios':   this._genPianoArpeggios(); break;
-            case 'lofi_rain':         this._genLofiRain(); break;
-            case 'kalimba_pulse':     this._genKalimbaPulse(); break;
-            case 'ocean_swells':      this._genOceanSwells(); break;
-            case 'forest_drone':      this._genForestDrone(); break;
-            case 'solfeggio_528':     this._genSolfeggio528(); break;
-            case 'crystal_chimes':    this._genCrystalChimes(); break;
-            case 'water_strings':     this._genWaterStrings(); break;
-            case 'bamboo_fountain':   this._genBambooFountain(); break;
-            case 'campfire':          this._genCampfire(); break;
-            case 'gamma_focus':       this._genGammaFocus(); break;
-            default:                  this._genBreathSwell(); break;
+            case 'breath_swell': this._genBreathSwell(); break;
+            case 'singing_bowl': this._genSingingBowl(); break;
+            case 'stream_chimes': this._genStreamChimes(); break;
+            case 'rain_ocean': this._genRainOcean(); break;
+            case 'piano_arpeggios': this._genPianoArpeggios(); break;
+            case 'lofi_rain': this._genLofiRain(); break;
+            case 'kalimba_pulse': this._genKalimbaPulse(); break;
+            case 'ocean_swells': this._genOceanSwells(); break;
+            case 'forest_drone': this._genForestDrone(); break;
+            case 'solfeggio_528': this._genSolfeggio528(); break;
+            case 'crystal_chimes': this._genCrystalChimes(); break;
+            case 'water_strings': this._genWaterStrings(); break;
+            case 'bamboo_fountain': this._genBambooFountain(); break;
+            case 'campfire': this._genCampfire(); break;
+            case 'gamma_focus': this._genGammaFocus(); break;
+            default: this._genBreathSwell(); break;
         }
 
         this._stopTimeout = setTimeout(() => this.stop(), (durationSeconds + 2) * 1000);
@@ -591,7 +591,7 @@ class CategorySoundEngine {
             hp.connect(this.masterVol);
             pop.volume.value = -14 - Math.random() * 8;
             pop.triggerAttackRelease('32n');
-            setTimeout(() => { try { pop.dispose(); hp.dispose(); } catch (_) {} }, 500);
+            setTimeout(() => { try { pop.dispose(); hp.dispose(); } catch (_) { } }, 500);
             this._regTimer(setTimeout(crackle, 200 + Math.random() * 700));
         };
         crackle();
@@ -623,3 +623,5 @@ class CategorySoundEngine {
 }
 
 export const audioEngine = new CategorySoundEngine();
+// Trigger Vite package HMR watch updates.
+
