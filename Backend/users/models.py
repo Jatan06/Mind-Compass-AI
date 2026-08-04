@@ -27,6 +27,7 @@ class UserProfile(models.Model):
     
     goals = models.JSONField(default=list, blank=True)
     coping_methods = models.JSONField(default=list, blank=True)
+    trigger_keywords = models.JSONField(default=list, blank=True, null=True)
     
     voice_preference = models.CharField(max_length=50, default='calm-female')
     notifications = models.JSONField(default=dict, blank=True) # {"dailyCheckin": True, "weeklySummary": True, "wellnessReminders": False}
