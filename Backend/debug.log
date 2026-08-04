@@ -11385,3 +11385,1175 @@ INFO 2026-08-03 23:30:17,392 autoreload 25160 11952 C:\Users\HP\Documents\mindCo
 INFO 2026-08-03 23:30:20,817 autoreload 1104 10640 Watching for file changes with StatReloader
 INFO 2026-08-03 23:34:03,754 autoreload 1104 10640 C:\Users\HP\Documents\mindCompass\Backend\config\__init__.py changed, reloading.
 INFO 2026-08-03 23:34:05,978 autoreload 34088 26256 Watching for file changes with StatReloader
+INFO 2026-08-03 23:35:35,480 autoreload 34088 26256 C:\Users\HP\Documents\mindCompass\Backend\config\urls.py changed, reloading.
+INFO 2026-08-03 23:35:39,348 autoreload 22488 21984 Watching for file changes with StatReloader
+INFO 2026-08-03 23:41:59,852 autoreload 15348 4928 Watching for file changes with StatReloader
+INFO 2026-08-03 23:48:19,059 autoreload 15348 4928 C:\Users\HP\Documents\mindCompass\Backend\config\settings.py changed, reloading.
+INFO 2026-08-03 23:48:22,626 autoreload 7196 20824 Watching for file changes with StatReloader
+INFO 2026-08-03 23:51:31,869 autoreload 7196 20824 C:\Users\HP\Documents\mindCompass\Backend\authentication\migrations\0003_passwordresettoken_is_verified_and_more.py changed, reloading.
+INFO 2026-08-03 23:51:34,989 autoreload 29876 26620 Watching for file changes with StatReloader
+WARNING 2026-08-03 23:52:42,810 log 15500 14244 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-03 23:53:05,404 log 15500 14244 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-03 23:53:05,408 log 15500 14244 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-03 23:53:05,411 log 15500 14244 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-03 23:53:05,413 log 15500 14244 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-03 23:53:05,417 log 15500 14244 Unauthorized: /api/ai/insights/
+WARNING 2026-08-03 23:53:07,787 log 15500 14244 Bad Request: /api/assessment/
+INFO 2026-08-03 23:53:14,938 utils 15500 14244 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: eb25b49b-acb9-4b77-8bc8-991a26bb3b1f | Details: Verification code generated.
+INFO 2026-08-03 23:53:17,281 utils 15500 14244 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 808bbc8d-def2-4ca7-b73e-efedef0c6ab2 | Details: Verification code generated.
+INFO 2026-08-03 23:53:17,294 utils 15500 14244 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 808bbc8d-def2-4ca7-b73e-efedef0c6ab2 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-03 23:53:21,679 utils 15500 14244 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 21ed1676-ea0a-423b-8e0f-acec47e751d4 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-03 23:53:21,686 utils 15500 14244 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 21ed1676-ea0a-423b-8e0f-acec47e751d4 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-03 23:53:26,253 utils 15500 14244 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: a9fd1d0b-f53c-4082-8951-0d475474f6af | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-03 23:53:30,749 utils 15500 14244 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 5ec49bd5-45b1-498e-8877-2858babce5f0 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-03 23:53:35,502 utils 15500 14244 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: dd390a24-67cf-4c3f-b416-3779d7c0973a | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:53:40,050 utils 15500 14244 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 5a71db82-0612-4d37-856b-e1b51b7810e5 | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:53:49,634 utils 15500 14244 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: f7db8262-63e4-42a0-8d25-6c098d027be5 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-03 23:53:49,639 utils 15500 14244 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: f7db8262-63e4-42a0-8d25-6c098d027be5 | Details: Verification code generated.
+WARNING 2026-08-03 23:53:54,446 log 15500 14244 Bad Request: /api/mood/
+ERROR 2026-08-03 23:54:02,359 log 15500 14244 Internal Server Error: /api/profile/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\users\views.py", line 19, in get
+    from ml.services.mood_predictor import MoodPredictorService
+ModuleNotFoundError: No module named 'ml.services.mood_predictor'
+INFO 2026-08-03 23:56:52,759 autoreload 29876 26620 C:\Users\HP\Documents\mindCompass\Backend\users\views.py changed, reloading.
+INFO 2026-08-03 23:56:55,911 autoreload 12964 18072 Watching for file changes with StatReloader
+WARNING 2026-08-03 23:57:26,734 log 27456 22772 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-03 23:57:37,107 log 27456 22772 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-03 23:57:37,108 log 27456 22772 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-03 23:57:37,110 log 27456 22772 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-03 23:57:37,113 log 27456 22772 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-03 23:57:37,118 log 27456 22772 Unauthorized: /api/ai/insights/
+WARNING 2026-08-03 23:57:38,187 log 27456 22772 Bad Request: /api/assessment/
+INFO 2026-08-03 23:57:41,353 utils 27456 22772 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 60b940b8-db51-4324-a4b2-f5d3f67f656c | Details: Verification code generated.
+INFO 2026-08-03 23:57:42,457 utils 27456 22772 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 4af92f69-97a1-475d-842b-1a4c244b7972 | Details: Verification code generated.
+INFO 2026-08-03 23:57:42,460 utils 27456 22772 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 4af92f69-97a1-475d-842b-1a4c244b7972 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-03 23:57:44,302 utils 27456 22772 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 04486549-c543-40ab-83ac-064352c05c5c | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-03 23:57:44,307 utils 27456 22772 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 04486549-c543-40ab-83ac-064352c05c5c | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-03 23:57:46,513 utils 27456 22772 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: e818f836-6663-489c-ab85-36638c69790e | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-03 23:57:48,808 utils 27456 22772 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: a521094e-4fc0-4a2a-8cb6-633434ed2d59 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-03 23:57:51,019 utils 27456 22772 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: d15cc66d-8fd5-4329-a0f9-b4796fe1c604 | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:57:53,244 utils 27456 22772 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8670665a-3290-49a7-a2ef-4a7f11206563 | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:57:57,741 utils 27456 22772 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 91ac3b0d-667b-406d-9c06-7ce7dd0f9c0e | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-03 23:57:57,742 utils 27456 22772 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 91ac3b0d-667b-406d-9c06-7ce7dd0f9c0e | Details: Verification code generated.
+WARNING 2026-08-03 23:58:00,067 log 27456 22772 Bad Request: /api/mood/
+WARNING 2026-08-03 23:59:01,661 log 14840 17908 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-03 23:59:06,403 log 14840 17908 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-03 23:59:06,404 log 14840 17908 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-03 23:59:06,404 log 14840 17908 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-03 23:59:06,405 log 14840 17908 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-03 23:59:06,406 log 14840 17908 Unauthorized: /api/ai/insights/
+WARNING 2026-08-03 23:59:06,933 log 14840 17908 Bad Request: /api/assessment/
+INFO 2026-08-03 23:59:08,421 utils 14840 17908 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 692e472f-d543-48df-b346-4bf6308cb0b3 | Details: Verification code generated.
+INFO 2026-08-03 23:59:08,943 utils 14840 17908 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 47fe219f-7f84-46d5-a7e3-22542f980833 | Details: Verification code generated.
+INFO 2026-08-03 23:59:08,945 utils 14840 17908 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 47fe219f-7f84-46d5-a7e3-22542f980833 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-03 23:59:10,000 utils 14840 17908 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: a147c595-e45f-451c-a29d-87ed4107c063 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-03 23:59:10,005 utils 14840 17908 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: a147c595-e45f-451c-a29d-87ed4107c063 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-03 23:59:11,080 utils 14840 17908 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: ec432cca-d2d8-4d60-9a4d-d71aacb5f2aa | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-03 23:59:12,163 utils 14840 17908 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 1e6160e4-218d-4bcb-9d74-2ef73ad5a1b6 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-03 23:59:13,234 utils 14840 17908 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: a08efb7b-80d4-4d3d-b474-12078426a29d | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:59:14,296 utils 14840 17908 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0ead472c-6f55-458f-a1ea-b5554e3530a1 | Details: User loginuser logged in successfully.
+INFO 2026-08-03 23:59:16,442 utils 14840 17908 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: acd3c63a-2051-4ec2-8033-7748a0cd918d | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-03 23:59:16,443 utils 14840 17908 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: acd3c63a-2051-4ec2-8033-7748a0cd918d | Details: Verification code generated.
+WARNING 2026-08-03 23:59:17,556 log 14840 17908 Bad Request: /api/mood/
+WARNING 2026-08-04 00:01:02,745 log 24476 14300 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 00:01:07,462 log 24476 14300 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 00:01:07,463 log 24476 14300 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 00:01:07,465 log 24476 14300 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 00:01:07,466 log 24476 14300 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 00:01:07,466 log 24476 14300 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 00:01:07,964 log 24476 14300 Bad Request: /api/assessment/
+INFO 2026-08-04 00:01:09,452 utils 24476 14300 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 3f41de47-ad15-4962-a92a-f470d2518873 | Details: Verification code generated.
+INFO 2026-08-04 00:01:09,983 utils 24476 14300 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c3576651-e297-4491-88ce-da8115d9f1b2 | Details: Verification code generated.
+INFO 2026-08-04 00:01:09,985 utils 24476 14300 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: c3576651-e297-4491-88ce-da8115d9f1b2 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 00:01:11,141 utils 24476 14300 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 52ca9092-224a-4dcd-895f-5e68ee12febb | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 00:01:11,142 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 52ca9092-224a-4dcd-895f-5e68ee12febb | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 00:01:12,238 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 6628ff63-0643-4162-9641-91f970146ed9 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 00:01:13,239 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: a0c1229d-b8d6-4a42-9eca-2c8846edcfb2 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 00:01:14,246 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6b8b4aab-32ae-4e57-aafd-fec6ddb8ff73 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 00:01:15,274 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: d1701e46-916d-48c6-8c6c-601b8d7ad8c1 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 00:01:15,798 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: cf902da8-2d0a-4187-8ae6-d74c26951646 | Details: Issued 6-digit password reset OTP: 402164
+INFO 2026-08-04 00:01:16,304 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: b95a7687-db73-4d2f-94d4-7875454e13c7 | Details: Issued 6-digit password reset OTP: 125907
+INFO 2026-08-04 00:01:16,305 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: b95a7687-db73-4d2f-94d4-7875454e13c7 | Details: Successfully verified OTP.
+INFO 2026-08-04 00:01:16,786 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: ee436c81-0e00-46ab-a04c-17a96b29ae60 | Details: Issued 6-digit password reset OTP: 298924
+INFO 2026-08-04 00:01:16,787 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: ee436c81-0e00-46ab-a04c-17a96b29ae60 | Details: Successfully verified OTP.
+INFO 2026-08-04 00:01:17,297 utils 24476 14300 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: ee436c81-0e00-46ab-a04c-17a96b29ae60 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 00:01:17,807 utils 24476 14300 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: ee436c81-0e00-46ab-a04c-17a96b29ae60 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 00:01:18,327 utils 24476 14300 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 68647c7c-36b2-45ef-831f-facb73915c58 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 00:01:18,328 utils 24476 14300 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 68647c7c-36b2-45ef-831f-facb73915c58 | Details: Verification code generated.
+WARNING 2026-08-04 00:01:19,357 log 24476 14300 Bad Request: /api/mood/
+INFO 2026-08-04 00:01:52,578 autoreload 10016 2908 Watching for file changes with StatReloader
+WARNING 2026-08-04 00:02:05,252 log 10016 20376 Not Found: /
+INFO 2026-08-04 00:05:58,070 utils 10016 33292 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: ANONYMOUS | Details: Attempted username/email: alex.student@gmail.com (User not found)
+WARNING 2026-08-04 00:05:58,071 log 10016 33292 Bad Request: /api/auth/login/
+WARNING 2026-08-04 00:06:58,638 log 10016 33292 Bad Request: /api/auth/register/
+WARNING 2026-08-04 00:07:05,241 log 10016 33292 Bad Request: /api/auth/register/
+INFO 2026-08-04 00:07:56,547 utils 10016 33292 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Incorrect password attempt for user: aaaa
+WARNING 2026-08-04 00:07:56,549 log 10016 33292 Bad Request: /api/auth/login/
+INFO 2026-08-04 00:08:04,964 utils 10016 33292 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Issued 6-digit password reset OTP: 848677
+INFO 2026-08-04 00:08:59,489 utils 10016 33292 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 00501919-a288-4a02-bae5-86c11b0dfcda | Details: Issued 6-digit password reset OTP: 372905
+INFO 2026-08-04 00:11:27,509 utils 10016 33292 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: ANONYMOUS | Details: Attempted username/email: alex.student@gmail.com (User not found)
+WARNING 2026-08-04 00:11:27,510 log 10016 33292 Bad Request: /api/auth/login/
+INFO 2026-08-04 00:12:04,378 utils 10016 33292 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: f8012fd7-79e0-425b-b469-1becdad96cf3 | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 00:12:04,660 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:04,689 log 10016 33292 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:04,762 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:04,770 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:04,775 log 10016 33292 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:04,781 log 10016 33292 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:19,481 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:19,488 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:19,491 log 10016 24840 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:19,501 log 10016 24840 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:46,929 log 10016 24840 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:46,934 log 10016 24840 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:12:46,938 log 10016 33292 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:12:46,943 log 10016 33292 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:14:17,513 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:14:17,517 log 10016 33292 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:14:17,522 log 10016 24840 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:14:17,527 log 10016 24840 Unauthorized: /api/mood/history/
+INFO 2026-08-04 00:20:46,877 autoreload 32716 34184 Watching for file changes with StatReloader
+INFO 2026-08-04 00:21:13,268 utils 32716 11092 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 90c0a989-b38e-4b3b-8e29-58eee00065c0 | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 00:21:13,475 log 32716 11092 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:21:13,526 log 32716 11092 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:21:13,528 log 32716 26480 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:21:13,538 log 32716 26480 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:21:13,553 log 32716 26480 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:21:13,557 log 32716 26480 Unauthorized: /api/mood/history/
+INFO 2026-08-04 00:29:13,340 autoreload 1408 25644 Watching for file changes with StatReloader
+INFO 2026-08-04 00:29:31,763 utils 1408 6568 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 9abadfdb-2226-4db3-b8b2-288f153936bc | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 00:29:32,025 log 1408 6568 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:29:32,050 log 1408 6568 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:29:32,088 log 1408 6568 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:29:32,092 log 1408 32320 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:29:32,098 log 1408 32320 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:29:32,103 log 1408 6568 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:39:15,576 log 10016 1252 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 00:39:19,676 log 10016 1252 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 00:39:19,677 log 10016 1252 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 00:39:19,677 log 10016 1252 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 00:39:19,678 log 10016 1252 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 00:39:19,678 log 10016 1252 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 00:39:20,147 log 10016 1252 Bad Request: /api/assessment/
+INFO 2026-08-04 00:39:21,558 utils 10016 1252 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: cb07ba35-2026-4fb6-9ff1-347cc436826e | Details: Verification code generated.
+INFO 2026-08-04 00:39:22,012 utils 10016 1252 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: a182aa73-b8b0-459e-a5e7-a33a8941528f | Details: Verification code generated.
+INFO 2026-08-04 00:39:22,013 utils 10016 1252 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: a182aa73-b8b0-459e-a5e7-a33a8941528f | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 00:39:23,012 utils 10016 1252 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 415f9076-616f-4c7b-be35-6938c09668d2 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 00:39:23,013 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 415f9076-616f-4c7b-be35-6938c09668d2 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 00:39:23,949 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: b2ded9bf-f788-44ec-a0e5-bb533124cba0 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 00:39:24,877 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: cb84df0f-2b95-4a3e-9a78-15577664ed77 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 00:39:25,802 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: aa446ec9-91de-4524-b5e8-d183c2956f1c | Details: User loginuser logged in successfully.
+INFO 2026-08-04 00:39:26,724 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0c6505df-35c8-4578-80c2-c50f09212c1d | Details: User loginuser logged in successfully.
+INFO 2026-08-04 00:39:27,195 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 4e45a811-0c7a-4e77-ba05-589d810a2c8d | Details: Issued 6-digit password reset OTP: 483874
+INFO 2026-08-04 00:39:27,657 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: c7253a33-e42e-42ca-b029-656a9addb1c2 | Details: Issued 6-digit password reset OTP: 984100
+INFO 2026-08-04 00:39:27,658 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: c7253a33-e42e-42ca-b029-656a9addb1c2 | Details: Successfully verified OTP.
+INFO 2026-08-04 00:39:28,121 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 4421875d-3c9b-49f9-b79b-9de4eb24b917 | Details: Issued 6-digit password reset OTP: 827659
+INFO 2026-08-04 00:39:28,122 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 4421875d-3c9b-49f9-b79b-9de4eb24b917 | Details: Successfully verified OTP.
+INFO 2026-08-04 00:39:28,583 utils 10016 1252 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 4421875d-3c9b-49f9-b79b-9de4eb24b917 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 00:39:29,040 utils 10016 1252 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 4421875d-3c9b-49f9-b79b-9de4eb24b917 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 00:39:29,522 utils 10016 1252 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 6e03f9de-16fc-472d-8913-9769f5f79317 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 00:39:29,522 utils 10016 1252 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 6e03f9de-16fc-472d-8913-9769f5f79317 | Details: Verification code generated.
+WARNING 2026-08-04 00:39:30,463 log 10016 1252 Bad Request: /api/mood/
+WARNING 2026-08-04 00:44:06,658 log 1408 26632 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:06,666 log 1408 26632 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:06,681 log 1408 26632 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:44:06,693 log 1408 26632 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:44:06,738 log 1408 26632 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:06,743 log 1408 26632 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:06,748 log 1408 26632 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:44:06,755 log 1408 26632 Unauthorized: /api/mood/history/
+INFO 2026-08-04 00:44:41,134 utils 1408 18188 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: a33a561b-3b4e-4846-be86-0638fc0e98a9 | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 00:44:41,145 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:41,165 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:44:41,182 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:41,187 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:44:41,193 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:44:41,196 log 1408 18188 Unauthorized: /api/mood/history/
+INFO 2026-08-04 00:45:14,925 utils 1408 18188 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: bfc9e308-609b-4059-a57c-485e2c415eb8 | Details: User emily_healthy logged in successfully.
+WARNING 2026-08-04 00:45:14,939 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:45:14,954 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:45:14,968 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:45:14,976 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:45:14,987 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:45:14,997 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:06,832 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:06,836 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:06,886 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:06,892 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:16,058 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:16,062 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:16,117 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:16,122 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:42,610 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:42,615 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:42,621 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:42,636 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:43,628 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:43,631 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:48:43,637 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:48:43,642 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:49:19,076 log 1408 15660 Unauthorized: /api/assessment/
+WARNING 2026-08-04 00:49:19,084 log 1408 15660 Unauthorized: /api/assessment/
+WARNING 2026-08-04 00:49:26,526 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:49:26,529 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:49:26,536 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:49:26,545 log 1408 18188 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:49:27,356 log 1408 18188 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:49:27,359 log 1408 15660 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:49:27,366 log 1408 15660 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:49:27,374 log 1408 15660 Unauthorized: /api/mood/history/
+ERROR 2026-08-04 00:55:25,102 log 7428 12892 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\utils\deprecation.py", line 308, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\http\request.py", line 206, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+ERROR 2026-08-04 00:56:32,325 log 7736 32068 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\utils\deprecation.py", line 308, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\http\request.py", line 206, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+WARNING 2026-08-04 00:59:52,417 log 1408 21132 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:59:52,485 log 1408 21132 Unauthorized: /api/profile/
+WARNING 2026-08-04 00:59:52,577 log 1408 21132 Unauthorized: /api/profile/
+ERROR 2026-08-04 00:59:52,706 log 1408 21132 Internal Server Error: /api/auth/refresh/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 459, in run_validation
+    value = self.validate(value)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\serializers.py", line 116, in validate
+    user := get_user_model().objects.get(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        **{api_settings.USER_ID_FIELD: user_id}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.User.DoesNotExist: User matching query does not exist.
+ERROR 2026-08-04 00:59:52,709 log 1408 16140 Internal Server Error: /api/auth/refresh/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 459, in run_validation
+    value = self.validate(value)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\serializers.py", line 116, in validate
+    user := get_user_model().objects.get(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        **{api_settings.USER_ID_FIELD: user_id}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.User.DoesNotExist: User matching query does not exist.
+ERROR 2026-08-04 00:59:52,713 log 1408 5248 Internal Server Error: /api/auth/refresh/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 459, in run_validation
+    value = self.validate(value)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\serializers.py", line 116, in validate
+    user := get_user_model().objects.get(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        **{api_settings.USER_ID_FIELD: user_id}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.User.DoesNotExist: User matching query does not exist.
+WARNING 2026-08-04 00:59:52,733 log 1408 5248 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:59:52,765 log 1408 5248 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 00:59:52,774 log 1408 5248 Unauthorized: /api/mood/history/
+WARNING 2026-08-04 01:00:28,619 log 12908 27104 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 01:00:33,484 log 12908 27104 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 01:00:33,484 log 12908 27104 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 01:00:33,486 log 12908 27104 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 01:00:33,486 log 12908 27104 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 01:00:33,487 log 12908 27104 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 01:00:34,001 log 12908 27104 Bad Request: /api/assessment/
+INFO 2026-08-04 01:00:35,551 utils 12908 27104 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c7b41a97-f34c-42cf-a6cc-c5d617b5d181 | Details: Verification code generated.
+INFO 2026-08-04 01:00:36,067 utils 12908 27104 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 04a333fe-34e0-4afe-9484-620e5c797ffb | Details: Verification code generated.
+INFO 2026-08-04 01:00:36,069 utils 12908 27104 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 04a333fe-34e0-4afe-9484-620e5c797ffb | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 01:00:37,099 utils 12908 27104 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 79da5279-330d-427c-8911-7c2fbc60a293 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 01:00:37,101 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 79da5279-330d-427c-8911-7c2fbc60a293 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 01:00:38,157 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 9497a30a-db58-427e-91ef-d9125d407e81 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 01:00:39,206 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: c9452d8a-d57b-4fc3-be43-efe60ec210f6 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 01:00:40,251 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 29737578-ed82-42db-a9f6-c18f31c17e40 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 01:00:41,342 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: dff4b0d3-01d9-4b93-b6ab-d9d718cb2efc | Details: User loginuser logged in successfully.
+INFO 2026-08-04 01:00:41,879 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: b44ddf78-cc01-4663-822f-73f22423cc93 | Details: Issued 6-digit password reset OTP: 554941
+INFO 2026-08-04 01:00:42,420 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 0b21212c-1279-4ae7-88cf-1ac7c14be344 | Details: Issued 6-digit password reset OTP: 308869
+INFO 2026-08-04 01:00:42,423 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 0b21212c-1279-4ae7-88cf-1ac7c14be344 | Details: Successfully verified OTP.
+INFO 2026-08-04 01:00:43,091 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 0ffc887c-fb86-4501-8f64-ae4d27330ebc | Details: Issued 6-digit password reset OTP: 201255
+INFO 2026-08-04 01:00:43,092 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 0ffc887c-fb86-4501-8f64-ae4d27330ebc | Details: Successfully verified OTP.
+INFO 2026-08-04 01:00:43,621 utils 12908 27104 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 0ffc887c-fb86-4501-8f64-ae4d27330ebc | Details: Password successfully reset via OTP.
+INFO 2026-08-04 01:00:44,153 utils 12908 27104 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0ffc887c-fb86-4501-8f64-ae4d27330ebc | Details: User resetuser logged in successfully.
+INFO 2026-08-04 01:00:44,696 utils 12908 27104 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: c24cdfe9-5bb1-48e8-ac0d-6d9de144a2fe | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 01:00:44,697 utils 12908 27104 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c24cdfe9-5bb1-48e8-ac0d-6d9de144a2fe | Details: Verification code generated.
+WARNING 2026-08-04 01:00:45,756 log 12908 27104 Bad Request: /api/mood/
+INFO 2026-08-04 01:03:07,861 utils 1408 28068 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: a33a561b-3b4e-4846-be86-0638fc0e98a9 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:10:35,831 autoreload 1408 25644 C:\Users\HP\Documents\mindCompass\Backend\ai\views.py changed, reloading.
+INFO 2026-08-04 01:10:37,718 autoreload 32660 10748 Watching for file changes with StatReloader
+INFO 2026-08-04 01:10:41,404 autoreload 32660 10748 C:\Users\HP\Documents\mindCompass\Backend\recommendation\views.py changed, reloading.
+INFO 2026-08-04 01:10:42,949 autoreload 7856 23180 Watching for file changes with StatReloader
+INFO 2026-08-04 01:10:47,711 autoreload 7856 23180 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 01:10:49,117 autoreload 29176 4192 Watching for file changes with StatReloader
+INFO 2026-08-04 01:10:54,033 autoreload 29176 4192 C:\Users\HP\Documents\mindCompass\Backend\ai\pipeline.py changed, reloading.
+INFO 2026-08-04 01:10:55,392 autoreload 28676 19320 Watching for file changes with StatReloader
+INFO 2026-08-04 01:10:59,205 autoreload 28676 19320 C:\Users\HP\Documents\mindCompass\Backend\ai\prediction\model.py changed, reloading.
+INFO 2026-08-04 01:11:00,592 autoreload 19472 15492 Watching for file changes with StatReloader
+INFO 2026-08-04 01:11:04,388 autoreload 19472 15492 C:\Users\HP\Documents\mindCompass\Backend\ai\prediction\model.py changed, reloading.
+INFO 2026-08-04 01:11:06,002 autoreload 9744 28012 Watching for file changes with StatReloader
+WARNING 2026-08-04 01:11:23,867 log 21536 9712 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 01:11:28,457 log 21536 9712 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 01:11:28,458 log 21536 9712 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 01:11:28,458 log 21536 9712 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 01:11:28,459 log 21536 9712 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 01:11:28,459 log 21536 9712 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 01:11:28,961 log 21536 9712 Bad Request: /api/assessment/
+INFO 2026-08-04 01:11:30,466 utils 21536 9712 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 04a63154-52c9-4792-84bf-2df51c73fbe8 | Details: Verification code generated.
+INFO 2026-08-04 01:11:30,970 utils 21536 9712 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: df0d89af-5245-48dd-ab04-5f398cc4df74 | Details: Verification code generated.
+INFO 2026-08-04 01:11:30,972 utils 21536 9712 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: df0d89af-5245-48dd-ab04-5f398cc4df74 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 01:11:31,923 utils 21536 9712 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: ae5f316a-758e-4d0c-8fc6-5f25d243801d | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 01:11:31,924 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: ae5f316a-758e-4d0c-8fc6-5f25d243801d | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 01:11:32,951 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 15a19f73-5172-4c12-88f8-2ce34915ffeb | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 01:11:33,981 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 6b7d9bad-8406-4b6e-bb5a-47df8271580f | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 01:11:34,980 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 1ff0c899-db4f-4715-b0b3-f005d1296a2e | Details: User loginuser logged in successfully.
+INFO 2026-08-04 01:11:35,982 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 64797ee2-721a-4058-b7ed-2b1d8acb2cd9 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 01:11:36,498 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: c4eda98c-f508-407d-9988-d80a8aaf940d | Details: Issued 6-digit password reset OTP: 925481
+INFO 2026-08-04 01:11:37,018 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: edbbdca9-dd62-4903-bf6e-51d71f3de6de | Details: Issued 6-digit password reset OTP: 350594
+INFO 2026-08-04 01:11:37,019 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: edbbdca9-dd62-4903-bf6e-51d71f3de6de | Details: Successfully verified OTP.
+INFO 2026-08-04 01:11:37,519 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: ff276c88-ec73-4823-8239-874ea06e648b | Details: Issued 6-digit password reset OTP: 453817
+INFO 2026-08-04 01:11:37,521 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: ff276c88-ec73-4823-8239-874ea06e648b | Details: Successfully verified OTP.
+INFO 2026-08-04 01:11:38,031 utils 21536 9712 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: ff276c88-ec73-4823-8239-874ea06e648b | Details: Password successfully reset via OTP.
+INFO 2026-08-04 01:11:38,523 utils 21536 9712 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: ff276c88-ec73-4823-8239-874ea06e648b | Details: User resetuser logged in successfully.
+INFO 2026-08-04 01:11:39,077 utils 21536 9712 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: c8c66294-05aa-454a-bd66-3b0eb48ebb65 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 01:11:39,078 utils 21536 9712 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c8c66294-05aa-454a-bd66-3b0eb48ebb65 | Details: Verification code generated.
+WARNING 2026-08-04 01:11:40,123 log 21536 9712 Bad Request: /api/mood/
+INFO 2026-08-04 01:12:05,512 autoreload 1632 2568 Watching for file changes with StatReloader
+INFO 2026-08-04 01:13:21,829 utils 9744 10772 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: Incorrect password attempt for user: alex_student
+WARNING 2026-08-04 01:13:21,831 log 9744 10772 Bad Request: /api/auth/login/
+INFO 2026-08-04 01:13:49,574 utils 9744 20452 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:14:09,672 utils 9744 14720 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:14:28,569 utils 9744 28144 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 01:17:41,352 log 9744 19152 Unauthorized: /api/profile/
+WARNING 2026-08-04 01:17:41,419 log 9744 19152 Unauthorized: /api/profile/
+ERROR 2026-08-04 01:17:41,538 log 9744 19152 Internal Server Error: /api/auth/refresh/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 459, in run_validation
+    value = self.validate(value)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\serializers.py", line 116, in validate
+    user := get_user_model().objects.get(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        **{api_settings.USER_ID_FIELD: user_id}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.User.DoesNotExist: User matching query does not exist.
+WARNING 2026-08-04 01:17:41,556 log 9744 19152 Unauthorized: /api/mood/history/
+ERROR 2026-08-04 01:17:41,667 log 9744 26096 Internal Server Error: /api/auth/refresh/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\views.py", line 46, in post
+    serializer.is_valid(raise_exception=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 225, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 459, in run_validation
+    value = self.validate(value)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework_simplejwt\serializers.py", line 116, in validate
+    user := get_user_model().objects.get(
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        **{api_settings.USER_ID_FIELD: user_id}
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+users.models.User.DoesNotExist: User matching query does not exist.
+WARNING 2026-08-04 01:17:41,686 log 9744 26096 Unauthorized: /api/mood/history/
+INFO 2026-08-04 01:18:03,247 utils 9744 26096 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:18:44,979 utils 9744 15956 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0e096aa2-b1e4-4b6a-8913-ea7960d280da | Details: User emily_healthy logged in successfully.
+INFO 2026-08-04 01:19:07,418 utils 9744 10224 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:19:53,446 utils 9744 10224 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 01:21:13,177 autoreload 1632 2568 C:\Users\HP\Documents\mindCompass\Backend\ai\prediction\model.py changed, reloading.
+INFO 2026-08-04 01:21:13,857 autoreload 9744 28012 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 01:21:15,859 autoreload 32460 30236 Watching for file changes with StatReloader
+INFO 2026-08-04 01:21:16,439 autoreload 30416 26736 Watching for file changes with StatReloader
+WARNING 2026-08-04 11:05:17,043 log 11084 33640 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:05:33,154 log 11084 33640 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:05:33,159 log 11084 33640 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:05:33,163 log 11084 33640 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:05:33,166 log 11084 33640 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:05:33,171 log 11084 33640 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:05:35,516 log 11084 33640 Bad Request: /api/assessment/
+INFO 2026-08-04 11:05:42,462 utils 11084 33640 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 05464ffe-02ad-4dfb-892f-de8a535dd2ae | Details: Verification code generated.
+INFO 2026-08-04 11:05:44,721 utils 11084 33640 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 6a7301a1-5b49-48b1-93a3-723b766b780d | Details: Verification code generated.
+INFO 2026-08-04 11:05:44,732 utils 11084 33640 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 6a7301a1-5b49-48b1-93a3-723b766b780d | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 11:05:49,446 utils 11084 33640 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 4a54c878-deb2-4cb5-bc1b-e32a8215f282 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 11:05:49,454 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 4a54c878-deb2-4cb5-bc1b-e32a8215f282 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 11:05:54,724 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: d5730b9a-d246-47e4-a98a-50985ca51a81 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 11:05:59,230 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: ca7aa470-d267-4439-bdd9-1584c37efcc6 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 11:06:03,862 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 4c82b5d1-2300-44b9-81c5-aaa4fd49e429 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:06:08,784 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: fbe5cc0c-1218-4641-bc15-82d787ddcf18 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:06:10,983 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 8311a9d9-6f6b-4db8-b4df-97fdfdd39478 | Details: Issued 6-digit password reset OTP: 206241
+INFO 2026-08-04 11:06:13,037 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 93fbe2a7-fcce-475b-a3a3-3761d6bd6bc8 | Details: Issued 6-digit password reset OTP: 133815
+INFO 2026-08-04 11:06:13,046 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 93fbe2a7-fcce-475b-a3a3-3761d6bd6bc8 | Details: Successfully verified OTP.
+INFO 2026-08-04 11:06:15,198 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 3df91f55-03c1-433d-82fc-17d10f3e9201 | Details: Issued 6-digit password reset OTP: 284192
+INFO 2026-08-04 11:06:15,205 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 3df91f55-03c1-433d-82fc-17d10f3e9201 | Details: Successfully verified OTP.
+INFO 2026-08-04 11:06:17,519 utils 11084 33640 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 3df91f55-03c1-433d-82fc-17d10f3e9201 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 11:06:20,173 utils 11084 33640 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 3df91f55-03c1-433d-82fc-17d10f3e9201 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 11:06:22,940 utils 11084 33640 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: c5a0d6d2-728d-45b2-b593-330e108cb710 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 11:06:22,944 utils 11084 33640 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c5a0d6d2-728d-45b2-b593-330e108cb710 | Details: Verification code generated.
+WARNING 2026-08-04 11:06:26,575 log 11084 33640 Bad Request: /api/mood/
+WARNING 2026-08-04 11:10:09,819 log 16156 17972 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:10:18,745 log 16156 17972 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:10:18,748 log 16156 17972 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:10:18,753 log 16156 17972 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:10:18,756 log 16156 17972 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:10:18,761 log 16156 17972 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:11:18,617 log 23784 19288 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:12:02,526 log 23784 19288 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:12:02,540 log 23784 19288 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:12:02,544 log 23784 19288 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:12:02,549 log 23784 19288 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:12:02,551 log 23784 19288 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:12:04,982 log 23784 19288 Bad Request: /api/assessment/
+INFO 2026-08-04 11:12:12,507 utils 23784 19288 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 96707966-a0c7-4da8-885a-b75a630cac51 | Details: Verification code generated.
+INFO 2026-08-04 11:12:13,098 utils 23784 19288 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 46c68945-fdc4-421b-b194-7d5be6ddbc4a | Details: Verification code generated.
+INFO 2026-08-04 11:12:13,100 utils 23784 19288 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 46c68945-fdc4-421b-b194-7d5be6ddbc4a | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 11:12:14,190 utils 23784 19288 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: b38e4696-0f38-4867-8ab0-ad2196bf9155 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 11:12:14,192 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: b38e4696-0f38-4867-8ab0-ad2196bf9155 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 11:12:15,330 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 65fd46c7-9c6f-4068-8f2a-d14d72e11b18 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 11:12:17,168 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: f7cbf104-e42e-4e3f-b490-b110756e9d20 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 11:12:22,196 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: f35cf2bb-03d3-4222-83f4-96a2a3b72f12 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:12:27,230 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 5c5ef62f-6687-435a-bc8d-9bc804d86c7c | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:12:30,012 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 85a3b9e4-59fe-4da7-9a5f-6cc9c5acc7bc | Details: Issued 6-digit password reset OTP: 670135
+INFO 2026-08-04 11:12:32,676 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 8dfeb796-7ccc-4b6c-a10d-60aad0f22962 | Details: Issued 6-digit password reset OTP: 496104
+INFO 2026-08-04 11:12:32,685 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 8dfeb796-7ccc-4b6c-a10d-60aad0f22962 | Details: Successfully verified OTP.
+INFO 2026-08-04 11:12:35,188 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 8b43f514-b07a-4c54-88ae-38f13e37545a | Details: Issued 6-digit password reset OTP: 465545
+INFO 2026-08-04 11:12:35,197 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 8b43f514-b07a-4c54-88ae-38f13e37545a | Details: Successfully verified OTP.
+INFO 2026-08-04 11:12:37,724 utils 23784 19288 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 8b43f514-b07a-4c54-88ae-38f13e37545a | Details: Password successfully reset via OTP.
+INFO 2026-08-04 11:12:40,025 utils 23784 19288 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8b43f514-b07a-4c54-88ae-38f13e37545a | Details: User resetuser logged in successfully.
+INFO 2026-08-04 11:12:42,572 utils 23784 19288 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: e54f12d3-b7ef-4c95-96e8-99583e32be8b | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 11:12:42,576 utils 23784 19288 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: e54f12d3-b7ef-4c95-96e8-99583e32be8b | Details: Verification code generated.
+WARNING 2026-08-04 11:12:47,843 log 23784 19288 Bad Request: /api/mood/
+WARNING 2026-08-04 11:14:24,313 log 14604 25208 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:15:11,237 log 14604 25208 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:15:11,239 log 14604 25208 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:15:11,239 log 14604 25208 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:15:11,240 log 14604 25208 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:15:11,241 log 14604 25208 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:16:39,415 log 13636 14880 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:17:01,785 log 13636 14880 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:17:01,786 log 13636 14880 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:17:01,787 log 13636 14880 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:17:01,788 log 13636 14880 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:17:01,789 log 13636 14880 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:17:02,629 log 13636 14880 Bad Request: /api/assessment/
+INFO 2026-08-04 11:17:05,279 utils 13636 14880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c0d2ee40-200a-48c4-8fde-fb7a39a3bd4c | Details: Verification code generated.
+INFO 2026-08-04 11:17:06,204 utils 13636 14880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: d242a405-2d54-4cb2-ad3e-ade6d1981f2e | Details: Verification code generated.
+INFO 2026-08-04 11:17:06,208 utils 13636 14880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: d242a405-2d54-4cb2-ad3e-ade6d1981f2e | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 11:17:09,538 utils 13636 14880 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 37ff57d8-c2d4-42b9-8e4d-c0cb216e2925 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 11:17:09,550 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 37ff57d8-c2d4-42b9-8e4d-c0cb216e2925 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 11:17:15,884 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 284bf9dd-9115-44e9-b9a0-e694f15bed73 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 11:17:22,276 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: c4e8c010-521f-41cb-9bed-6515e4c96161 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 11:17:27,879 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 7812c66b-e833-45f2-94ab-aaa32ecca775 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:17:33,435 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 436a1d2d-6267-451e-858d-8c400cc50e0a | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:17:36,289 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: b08cbd2d-5a24-4d71-8473-557385bd643c | Details: Issued 6-digit password reset OTP: 679080
+INFO 2026-08-04 11:17:39,110 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 206d78a3-db50-442b-9a20-d56d3128b70d | Details: Issued 6-digit password reset OTP: 581153
+INFO 2026-08-04 11:17:39,118 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 206d78a3-db50-442b-9a20-d56d3128b70d | Details: Successfully verified OTP.
+INFO 2026-08-04 11:17:41,883 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 0ff9491a-99f7-4077-a86f-b725231a61c7 | Details: Issued 6-digit password reset OTP: 388239
+INFO 2026-08-04 11:17:41,897 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 0ff9491a-99f7-4077-a86f-b725231a61c7 | Details: Successfully verified OTP.
+INFO 2026-08-04 11:17:44,990 utils 13636 14880 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 0ff9491a-99f7-4077-a86f-b725231a61c7 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 11:17:48,603 utils 13636 14880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0ff9491a-99f7-4077-a86f-b725231a61c7 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 11:17:51,560 utils 13636 14880 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 1085c32c-c04f-4d0f-b813-d0eafc4729aa | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 11:17:51,561 utils 13636 14880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 1085c32c-c04f-4d0f-b813-d0eafc4729aa | Details: Verification code generated.
+WARNING 2026-08-04 11:17:53,516 log 13636 14880 Bad Request: /api/mood/
+INFO 2026-08-04 11:20:37,677 autoreload 10024 32468 Watching for file changes with StatReloader
+WARNING 2026-08-04 11:21:18,247 log 10024 14040 Not Found: /
+WARNING 2026-08-04 11:21:18,346 log 10024 14040 Not Found: /favicon.ico
+INFO 2026-08-04 11:21:38,840 utils 10024 15684 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 11:23:00,056 utils 10024 25416 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0e096aa2-b1e4-4b6a-8913-ea7960d280da | Details: User emily_healthy logged in successfully.
+INFO 2026-08-04 11:23:37,113 autoreload 10024 32468 C:\Users\HP\Documents\mindCompass\Backend\ai\views.py changed, reloading.
+INFO 2026-08-04 11:23:39,773 autoreload 3552 20328 Watching for file changes with StatReloader
+WARNING 2026-08-04 11:37:12,844 log 4768 14292 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:37:30,917 log 4768 14292 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:37:30,922 log 4768 14292 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:37:30,925 log 4768 14292 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:37:30,930 log 4768 14292 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:37:30,934 log 4768 14292 Unauthorized: /api/ai/insights/
+INFO 2026-08-04 11:41:36,273 autoreload 6020 31116 Watching for file changes with StatReloader
+INFO 2026-08-04 11:42:28,099 utils 6020 20184 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 11:47:44,507 autoreload 20208 18348 Watching for file changes with StatReloader
+WARNING 2026-08-04 11:49:31,377 log 33128 5880 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 11:49:44,776 log 33128 5880 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 11:49:44,778 log 33128 5880 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 11:49:44,781 log 33128 5880 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 11:49:44,783 log 33128 5880 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 11:49:44,786 log 33128 5880 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 11:49:46,238 log 33128 5880 Bad Request: /api/assessment/
+INFO 2026-08-04 11:49:49,589 utils 33128 5880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 1a7c5658-7eee-4c54-8f0e-e49a98a90a52 | Details: Verification code generated.
+INFO 2026-08-04 11:49:50,164 utils 33128 5880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 60cf54ef-3c2c-4c44-b881-66acbf3a3e1d | Details: Verification code generated.
+INFO 2026-08-04 11:49:50,166 utils 33128 5880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 60cf54ef-3c2c-4c44-b881-66acbf3a3e1d | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 11:49:51,481 utils 33128 5880 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 49ef000d-0c8c-4000-97de-d46e81bb4c20 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 11:49:51,483 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 49ef000d-0c8c-4000-97de-d46e81bb4c20 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 11:49:52,476 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: bfb5aa7d-3791-4cd2-b933-22bef96cdf4d | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 11:49:53,368 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: c9e4b361-9cc6-489a-9422-b044c5919a02 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 11:49:54,322 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: fb555e30-cd7b-4087-94a9-8a840ff2acc8 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:49:55,285 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0edcf80d-1235-4800-ae09-4060398d6ec3 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 11:49:55,806 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 0dfd61dd-63af-4cf6-ae75-465071374c1b | Details: Issued 6-digit password reset OTP: 859319
+INFO 2026-08-04 11:49:56,290 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 6eaa5c10-3533-4556-bf5d-a661138769e8 | Details: Issued 6-digit password reset OTP: 713834
+INFO 2026-08-04 11:49:56,291 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 6eaa5c10-3533-4556-bf5d-a661138769e8 | Details: Successfully verified OTP.
+INFO 2026-08-04 11:49:56,758 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 2d1f155d-fafd-4601-a600-0082351c6ead | Details: Issued 6-digit password reset OTP: 117236
+INFO 2026-08-04 11:49:56,759 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 2d1f155d-fafd-4601-a600-0082351c6ead | Details: Successfully verified OTP.
+INFO 2026-08-04 11:49:57,258 utils 33128 5880 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 2d1f155d-fafd-4601-a600-0082351c6ead | Details: Password successfully reset via OTP.
+INFO 2026-08-04 11:49:57,752 utils 33128 5880 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 2d1f155d-fafd-4601-a600-0082351c6ead | Details: User resetuser logged in successfully.
+INFO 2026-08-04 11:49:58,264 utils 33128 5880 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 2e974d09-b5d2-452a-9db5-9f4e0159a9e6 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 11:49:58,272 utils 33128 5880 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 2e974d09-b5d2-452a-9db5-9f4e0159a9e6 | Details: Verification code generated.
+WARNING 2026-08-04 11:49:59,262 log 33128 5880 Bad Request: /api/mood/
+INFO 2026-08-04 11:55:16,446 utils 6020 18964 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 11:59:38,376 utils 6020 19172 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+INFO 2026-08-04 12:00:16,584 utils 6020 26960 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 6f67c08c-1598-4d80-840d-1513e4fc1949 | Details: User alex_student logged in successfully.
+WARNING 2026-08-04 12:13:56,627 log 6020 22380 Bad Request: /api/mood/
+INFO 2026-08-04 12:43:23,874 utils 11612 19876 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: c720071d-584b-4c76-9d2a-ef379f757103 | Details: Verification code generated.
+INFO 2026-08-04 12:43:24,359 utils 11612 19876 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 1b72f683-15f4-4da8-91a9-830a013c3fe4 | Details: Verification code generated.
+INFO 2026-08-04 12:43:24,361 utils 11612 19876 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 1b72f683-15f4-4da8-91a9-830a013c3fe4 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 12:43:25,466 utils 11612 19876 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 42990a79-5602-49b4-bf67-cfe58bdf4d37 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 12:43:25,467 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 42990a79-5602-49b4-bf67-cfe58bdf4d37 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 12:43:26,450 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 41c47ec3-1f5f-4c02-89c8-c7eaadd161ef | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 12:43:27,421 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: f976d2c4-545f-49ae-8486-647873df198c | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 12:43:28,355 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: eaaa27bc-fe03-4717-b584-92f285a3f08d | Details: User loginuser logged in successfully.
+INFO 2026-08-04 12:43:29,300 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: d56bb474-7a98-4035-a9ec-ad118c661d3c | Details: User loginuser logged in successfully.
+INFO 2026-08-04 12:43:29,765 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 7863c701-229f-4a23-a713-5389d8dfd0a3 | Details: Issued 6-digit password reset OTP: 243624
+INFO 2026-08-04 12:43:30,263 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 29fc5726-c755-4eb3-9c29-7cbb24299d41 | Details: Issued 6-digit password reset OTP: 292459
+INFO 2026-08-04 12:43:30,264 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 29fc5726-c755-4eb3-9c29-7cbb24299d41 | Details: Successfully verified OTP.
+INFO 2026-08-04 12:43:30,743 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 06fb4a2f-84f8-4da8-b9ff-c50d732d23f7 | Details: Issued 6-digit password reset OTP: 582422
+INFO 2026-08-04 12:43:30,744 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 06fb4a2f-84f8-4da8-b9ff-c50d732d23f7 | Details: Successfully verified OTP.
+INFO 2026-08-04 12:43:31,231 utils 11612 19876 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 06fb4a2f-84f8-4da8-b9ff-c50d732d23f7 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 12:43:31,744 utils 11612 19876 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 06fb4a2f-84f8-4da8-b9ff-c50d732d23f7 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 12:43:32,266 utils 11612 19876 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: ffa8a323-478d-4ea7-a32e-a0a3f3afd4bd | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 12:43:32,266 utils 11612 19876 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: ffa8a323-478d-4ea7-a32e-a0a3f3afd4bd | Details: Verification code generated.
+WARNING 2026-08-04 12:43:52,840 log 29808 11092 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 12:43:56,967 log 29808 11092 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 12:43:56,967 log 29808 11092 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 12:43:56,968 log 29808 11092 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 12:43:56,968 log 29808 11092 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 12:43:56,969 log 29808 11092 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 12:43:57,428 log 29808 11092 Bad Request: /api/assessment/
+WARNING 2026-08-04 12:43:59,273 log 29808 11092 Bad Request: /api/mood/
+INFO 2026-08-04 12:48:54,649 utils 20208 27396 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: aff543e1-0693-4206-a5e2-2239031d307c | Details: User priya_recovery logged in successfully.
+WARNING 2026-08-04 12:49:11,419 log 20208 27396 Bad Request: /api/mood/
+INFO 2026-08-04 12:59:42,199 autoreload 20208 18348 C:\Users\HP\Documents\mindCompass\Backend\mood\services.py changed, reloading.
+INFO 2026-08-04 13:04:44,766 autoreload 5028 28548 Watching for file changes with StatReloader
+WARNING 2026-08-04 13:05:16,401 log 5028 31900 Bad Request: /api/mood/
+INFO 2026-08-04 13:07:36,371 autoreload 23312 13740 Watching for file changes with StatReloader
+INFO 2026-08-04 13:07:46,642 utils 23312 28032 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-04 13:14:47,294 autoreload 23312 13740 C:\Users\HP\Documents\mindCompass\Backend\mood\urls.py changed, reloading.
+INFO 2026-08-04 13:14:48,382 autoreload 34788 2832 Watching for file changes with StatReloader
+INFO 2026-08-04 13:14:52,680 autoreload 34788 2832 C:\Users\HP\Documents\mindCompass\Backend\mood\urls.py changed, reloading.
+INFO 2026-08-04 13:14:53,884 autoreload 11496 18508 Watching for file changes with StatReloader
+INFO 2026-08-04 13:17:09,634 autoreload 11496 18508 C:\Users\HP\Documents\mindCompass\Backend\config\urls.py changed, reloading.
+INFO 2026-08-04 13:17:10,792 autoreload 34700 16156 Watching for file changes with StatReloader
+WARNING 2026-08-04 13:18:03,013 log 34700 16920 Unauthorized: /api/mood/history/
+INFO 2026-08-04 13:26:41,999 autoreload 32700 25708 Watching for file changes with StatReloader
+INFO 2026-08-04 13:46:16,414 autoreload 17776 10412 Watching for file changes with StatReloader
+INFO 2026-08-04 13:57:50,296 autoreload 31332 18796 Watching for file changes with StatReloader
+INFO 2026-08-04 13:58:22,282 utils 31332 32332 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-04 14:00:52,352 utils 31332 25584 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-04 14:01:20,658 utils 31332 32332 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 39c160e0-8274-4913-aa9f-81f8e88bb491 | Details: User sophia_executive logged in successfully.
+INFO 2026-08-04 14:01:46,773 utils 31332 25584 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 39c160e0-8274-4913-aa9f-81f8e88bb491 | Details: User sophia_executive logged in successfully.
+INFO 2026-08-04 14:03:34,206 utils 31332 32332 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 39c160e0-8274-4913-aa9f-81f8e88bb491 | Details: User sophia_executive logged in successfully.
+INFO 2026-08-04 14:04:18,885 utils 31332 32332 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: df39dd87-b6f2-4296-8b0d-b2f6c0473342 | Details: User ethan_crisis logged in successfully.
+INFO 2026-08-04 14:05:21,231 utils 31332 32332 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: aff543e1-0693-4206-a5e2-2239031d307c | Details: User priya_recovery logged in successfully.
+INFO 2026-08-04 15:38:03,280 autoreload 18788 5888 Watching for file changes with StatReloader
+WARNING 2026-08-04 15:38:30,225 log 18788 6380 Not Found: /
+INFO 2026-08-04 15:38:47,230 utils 18788 25168 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-04 15:40:24,807 utils 18788 25168 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Logged in user aaaa via Google OAuth.
+INFO 2026-08-04 15:41:11,417 utils 18788 4132 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 00501919-a288-4a02-bae5-86c11b0dfcda | Details: Logged in user acds via Google OAuth.
+INFO 2026-08-04 15:41:49,785 utils 18788 25168 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 4ef17be8-acd9-418d-8c84-04c86adf1c52 | Details: Registered via Google OAuth: 6eakankshagupta (6eakankshagupta@gmail.com)
+INFO 2026-08-04 15:41:49,806 utils 18788 25168 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 4ef17be8-acd9-418d-8c84-04c86adf1c52 | Details: Logged in user 6eakankshagupta via Google OAuth.
+INFO 2026-08-04 15:47:16,742 utils 18788 4132 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Issued 6-digit password reset OTP: 684531
+WARNING 2026-08-04 15:55:32,052 log 14016 25928 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 15:55:36,736 log 14016 25928 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 15:55:36,737 log 14016 25928 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 15:55:36,738 log 14016 25928 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 15:55:36,739 log 14016 25928 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 15:55:36,740 log 14016 25928 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 15:55:37,244 log 14016 25928 Bad Request: /api/assessment/
+INFO 2026-08-04 15:55:38,825 utils 14016 25928 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 2c38e81a-e57e-4f54-bfa8-bda8b5cac5bc | Details: Verification code generated.
+INFO 2026-08-04 15:55:39,348 utils 14016 25928 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: e09aa36b-9650-433b-999f-9d8c210c6763 | Details: Verification code generated.
+INFO 2026-08-04 15:55:39,350 utils 14016 25928 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: e09aa36b-9650-433b-999f-9d8c210c6763 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 15:55:40,392 utils 14016 25928 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: b4f2b8d1-8aaa-45c5-bf84-2cdc35bdc5cc | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 15:55:40,395 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: b4f2b8d1-8aaa-45c5-bf84-2cdc35bdc5cc | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 15:55:41,441 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 9d1e9cc3-01e2-4bbf-ac72-3e4e263c0a83 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 15:55:42,471 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: d42aea6e-79cf-4a6c-a6ed-f07aadc1401e | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 15:55:43,503 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 886600ef-9cc0-47e6-8139-d532acc0cbed | Details: User loginuser logged in successfully.
+INFO 2026-08-04 15:55:44,537 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8c62c4eb-f99c-4ac5-b329-d474d6dceaac | Details: User loginuser logged in successfully.
+INFO 2026-08-04 15:55:45,062 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: f84a49b9-53c3-4c4c-bef4-94ca0bf308d1 | Details: Issued 6-digit password reset OTP: 735173
+INFO 2026-08-04 15:55:45,576 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 53c9b2d5-008a-48d3-943f-35deab79208a | Details: Issued 6-digit password reset OTP: 733705
+INFO 2026-08-04 15:55:45,577 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 53c9b2d5-008a-48d3-943f-35deab79208a | Details: Successfully verified OTP.
+INFO 2026-08-04 15:55:46,103 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 228d2b3a-90f6-4d59-a2f9-54cabce22938 | Details: Issued 6-digit password reset OTP: 651849
+INFO 2026-08-04 15:55:46,104 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 228d2b3a-90f6-4d59-a2f9-54cabce22938 | Details: Successfully verified OTP.
+INFO 2026-08-04 15:55:46,636 utils 14016 25928 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 228d2b3a-90f6-4d59-a2f9-54cabce22938 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 15:55:47,153 utils 14016 25928 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 228d2b3a-90f6-4d59-a2f9-54cabce22938 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 15:55:47,693 utils 14016 25928 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: a8f4e212-7bee-492b-87a2-dfad0052101f | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 15:55:47,694 utils 14016 25928 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: a8f4e212-7bee-492b-87a2-dfad0052101f | Details: Verification code generated.
+WARNING 2026-08-04 15:55:48,740 log 14016 25928 Bad Request: /api/mood/
+INFO 2026-08-04 15:57:02,508 autoreload 17120 12620 Watching for file changes with StatReloader
+INFO 2026-08-04 15:57:27,215 utils 17120 5208 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 4ef17be8-acd9-418d-8c84-04c86adf1c52 | Details: Logged in user 6eakankshagupta via Google OAuth.
+INFO 2026-08-04 16:10:43,161 autoreload 17120 12620 C:\Users\HP\Documents\mindCompass\Backend\recommendation\models.py changed, reloading.
+INFO 2026-08-04 16:10:45,012 autoreload 23820 8784 Watching for file changes with StatReloader
+INFO 2026-08-04 16:12:23,090 autoreload 23820 8784 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 16:12:24,391 autoreload 30008 32792 Watching for file changes with StatReloader
+INFO 2026-08-04 16:13:51,622 autoreload 30008 32792 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 16:13:52,800 autoreload 32880 33156 Watching for file changes with StatReloader
+INFO 2026-08-04 16:14:02,612 autoreload 32880 33156 C:\Users\HP\Documents\mindCompass\Backend\recommendation\serializers.py changed, reloading.
+INFO 2026-08-04 16:14:03,810 autoreload 28560 26560 Watching for file changes with StatReloader
+INFO 2026-08-04 16:14:20,110 autoreload 28560 26560 C:\Users\HP\Documents\mindCompass\Backend\recommendation\views.py changed, reloading.
+INFO 2026-08-04 16:14:21,289 autoreload 11700 29692 Watching for file changes with StatReloader
+INFO 2026-08-04 16:36:24,660 autoreload 11700 29692 C:\Users\HP\Documents\mindCompass\Backend\recommendation\serializers.py changed, reloading.
+INFO 2026-08-04 16:36:25,947 autoreload 25584 21540 Watching for file changes with StatReloader
+INFO 2026-08-04 16:42:57,460 autoreload 25584 21540 C:\Users\HP\Documents\mindCompass\Backend\ai\prediction\model.py changed, reloading.
+INFO 2026-08-04 16:42:58,861 autoreload 8792 12924 Watching for file changes with StatReloader
+INFO 2026-08-04 16:43:14,370 autoreload 8792 12924 C:\Users\HP\Documents\mindCompass\Backend\ai\prediction\services.py changed, reloading.
+INFO 2026-08-04 16:43:15,640 autoreload 18508 19920 Watching for file changes with StatReloader
+ERROR 2026-08-04 16:46:18,584 log 18508 33784 Internal Server Error: /api/ai/prediction/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 437, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 102, in get_attribute
+    instance = instance[attr]
+               ~~~~~~~~^^^^^^
+KeyError: 'reasons'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\ai\views.py", line 89, in get
+    return Response(res_serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 585, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 539, in to_representation
+    attribute = field.get_attribute(instance)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 470, in get_attribute
+    raise type(exc)(msg)
+KeyError: "Got KeyError when attempting to get a value for field `reasons` on serializer `MoodPredictionResponseSerializer`.\nThe serializer field might be named incorrectly and not match any attribute or key on the `dict` instance.\nOriginal exception text was: 'reasons'."
+ERROR 2026-08-04 16:46:18,696 log 18508 34224 Internal Server Error: /api/ai/prediction/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 437, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 102, in get_attribute
+    instance = instance[attr]
+               ~~~~~~~~^^^^^^
+KeyError: 'reasons'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\ai\views.py", line 89, in get
+    return Response(res_serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 585, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 539, in to_representation
+    attribute = field.get_attribute(instance)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 470, in get_attribute
+    raise type(exc)(msg)
+KeyError: "Got KeyError when attempting to get a value for field `reasons` on serializer `MoodPredictionResponseSerializer`.\nThe serializer field might be named incorrectly and not match any attribute or key on the `dict` instance.\nOriginal exception text was: 'reasons'."
+ERROR 2026-08-04 16:46:19,772 log 18508 33784 Internal Server Error: /api/ai/prediction/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 437, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 102, in get_attribute
+    instance = instance[attr]
+               ~~~~~~~~^^^^^^
+KeyError: 'reasons'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\ai\views.py", line 89, in get
+    return Response(res_serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 585, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 539, in to_representation
+    attribute = field.get_attribute(instance)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 470, in get_attribute
+    raise type(exc)(msg)
+KeyError: "Got KeyError when attempting to get a value for field `reasons` on serializer `MoodPredictionResponseSerializer`.\nThe serializer field might be named incorrectly and not match any attribute or key on the `dict` instance.\nOriginal exception text was: 'reasons'."
+ERROR 2026-08-04 16:46:20,415 log 18508 31956 Internal Server Error: /api/ai/prediction/
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 437, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 102, in get_attribute
+    instance = instance[attr]
+               ~~~~~~~~^^^^^^
+KeyError: 'reasons'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\ai\views.py", line 89, in get
+    return Response(res_serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 585, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 251, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\serializers.py", line 539, in to_representation
+    attribute = field.get_attribute(instance)
+  File "C:\Users\HP\AppData\Roaming\Python\Python314\site-packages\rest_framework\fields.py", line 470, in get_attribute
+    raise type(exc)(msg)
+KeyError: "Got KeyError when attempting to get a value for field `reasons` on serializer `MoodPredictionResponseSerializer`.\nThe serializer field might be named incorrectly and not match any attribute or key on the `dict` instance.\nOriginal exception text was: 'reasons'."
+INFO 2026-08-04 16:49:08,095 autoreload 18508 19920 C:\Users\HP\Documents\mindCompass\Backend\ai\views.py changed, reloading.
+INFO 2026-08-04 16:49:09,465 autoreload 12928 33372 Watching for file changes with StatReloader
+INFO 2026-08-04 16:58:04,783 autoreload 12928 33372 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 16:58:07,217 autoreload 25836 13324 Watching for file changes with StatReloader
+INFO 2026-08-04 16:58:39,159 autoreload 25836 13324 C:\Users\HP\Documents\mindCompass\Backend\recommendation\views.py changed, reloading.
+INFO 2026-08-04 16:58:41,155 autoreload 11636 32632 Watching for file changes with StatReloader
+INFO 2026-08-04 17:14:02,849 autoreload 11636 32632 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:14:04,506 autoreload 31972 2060 Watching for file changes with StatReloader
+INFO 2026-08-04 17:20:46,982 autoreload 31972 2060 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:20:48,542 autoreload 26344 7044 Watching for file changes with StatReloader
+INFO 2026-08-04 17:34:48,591 autoreload 26344 7044 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:34:49,866 autoreload 11688 9932 Watching for file changes with StatReloader
+INFO 2026-08-04 17:34:58,655 autoreload 11688 9932 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:34:59,879 autoreload 31460 22724 Watching for file changes with StatReloader
+INFO 2026-08-04 17:35:41,764 autoreload 31460 22724 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:35:43,106 autoreload 21796 776 Watching for file changes with StatReloader
+WARNING 2026-08-04 17:36:00,701 log 18172 14192 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:36:04,965 log 18172 14192 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:36:04,965 log 18172 14192 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:36:04,966 log 18172 14192 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:36:04,966 log 18172 14192 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:36:04,967 log 18172 14192 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:36:05,444 log 18172 14192 Bad Request: /api/assessment/
+INFO 2026-08-04 17:36:06,829 utils 18172 14192 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 6b2c68e6-9e46-4a1d-9525-fc717efa359e | Details: Verification code generated.
+INFO 2026-08-04 17:36:07,293 utils 18172 14192 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 88c91239-6127-4352-9242-4ae2ede10a12 | Details: Verification code generated.
+INFO 2026-08-04 17:36:07,294 utils 18172 14192 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 88c91239-6127-4352-9242-4ae2ede10a12 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:36:09,040 utils 18172 14192 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 78d0bed6-f8a5-439f-b812-cb90045196f8 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:36:09,042 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 78d0bed6-f8a5-439f-b812-cb90045196f8 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:36:09,999 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: ca7ff95d-e9f9-40f3-8018-ebbc31e7f3e2 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:36:10,941 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 18d41862-6f9c-4e30-b91e-84e531bb0088 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:36:11,890 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: b74d6153-729d-48a7-b640-933c021d02e2 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:36:12,831 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8260328c-1be3-4c7b-b15d-71604de26fb8 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:36:13,312 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 08f3e546-958c-4f75-86cf-09c830b87e53 | Details: Issued 6-digit password reset OTP: 413987
+INFO 2026-08-04 17:36:13,839 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 22951b8d-6814-48e3-8fe8-f957488dab69 | Details: Issued 6-digit password reset OTP: 263063
+INFO 2026-08-04 17:36:13,840 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 22951b8d-6814-48e3-8fe8-f957488dab69 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:36:14,309 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 41d11575-7f62-4217-813c-bb7eed341ccd | Details: Issued 6-digit password reset OTP: 448936
+INFO 2026-08-04 17:36:14,311 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 41d11575-7f62-4217-813c-bb7eed341ccd | Details: Successfully verified OTP.
+INFO 2026-08-04 17:36:14,796 utils 18172 14192 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 41d11575-7f62-4217-813c-bb7eed341ccd | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:36:15,258 utils 18172 14192 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 41d11575-7f62-4217-813c-bb7eed341ccd | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:36:15,755 utils 18172 14192 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 2ff05ab2-9d63-49a5-9a51-56cf1e2b94c4 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:36:15,756 utils 18172 14192 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 2ff05ab2-9d63-49a5-9a51-56cf1e2b94c4 | Details: Verification code generated.
+WARNING 2026-08-04 17:36:16,724 log 18172 14192 Bad Request: /api/mood/
+WARNING 2026-08-04 17:36:44,986 log 32880 6216 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:36:49,121 log 32880 6216 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:36:49,122 log 32880 6216 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:36:49,123 log 32880 6216 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:36:49,123 log 32880 6216 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:36:49,124 log 32880 6216 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:36:49,584 log 32880 6216 Bad Request: /api/assessment/
+INFO 2026-08-04 17:36:50,969 utils 32880 6216 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 3c5228b9-67b7-43b2-8914-b19ff2a14cfa | Details: Verification code generated.
+INFO 2026-08-04 17:36:51,425 utils 32880 6216 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 74b3cf0e-7104-4013-b00d-21b272d0fcc5 | Details: Verification code generated.
+INFO 2026-08-04 17:36:51,427 utils 32880 6216 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 74b3cf0e-7104-4013-b00d-21b272d0fcc5 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:36:54,907 utils 32880 6216 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 748ecfdd-7c25-40dd-80f5-95bccbf1ce24 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:36:54,908 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 748ecfdd-7c25-40dd-80f5-95bccbf1ce24 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:36:55,850 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 0d790cc0-7d42-4548-b81a-8987ad338edd | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:36:56,795 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 0abaa62e-10bf-4431-b862-1d96e63d88fb | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:36:57,735 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 9fd16682-493e-4aa5-a84c-6e3c85a848c9 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:36:58,696 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 357b1037-cccc-4eaa-b77c-c655af248621 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:36:59,167 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 259ff6c7-0e9e-4440-937b-2248dbfb655a | Details: Issued 6-digit password reset OTP: 403732
+INFO 2026-08-04 17:36:59,640 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 297dd63f-ac73-42be-871a-cb76794507e3 | Details: Issued 6-digit password reset OTP: 332685
+INFO 2026-08-04 17:36:59,642 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 297dd63f-ac73-42be-871a-cb76794507e3 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:37:00,113 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 9cc8ec6c-d353-44ed-b22a-304899be0abb | Details: Issued 6-digit password reset OTP: 768863
+INFO 2026-08-04 17:37:00,114 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 9cc8ec6c-d353-44ed-b22a-304899be0abb | Details: Successfully verified OTP.
+INFO 2026-08-04 17:37:00,587 utils 32880 6216 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 9cc8ec6c-d353-44ed-b22a-304899be0abb | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:37:01,043 utils 32880 6216 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 9cc8ec6c-d353-44ed-b22a-304899be0abb | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:37:01,530 utils 32880 6216 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 76b8160c-ad83-4923-8dfd-9d93b473d163 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:37:01,531 utils 32880 6216 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 76b8160c-ad83-4923-8dfd-9d93b473d163 | Details: Verification code generated.
+WARNING 2026-08-04 17:37:02,476 log 32880 6216 Bad Request: /api/mood/
+INFO 2026-08-04 17:38:07,486 autoreload 21796 776 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:38:08,766 autoreload 27972 30896 Watching for file changes with StatReloader
+WARNING 2026-08-04 17:38:34,936 log 15908 12612 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:38:39,185 log 15908 12612 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:38:39,186 log 15908 12612 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:38:39,186 log 15908 12612 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:38:39,187 log 15908 12612 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:38:39,187 log 15908 12612 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:38:39,650 log 15908 12612 Bad Request: /api/assessment/
+INFO 2026-08-04 17:38:41,136 utils 15908 12612 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: dc525efe-dff6-4f6e-8e0d-1dbc704fe45d | Details: Verification code generated.
+INFO 2026-08-04 17:38:41,637 utils 15908 12612 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: d3cb76a1-9675-49ff-8dd1-ce1264c66a07 | Details: Verification code generated.
+INFO 2026-08-04 17:38:41,639 utils 15908 12612 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: d3cb76a1-9675-49ff-8dd1-ce1264c66a07 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:38:43,697 utils 15908 12612 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 24d77e4a-1855-4598-8d96-b497352d6446 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:38:43,699 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 24d77e4a-1855-4598-8d96-b497352d6446 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:38:44,664 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: ce188e77-a5c7-4afe-9877-e6a033ecc745 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:38:45,648 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: a2420930-bf20-44b7-862e-5b01b1ee8702 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:38:46,609 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: ac2829a8-c380-4670-9ef5-65c62b2a2a4c | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:38:47,566 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: c22146bf-f626-4927-b19d-a51e6cb1dc2e | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:38:48,069 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 15647bb5-95c2-450a-9c49-64b347913575 | Details: Issued 6-digit password reset OTP: 981676
+INFO 2026-08-04 17:38:48,547 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: e3bf21f3-8a01-4dad-80fc-0b63556802fe | Details: Issued 6-digit password reset OTP: 847186
+INFO 2026-08-04 17:38:48,548 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: e3bf21f3-8a01-4dad-80fc-0b63556802fe | Details: Successfully verified OTP.
+INFO 2026-08-04 17:38:49,035 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 4977b347-84f4-4afe-a177-51e8acc45e8b | Details: Issued 6-digit password reset OTP: 804911
+INFO 2026-08-04 17:38:49,036 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 4977b347-84f4-4afe-a177-51e8acc45e8b | Details: Successfully verified OTP.
+INFO 2026-08-04 17:38:49,513 utils 15908 12612 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 4977b347-84f4-4afe-a177-51e8acc45e8b | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:38:49,986 utils 15908 12612 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 4977b347-84f4-4afe-a177-51e8acc45e8b | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:38:50,487 utils 15908 12612 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 7b0f1306-cfb9-4434-9087-cbe35989b78a | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:38:50,488 utils 15908 12612 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 7b0f1306-cfb9-4434-9087-cbe35989b78a | Details: Verification code generated.
+WARNING 2026-08-04 17:38:51,539 log 15908 12612 Bad Request: /api/mood/
+WARNING 2026-08-04 17:39:22,960 log 26984 16596 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:39:27,191 log 26984 16596 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:39:27,192 log 26984 16596 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:39:27,192 log 26984 16596 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:39:27,193 log 26984 16596 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:39:27,194 log 26984 16596 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:39:27,665 log 26984 16596 Bad Request: /api/assessment/
+INFO 2026-08-04 17:39:29,079 utils 26984 16596 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 3c62ef63-41b4-42c3-9b9f-08b013d809e8 | Details: Verification code generated.
+INFO 2026-08-04 17:39:29,551 utils 26984 16596 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 5661ab38-9adb-4fd1-9282-d6a3bcee7d83 | Details: Verification code generated.
+INFO 2026-08-04 17:39:29,554 utils 26984 16596 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 5661ab38-9adb-4fd1-9282-d6a3bcee7d83 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:39:30,470 utils 26984 16596 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 9758a3dc-fdb5-4f69-9435-1a90ad27e710 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:39:30,472 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 9758a3dc-fdb5-4f69-9435-1a90ad27e710 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:39:31,450 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: b74b1d18-622a-4550-a574-7ab1003d26d3 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:39:32,415 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: c694eeb7-e944-4ab2-b132-5fee5656c7a0 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:39:33,390 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 8deb23ff-49fd-4074-a0ed-863fdcbea317 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:39:34,345 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: e2af9609-e4a7-4b62-9209-9914cb228b67 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:39:34,840 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 2275758d-f045-4da2-abe4-be230e0b5423 | Details: Issued 6-digit password reset OTP: 510983
+INFO 2026-08-04 17:39:35,330 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: fe1a31c1-da70-44fe-9eb5-f0cf7dc53f44 | Details: Issued 6-digit password reset OTP: 417281
+INFO 2026-08-04 17:39:35,333 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: fe1a31c1-da70-44fe-9eb5-f0cf7dc53f44 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:39:35,818 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: eb4c6cbc-7c8e-417d-9894-bec983cdc1b5 | Details: Issued 6-digit password reset OTP: 117164
+INFO 2026-08-04 17:39:35,820 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: eb4c6cbc-7c8e-417d-9894-bec983cdc1b5 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:39:36,296 utils 26984 16596 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: eb4c6cbc-7c8e-417d-9894-bec983cdc1b5 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:39:36,765 utils 26984 16596 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: eb4c6cbc-7c8e-417d-9894-bec983cdc1b5 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:39:37,259 utils 26984 16596 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 4e21b0f8-0084-45e9-952d-d526d8d700d2 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:39:37,259 utils 26984 16596 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 4e21b0f8-0084-45e9-952d-d526d8d700d2 | Details: Verification code generated.
+WARNING 2026-08-04 17:39:38,218 log 26984 16596 Bad Request: /api/mood/
+WARNING 2026-08-04 17:41:04,715 log 12052 14524 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:41:09,176 log 12052 14524 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:41:09,177 log 12052 14524 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:41:09,177 log 12052 14524 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:41:09,178 log 12052 14524 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:41:09,178 log 12052 14524 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:41:09,664 log 12052 14524 Bad Request: /api/assessment/
+INFO 2026-08-04 17:41:11,130 utils 12052 14524 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 7123ffcf-8781-459f-ae4f-cc03a8d26fda | Details: Verification code generated.
+INFO 2026-08-04 17:41:11,620 utils 12052 14524 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 0ea0af77-529e-405b-b1ba-3392eaa55602 | Details: Verification code generated.
+INFO 2026-08-04 17:41:11,622 utils 12052 14524 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 0ea0af77-529e-405b-b1ba-3392eaa55602 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:41:12,585 utils 12052 14524 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: aa502c90-2b35-4c06-8b10-d45056dee4d3 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:41:12,586 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: aa502c90-2b35-4c06-8b10-d45056dee4d3 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:41:13,595 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 3944e65e-4984-4e5d-bf83-c791d2a34593 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:41:14,597 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 71cd52c2-3644-4f52-b251-4cb0afcf5da3 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:41:15,583 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 564d692f-7f1a-4b23-a5a1-28c3cec73117 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:41:16,559 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 124fb58f-e999-44a4-9246-f1448148ee3e | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:41:17,081 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 3c10e5d8-6cdc-4d06-ab10-b4c038e71d23 | Details: Issued 6-digit password reset OTP: 344976
+INFO 2026-08-04 17:41:17,572 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: af43ddd8-7ce6-404e-ac57-d1d132b9ad56 | Details: Issued 6-digit password reset OTP: 774852
+INFO 2026-08-04 17:41:17,573 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: af43ddd8-7ce6-404e-ac57-d1d132b9ad56 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:41:18,052 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: df841492-c2c2-469c-8c33-67e5679cd699 | Details: Issued 6-digit password reset OTP: 383562
+INFO 2026-08-04 17:41:18,054 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: df841492-c2c2-469c-8c33-67e5679cd699 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:41:18,542 utils 12052 14524 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: df841492-c2c2-469c-8c33-67e5679cd699 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:41:19,026 utils 12052 14524 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: df841492-c2c2-469c-8c33-67e5679cd699 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:41:19,545 utils 12052 14524 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: fb4e966c-fd9f-4346-838d-143080be3b6f | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:41:19,545 utils 12052 14524 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: fb4e966c-fd9f-4346-838d-143080be3b6f | Details: Verification code generated.
+WARNING 2026-08-04 17:41:20,576 log 12052 14524 Bad Request: /api/mood/
+INFO 2026-08-04 17:42:19,160 autoreload 27972 30896 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:42:20,677 autoreload 20344 17364 Watching for file changes with StatReloader
+INFO 2026-08-04 17:43:33,351 autoreload 20344 17364 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:43:34,692 autoreload 24604 29104 Watching for file changes with StatReloader
+INFO 2026-08-04 17:43:41,687 autoreload 24604 29104 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:43:42,978 autoreload 26712 8368 Watching for file changes with StatReloader
+INFO 2026-08-04 17:44:17,179 autoreload 26712 8368 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:44:18,778 autoreload 12544 21140 Watching for file changes with StatReloader
+WARNING 2026-08-04 17:49:21,635 log 13268 11276 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-04 17:49:27,776 log 13268 11276 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-04 17:49:27,777 log 13268 11276 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-04 17:49:27,778 log 13268 11276 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-04 17:49:27,779 log 13268 11276 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-04 17:49:27,779 log 13268 11276 Unauthorized: /api/ai/insights/
+WARNING 2026-08-04 17:49:28,277 log 13268 11276 Bad Request: /api/assessment/
+INFO 2026-08-04 17:49:29,774 utils 13268 11276 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 7705afaa-6e29-46ce-acd8-e4b16bb9dc93 | Details: Verification code generated.
+INFO 2026-08-04 17:49:30,263 utils 13268 11276 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 9ed5f4ab-d150-4e70-90d4-3f864263f30d | Details: Verification code generated.
+INFO 2026-08-04 17:49:30,264 utils 13268 11276 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 9ed5f4ab-d150-4e70-90d4-3f864263f30d | Details: Verified email: verifyuser@example.com
+INFO 2026-08-04 17:49:32,486 utils 13268 11276 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: c8aa0e5d-9506-4149-9a5e-39f67f5ee5f6 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-04 17:49:32,488 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: c8aa0e5d-9506-4149-9a5e-39f67f5ee5f6 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-04 17:49:33,480 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: e4c0d5fd-9a12-4aaa-9186-83e3fc9d2420 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-04 17:49:34,446 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 9456629f-46d2-422c-a02d-debd18cbc91e | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-04 17:49:35,450 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 89e84473-0bb2-4070-be7e-94b7feb6bdae | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:49:36,451 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 746e30e8-d446-4f70-8f36-292b746ea001 | Details: User loginuser logged in successfully.
+INFO 2026-08-04 17:49:36,964 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: aaa61904-2370-4d68-8591-822fd15d3c65 | Details: Issued 6-digit password reset OTP: 578708
+INFO 2026-08-04 17:49:37,446 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: e2384190-44d0-46cf-a172-7c2a371b780a | Details: Issued 6-digit password reset OTP: 158810
+INFO 2026-08-04 17:49:37,448 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: e2384190-44d0-46cf-a172-7c2a371b780a | Details: Successfully verified OTP.
+INFO 2026-08-04 17:49:37,931 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 0ac69a6c-fa23-4974-807d-3528183e09a4 | Details: Issued 6-digit password reset OTP: 916240
+INFO 2026-08-04 17:49:37,932 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 0ac69a6c-fa23-4974-807d-3528183e09a4 | Details: Successfully verified OTP.
+INFO 2026-08-04 17:49:38,432 utils 13268 11276 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 0ac69a6c-fa23-4974-807d-3528183e09a4 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 17:49:38,927 utils 13268 11276 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 0ac69a6c-fa23-4974-807d-3528183e09a4 | Details: User resetuser logged in successfully.
+INFO 2026-08-04 17:49:39,425 utils 13268 11276 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 7c977c22-766d-4c7a-a0f9-1e1f08e69a0d | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-04 17:49:39,425 utils 13268 11276 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 7c977c22-766d-4c7a-a0f9-1e1f08e69a0d | Details: Verification code generated.
+WARNING 2026-08-04 17:49:40,414 log 13268 11276 Bad Request: /api/mood/
+INFO 2026-08-04 17:56:41,750 autoreload 12544 21140 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:56:43,276 autoreload 3964 6692 Watching for file changes with StatReloader
+INFO 2026-08-04 17:56:51,654 autoreload 3964 6692 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:56:53,146 autoreload 27200 31760 Watching for file changes with StatReloader
+INFO 2026-08-04 17:57:05,699 autoreload 27200 31760 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-04 17:57:07,109 autoreload 19768 19020 Watching for file changes with StatReloader
+INFO 2026-08-04 18:01:07,809 utils 19768 8800 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-04 18:02:10,636 utils 19768 5012 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 4ef17be8-acd9-418d-8c84-04c86adf1c52 | Details: Logged in user 6eakankshagupta via Google OAuth.
+INFO 2026-08-04 18:04:22,020 utils 19768 8800 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Issued 6-digit password reset OTP: 904296
+INFO 2026-08-04 18:05:16,206 utils 19768 8800 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Successfully verified OTP.
+INFO 2026-08-04 18:06:31,962 utils 19768 8800 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Password successfully reset via OTP.
+INFO 2026-08-04 18:06:48,133 utils 19768 8800 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: User aaaa logged in successfully.
+INFO 2026-08-04 18:08:47,773 autoreload 19768 19020 C:\Users\HP\Documents\mindCompass\Backend\authentication\migrations\0003_passwordresettoken_is_verified_and_more.py changed, reloading.
+INFO 2026-08-04 18:08:49,648 autoreload 17716 13168 Watching for file changes with StatReloader

@@ -59,3 +59,12 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* Browser default password reveal button theme styling */
+input::-ms-reveal {
+  filter: invert(50%) sepia(10%) saturate(500%) hue-rotate(80deg);
+}
+
+.dark input::-ms-reveal {
+  filter: invert(80%) sepia(20%) saturate(300%) hue-rotate(80deg);
+}

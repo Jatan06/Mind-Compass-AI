@@ -65,6 +65,8 @@ export const AppProvider = ({ children }) => {
             // Map backend fields to frontend camelCase formats
             setUserProfile((prev) => ({
                 ...prev,
+                name: profileData.username || prev.name,
+                email: profileData.email || prev.email,
                 occupation: profileData.occupation || '',
                 sleepHours: profileData.sleep_hours ? Number(profileData.sleep_hours) : 7,
                 exerciseFrequency: profileData.exercise_frequency || '',
@@ -208,14 +210,14 @@ export const AppProvider = ({ children }) => {
     // Session Hydration on page reload
     useEffect(() => {
         const hydrateSession = async () => {
-            const storedAccess = localStorage.getItem('access_token');
-            const storedRefresh = localStorage.getItem('refresh_token');
+            const storedAccess = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+            const storedRefresh = localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token');
 
             if (storedAccess && storedRefresh) {
                 setToken(storedAccess);
                 setRefreshToken(storedRefresh);
                 // Also hydrate raw user config first
-                const storedUser = localStorage.getItem('currentUser');
+                const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
                 if (storedUser) {
                     try {
                         const parsed = JSON.parse(storedUser);
@@ -240,6 +242,10 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('remembered_username');
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('refresh_token');
+        sessionStorage.removeItem('currentUser');
         setToken(null);
         setRefreshToken(null);
         setIsOnboarded(false);
@@ -271,7 +277,7 @@ export const AppProvider = ({ children }) => {
     }, [clearAuthData]);
 
     // Context Auth Workflows
-    const login = async (emailOrUsername, password) => {
+    const login = async (emailOrUsername, password, rememberMe = true) => {
         const response = await authAPI.login({
             email: emailOrUsername, // django holds compatibility logic for backend authentication Service
             password,
@@ -281,12 +287,22 @@ export const AppProvider = ({ children }) => {
             const { access, refresh } = response.data.tokens;
             const userObj = response.data.user;
 
-            localStorage.setItem('access_token', access);
-            localStorage.setItem('refresh_token', refresh);
-            localStorage.setItem('currentUser', JSON.stringify(userObj));
+            const storage = rememberMe ? localStorage : sessionStorage;
+            const altStorage = rememberMe ? sessionStorage : localStorage;
+
+            altStorage.removeItem('access_token');
+            altStorage.removeItem('refresh_token');
+            altStorage.removeItem('currentUser');
+
+            storage.setItem('access_token', access);
+            storage.setItem('refresh_token', refresh);
+            storage.setItem('currentUser', JSON.stringify(userObj));
 
             setToken(access);
             setRefreshToken(refresh);
+            if (userObj && userObj.profile) {
+                setIsOnboarded(userObj.profile.is_onboarded || false);
+            }
             setUserProfile((prev) => ({
                 ...prev,
                 name: userObj.username,
@@ -338,6 +354,9 @@ export const AppProvider = ({ children }) => {
 
             setToken(access);
             setRefreshToken(refresh);
+            if (userObj && userObj.profile) {
+                setIsOnboarded(userObj.profile.is_onboarded || false);
+            }
             setUserProfile((prev) => ({
                 ...prev,
                 name: userObj.username,
@@ -367,16 +386,13 @@ export const AppProvider = ({ children }) => {
             stressContributors: onboardingData.stressContributors,
         };
 
-        // Try load latest assessment structure first to determine PUT or POST
+        // Save assessment payload directly to Django backend
         let response;
         try {
-            // Check if assessment is already logged in DB
-            await assessmentAPI.getLatest();
-            // Exist, run update PUT
-            response = await assessmentAPI.update(rawPayload);
-        } catch (error) {
-            // Not found, run save POST
             response = await assessmentAPI.save(rawPayload);
+        } catch (error) {
+            // Fallback to update PUT if assessment already exists
+            response = await assessmentAPI.update(rawPayload);
         }
 
         // Apply fields locally

@@ -28,7 +28,8 @@ def validate_email_format(email):
     """
     if not email:
         raise ValidationError({"email": ["Email address is required."]})
-    
+    if " " in email:
+        raise ValidationError({"email": ["Email address cannot contain spaces."]})
     try:
         validate_email(email)
     except DjangoValidationError:
