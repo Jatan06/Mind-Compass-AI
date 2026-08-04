@@ -174,18 +174,23 @@ class PasswordResetTestCase(TestCase):
         UserProfile.objects.get_or_create(user=self.user)
 
     def test_reset_lifecycle(self):
-        # 1. Request reset link
-        reset_token_obj = AuthService.send_password_reset_email("resetuser@example.com")
+        # 1. Request reset OTP
+        reset_token_obj, otp_code = AuthService.send_password_reset_otp("resetuser@example.com")
         self.assertEqual(reset_token_obj.user, self.user)
         
-        # 2. Reset with new password
-        AuthService.reset_password(
-            token_str=reset_token_obj.token,
+        # 2. Verify OTP
+        token_str = AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
+        self.assertTrue(token_str)
+
+        # 3. Reset with new password
+        AuthService.reset_password_with_otp(
+            email_address="resetuser@example.com",
+            otp_code=otp_code,
             new_password="NewStrongPassword123!",
             new_password_confirm="NewStrongPassword123!"
         )
         
-        # 3. Authenticate with new password
+        # 4. Authenticate with new password
         user, tokens = AuthService.authenticate_user("resetuser", "NewStrongPassword123!")
         self.assertEqual(user, self.user)
         
@@ -194,18 +199,19 @@ class PasswordResetTestCase(TestCase):
         self.assertTrue(reset_token_obj.is_used)
 
     def test_expired_reset_token(self):
-        reset_token_obj = AuthService.send_password_reset_email("resetuser@example.com")
+        reset_token_obj, otp_code = AuthService.send_password_reset_otp("resetuser@example.com")
         reset_token_obj.expires_at = timezone.now() - timedelta(minutes=1)
         reset_token_obj.save()
         
         with self.assertRaises(ValidationError) as ctx:
-            AuthService.reset_password(reset_token_obj.token, "NewStrongPassword123!", "NewStrongPassword123!")
-        self.assertIn("token", ctx.exception.detail)
+            AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
+        self.assertIn("otp", ctx.exception.detail)
 
     def test_invalid_reset_password_rules(self):
-        reset_token_obj = AuthService.send_password_reset_email("resetuser@example.com")
+        reset_token_obj, otp_code = AuthService.send_password_reset_otp("resetuser@example.com")
+        AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
         
-        # Password matches username
+        # Password fails validation rules (missing uppercase/special char or matches username)
         with self.assertRaises(ValidationError) as ctx:
-            AuthService.reset_password(reset_token_obj.token, "resetuser", "resetuser")
+            AuthService.reset_password_with_otp("resetuser@example.com", otp_code, "resetuser", "resetuser")
         self.assertIn("password", ctx.exception.detail)

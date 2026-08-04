@@ -17,6 +17,8 @@ class UserProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     
+    objects = models.Manager()
+    
     occupation = models.CharField(max_length=100, blank=True, null=True)
     sleep_hours = models.DecimalField(max_digits=4, decimal_places=2, default=7.00)
     exercise_frequency = models.CharField(max_length=50, blank=True, null=True)

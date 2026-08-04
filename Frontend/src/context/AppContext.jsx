@@ -5,8 +5,8 @@ const AppContext = createContext(undefined);
 
 export const AppProvider = ({ children }) => {
     // Session State
-    const [token, setToken] = useState(() => localStorage.getItem('access_token') || null);
-    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || null);
+    const [token, setToken] = useState(() => localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || null);
+    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token') || null);
     const [authLoading, setAuthLoading] = useState(true);
 
     // User Profile settings loaded from Django User profile object
@@ -31,7 +31,18 @@ export const AppProvider = ({ children }) => {
         is_email_verified: false
     });
 
-    const [isOnboarded, setIsOnboarded] = useState(false);
+    const [isOnboarded, setIsOnboarded] = useState(() => {
+        try {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                const parsed = JSON.parse(storedUser);
+                if (parsed.profile && typeof parsed.profile.is_onboarded === 'boolean') {
+                    return parsed.profile.is_onboarded;
+                }
+            }
+        } catch (e) { }
+        return false;
+    });
     const [streak, setStreak] = useState(0);
     const [wellnessScore, setWellnessScore] = useState(72);
 
@@ -89,6 +100,16 @@ export const AppProvider = ({ children }) => {
             setIsOnboarded(profileData.is_onboarded || false);
             setStreak(profileData.streak || 0);
             setWellnessScore(profileData.wellness_score || 72);
+
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                try {
+                    const parsed = JSON.parse(storedUser);
+                    if (!parsed.profile) parsed.profile = {};
+                    parsed.profile.is_onboarded = !!profileData.is_onboarded;
+                    localStorage.setItem('currentUser', JSON.stringify(parsed));
+                } catch (e) { }
+            }
         } catch (error) {
             console.error('Failed to fetch user profile:', error);
         }
@@ -210,14 +231,14 @@ export const AppProvider = ({ children }) => {
     // Session Hydration on page reload
     useEffect(() => {
         const hydrateSession = async () => {
-            const storedAccess = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-            const storedRefresh = localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token');
+            const storedAccess = localStorage.getItem('access_token');
+            const storedRefresh = localStorage.getItem('refresh_token');
 
             if (storedAccess && storedRefresh) {
                 setToken(storedAccess);
                 setRefreshToken(storedRefresh);
                 // Also hydrate raw user config first
-                const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+                const storedUser = localStorage.getItem('currentUser');
                 if (storedUser) {
                     try {
                         const parsed = JSON.parse(storedUser);
@@ -226,6 +247,9 @@ export const AppProvider = ({ children }) => {
                             name: parsed.username,
                             email: parsed.email,
                         }));
+                        if (parsed.profile && typeof parsed.profile.is_onboarded === 'boolean') {
+                            setIsOnboarded(parsed.profile.is_onboarded);
+                        }
                     } catch (e) {
                         // invalid details
                     }
@@ -277,7 +301,7 @@ export const AppProvider = ({ children }) => {
     }, [clearAuthData]);
 
     // Context Auth Workflows
-    const login = async (emailOrUsername, password, rememberMe = true) => {
+    const login = async (emailOrUsername, password) => {
         const response = await authAPI.login({
             email: emailOrUsername, // django holds compatibility logic for backend authentication Service
             password,
@@ -287,16 +311,9 @@ export const AppProvider = ({ children }) => {
             const { access, refresh } = response.data.tokens;
             const userObj = response.data.user;
 
-            const storage = rememberMe ? localStorage : sessionStorage;
-            const altStorage = rememberMe ? sessionStorage : localStorage;
-
-            altStorage.removeItem('access_token');
-            altStorage.removeItem('refresh_token');
-            altStorage.removeItem('currentUser');
-
-            storage.setItem('access_token', access);
-            storage.setItem('refresh_token', refresh);
-            storage.setItem('currentUser', JSON.stringify(userObj));
+            localStorage.setItem('access_token', access);
+            localStorage.setItem('refresh_token', refresh);
+            localStorage.setItem('currentUser', JSON.stringify(userObj));
 
             setToken(access);
             setRefreshToken(refresh);
@@ -407,6 +424,15 @@ export const AppProvider = ({ children }) => {
             waterIntake: onboardingData.waterIntake || prev.waterIntake,
         }));
         setIsOnboarded(true);
+        const storedUser = localStorage.getItem('currentUser');
+        if (storedUser) {
+            try {
+                const parsed = JSON.parse(storedUser);
+                if (!parsed.profile) parsed.profile = {};
+                parsed.profile.is_onboarded = true;
+                localStorage.setItem('currentUser', JSON.stringify(parsed));
+            } catch (e) { }
+        }
         await refreshDashboardData();
 
         return response.data;
