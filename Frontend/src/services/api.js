@@ -136,6 +136,7 @@ export const aiAPI = {
     getCrisis: (text) => api.post('/api/ai/crisis/', { text }),
     getPrediction: () => api.get('/api/ai/prediction/'),
     getInsights: () => api.get('/api/ai/insights/'),
+    chat: (message, history) => api.post('/api/ai/companion/', { message, history }),
 };
 
 export default api;

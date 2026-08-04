@@ -11,6 +11,8 @@ class EmotionAnalysis(models.Model):
     confidence = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+
     class Meta:
         ordering = ['-created_at']
 
@@ -25,6 +27,8 @@ class MoodPrediction(models.Model):
     reasons = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+
     class Meta:
         ordering = ['-created_at']
 
@@ -36,6 +40,8 @@ class AIInsight(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='ai_insights')
     summary = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
 
     class Meta:
         ordering = ['-created_at']
