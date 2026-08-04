@@ -7,6 +7,7 @@ from .views import (
     MoodPredictionView,
     AIInsightsView
 )
+from .companion.views import CompanionChatView
 
 urlpatterns = [
     path('sentiment/', SentimentAnalysisView.as_view(), name='ai-sentiment'),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('crisis/', CrisisDetectionView.as_view(), name='ai-crisis'),
     path('prediction/', MoodPredictionView.as_view(), name='ai-prediction'),
     path('insights/', AIInsightsView.as_view(), name='ai-insights'),
+    path('companion/', CompanionChatView.as_view(), name='ai-companion'),
 ]

@@ -22,6 +22,8 @@ class MoodLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     class Meta:
         ordering = ['-date', '-created_at']
         unique_together = ('user', 'date') # Throttle to max one log per day

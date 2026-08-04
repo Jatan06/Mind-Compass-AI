@@ -216,6 +216,10 @@ CELERY_TIMEZONE = TIME_ZONE
 GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID', '')
 GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', '')
 
+# Gemini AI Config (used by AI Companion)
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GROQ_API_KEY = os.getenv('GROQ_API_KEY', '')
+
 
 # Logging Config
 LOGGING = {

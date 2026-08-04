@@ -26,9 +26,10 @@ import {
 import { PageTransition } from '../components/PageTransition';
 import { useApp } from '../context/AppContext';
 import { insightsAPI, aiAPI } from '../services/api';
+import { AICompanion } from '../components/AICompanion';
 
 export const Insights = () => {
-    const { wellnessScore, aiInsightsData, insightsLoading, analyticsData, analyticsLoading, refreshDashboardData } = useApp();
+    const { wellnessScore, aiInsightsData, insightsLoading, analyticsData, analyticsLoading, refreshDashboardData, userProfile } = useApp();
     const [insightsTab, setInsightsTab] = useState('twin'); // 'twin' | 'analytics'
 
     const [error, setError] = useState('');
@@ -60,8 +61,9 @@ export const Insights = () => {
             <PageTransition>
                 <div className="flex-grow flex flex-col gap-6 text-left max-w-5xl mx-auto w-full pt-4">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light flex items-center gap-2.5">
                             Mind Insights
+                            <AICompanion userProfile={userProfile} wellnessScore={wellnessScore} />
                         </h1>
                         <p className="text-sm md:text-base text-text-dark/65 dark:text-text-light/70 mt-1">
                             A professional, personalized look at your mental metrics.
@@ -122,8 +124,9 @@ export const Insights = () => {
                 {/* Header & Tabs Switcher */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light flex items-center gap-2.5">
                             Mind Insights
+                            <AICompanion userProfile={userProfile} wellnessScore={wellnessScore} />
                         </h1>
                         <p className="text-sm md:text-base text-text-dark/65 dark:text-text-light/70 mt-1">
                             A professional, personalized look at your mental metrics.
