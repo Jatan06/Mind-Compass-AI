@@ -94,6 +94,7 @@ export const assessmentAPI = {
 export const profileAPI = {
     get: (todayStr) => api.get(`/api/profile/${todayStr ? `?today=${todayStr}` : ''}`),
     update: (data) => api.put('/api/profile/', data),
+    deleteAccount: () => api.delete('/api/account/delete/', { data: { confirm: 'DELETE MY ACCOUNT' } }),
 };
 
 // Mood Services

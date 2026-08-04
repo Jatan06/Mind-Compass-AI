@@ -78,14 +78,46 @@ const SUGGESTION_CHIPS = [
    ═══════════════════════════════════════════════ */
 export const AICompanion = ({ userProfile, wellnessScore }) => {
     const [open, setOpen] = useState(false);
-    const [messages, setMessages] = useState([]);   // { id, role: 'user'|'model', content, ts }
+    const [messages, setMessages] = useState(() => {
+        try {
+            const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
+            const saved = storage.getItem('ai_chat_messages');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    return parsed.map(m => ({ ...m, ts: new Date(m.ts) }));
+                }
+            }
+        } catch (e) { }
+        return [];
+    });
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
-    const [greeted, setGreeted] = useState(false);
+    const [greeted, setGreeted] = useState(() => {
+        try {
+            const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
+            const saved = storage.getItem('ai_chat_messages');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                return Array.isArray(parsed) && parsed.length > 0;
+            }
+        } catch (e) { }
+        return false;
+    });
 
     const textareaRef = useRef(null);
     const messagesEndRef = useRef(null);
     const panelRef = useRef(null);
+
+    /* ── Persist messages to active session storage ── */
+    useEffect(() => {
+        if (messages.length > 0) {
+            try {
+                const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
+                storage.setItem('ai_chat_messages', JSON.stringify(messages));
+            } catch (e) { }
+        }
+    }, [messages]);
 
     /* ── Auto-scroll to bottom ── */
     const scrollToBottom = useCallback(() => {
@@ -106,7 +138,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
 
     /* ── Greeting on first open ── */
     useEffect(() => {
-        if (open && !greeted) {
+        if (open && !greeted && messages.length === 0) {
             const name = userProfile?.name?.split(' ')[0] || 'there';
             const score = wellnessScore ?? 72;
             const scoreLabel = score >= 75 ? 'in a great space' : score >= 55 ? 'on a solid path' : 'navigating some challenges';
@@ -121,7 +153,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
             }]);
             setGreeted(true);
         }
-    }, [open, greeted, userProfile, wellnessScore]);
+    }, [open, greeted, messages.length, userProfile, wellnessScore]);
 
     /* ── Close on outside click ── */
     useEffect(() => {

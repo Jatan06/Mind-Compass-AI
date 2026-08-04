@@ -16,10 +16,11 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import { useApp } from '../context/AppContext';
 import { LogoIcon } from '../components/Logo';
+import { PageLoader } from '../components/PageLoader';
 
 export const AppLayout = () => {
     const { theme, toggleTheme } = useTheme();
-    const { userProfile, streak, isOnboarded, isAuthenticated, authLoading, logout } = useApp();
+    const { userProfile, streak, isOnboarded, isAuthenticated, authLoading, isInitialLoading, logout, checkins } = useApp();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -38,6 +39,25 @@ export const AppLayout = () => {
         }
     }, [isAuthenticated, authLoading, isOnboarded, isOnboardingPage, navigate]);
 
+    // Daily morning check-in reminder redirect logic on site entry
+    React.useEffect(() => {
+        if (!authLoading && isAuthenticated && isOnboarded) {
+            const hasRedirected = sessionStorage.getItem('has_checked_daily_checkin_redirect');
+            if (!hasRedirected && userProfile?.notifications?.dailyCheckin !== false) {
+                const getUTCDateString = () => new Date().toISOString().split('T')[0];
+                const todayStr = getUTCDateString();
+                const hasCheckedInToday = checkins && checkins.some(c => c.date === todayStr);
+
+                if (!hasCheckedInToday && location.pathname !== '/app/checkin' && location.pathname !== '/app/onboarding') {
+                    sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+                    navigate('/app/checkin');
+                } else if (hasCheckedInToday || location.pathname === '/app/checkin') {
+                    sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+                }
+            }
+        }
+    }, [isAuthenticated, authLoading, isOnboarded, userProfile, checkins, location.pathname, navigate]);
+
     const menuItems = [
         { name: 'Dashboard', path: '/app', icon: <FiGrid className="w-5 h-5" /> },
         { name: 'Check-in', path: '/app/checkin', icon: <FiCheckSquare className="w-5 h-5" /> },
@@ -54,18 +74,8 @@ export const AppLayout = () => {
         }
     };
 
-    // Global loading spinner when session is still loading credentials
-    if (authLoading) {
-        return (
-            <div className="min-h-screen bg-bg-light dark:bg-bg-dark flex flex-col justify-center items-center gap-4 text-text-dark dark:text-text-light transition-colors duration-300">
-                <FiLoader className="w-12 h-12 text-primary animate-spin" />
-                <span className="text-sm font-semibold tracking-wide text-text-dark/70 dark:text-text-light/75">Loading secure session...</span>
-            </div>
-        );
-    }
-
-    // Guard rendering
-    if (!isAuthenticated) {
+    // Guard rendering if not authenticated after auth loading finishes
+    if (!authLoading && !isAuthenticated) {
         return null;
     }
 
@@ -190,6 +200,11 @@ export const AppLayout = () => {
                     </div>
                 </nav>
             )}
+
+            {/* Full-Screen Semi-Transparent Loading Overlay */}
+            <AnimatePresence>
+                {isInitialLoading && <PageLoader />}
+            </AnimatePresence>
         </div>
     );
 };

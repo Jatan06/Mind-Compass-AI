@@ -106,7 +106,7 @@ export const Dashboard = () => {
     // Fetch fresh profile + checkins + journals + prediction on load
     React.useEffect(() => {
         refreshDashboardData();
-    }, [refreshDashboardData]);
+    }, []);
 
     // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
     const getUTCDateString = () => new Date().toISOString().split('T')[0];

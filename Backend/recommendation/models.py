@@ -31,13 +31,18 @@ class Recommendation(models.Model):
     historical_matches = models.IntegerField(default=0, help_text="Number of historical theme-matching journals")
     success_rate = models.CharField(max_length=50, blank=True, null=True, help_text="Historical activity success rate percentage string")
     mood_improvement = models.CharField(max_length=100, blank=True, null=True, help_text="Mood improvement description string")
+    daily_suggestion = models.TextField(blank=True, null=True, help_text="AI-style coach daily suggestion/insight")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
         status = "Active" if self.is_active else "Historical"
-        return f"Recommendation for {self.user.username}: {self.activity.title} ({status})"
+        username = getattr(self.user, 'username', str(self.user))
+        return f"Recommendation for {username}: {self.activity.title} ({status})"
+

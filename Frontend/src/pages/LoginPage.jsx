@@ -276,7 +276,7 @@ export const LoginPage = () => {
       setFormError("");
       setSuccessMessage("");
       try {
-        await googleLogin(tokenResponse.access_token);
+        await googleLogin(tokenResponse.access_token, null, null, rememberMe);
         setIsGoogleLoading(false);
         navigate("/app");
       } catch (err) {

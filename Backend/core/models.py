@@ -24,8 +24,12 @@ class CrisisAlert(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Crisis Alert ({self.alert_level}) for {self.user.username} - {self.status}"
+        username = getattr(self.user, 'username', str(self.user))
+        return f"Crisis Alert ({self.alert_level}) for {username} - {self.status}"
+

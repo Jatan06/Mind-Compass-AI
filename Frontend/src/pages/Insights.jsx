@@ -36,9 +36,9 @@ export const Insights = () => {
 
     useEffect(() => {
         refreshDashboardData();
-    }, [refreshDashboardData]);
+    }, []);
 
-    const loading = insightsLoading || analyticsLoading;
+    const loading = (insightsLoading || analyticsLoading) && !aiInsightsData && !analyticsData;
 
     if (loading) {
         return (
@@ -226,7 +226,13 @@ export const Insights = () => {
                                             TODAY’S EMOTIONAL SPECTRUM
                                         </span>
                                         <p className="text-sm sm:text-base leading-relaxed text-text-dark/85 dark:text-text-light/90 font-light">
-                                            "{summaries.weeklySummary}"
+                                            {userProfile?.notifications?.weeklySummary !== false ? (
+                                                `"${summaries.weeklySummary}"`
+                                            ) : (
+                                                <span className="text-text-dark/50 dark:text-text-light/50 italic">
+                                                    Weekly twin metrics summary is disabled in system preferences. Enable it under Profile & Settings to display your summary.
+                                                </span>
+                                            )}
                                         </p>
                                     </div>
 

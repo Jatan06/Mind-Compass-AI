@@ -113,151 +113,146 @@ export const AppProvider = ({ children }) => {
         }
     }, []);
 
-    // Refresh all central dashboard and histories variables from backend APIs
+    // Refresh all central dashboard and histories variables from backend APIs concurrently
     const refreshDashboardData = useCallback(async () => {
         try {
-            // 1. Fetch latest profile stats (wellnessScore, streak)
-            await fetchUserProfile();
+            setRecLoading(true);
+            setPredictionLoading(true);
+            setInsightsLoading(true);
+            setAnalyticsLoading(true);
 
-            // 2. Fetch mood checkins history
-            const moodRes = await moodAPI.getHistory();
-            if (moodRes.status === 200 && Array.isArray(moodRes.data)) {
-                const mappedCheckins = moodRes.data.map(c => ({
+            // Execute independent API calls concurrently for massive performance speedup
+            const [
+                profileRes,
+                moodRes,
+                journalRes,
+                activityRes,
+                recRes,
+                predRes,
+                insightsRes,
+                analyticsRes
+            ] = await Promise.allSettled([
+                fetchUserProfile(),
+                moodAPI.getHistory(),
+                journalAPI.getAll(),
+                activitiesAPI.getFeedback(),
+                recommendationAPI.getToday(),
+                aiAPI.getPrediction(),
+                aiAPI.getInsights(),
+                insightsAPI.getAnalytics()
+            ]);
+
+            // 1. Mood Checkins
+            if (moodRes.status === 'fulfilled' && moodRes.value?.status === 200 && Array.isArray(moodRes.value.data)) {
+                const mappedCheckins = moodRes.value.data.map(c => ({
                     ...c,
                     sleep: c.sleep ? parseFloat(c.sleep) : 0,
-                    moodLabel: c.mood_label || '' // map snake_case to camelCase
+                    moodLabel: c.mood_label || ''
                 }));
-                // Sort checkins chronologically so charts map time correctly
                 setCheckins(mappedCheckins.reverse());
             }
 
-            // 3. Fetch journals history
-            const journalRes = await journalAPI.getAll();
-            if (journalRes.status === 200 && Array.isArray(journalRes.data)) {
-                const mappedJournals = journalRes.data.map(j => ({
+            // 2. Journals
+            if (journalRes.status === 'fulfilled' && journalRes.value?.status === 200 && Array.isArray(journalRes.value.data)) {
+                const mappedJournals = journalRes.value.data.map(j => ({
                     ...j,
-                    isVoice: j.is_voice // map snake_case to camelCase
+                    isVoice: j.is_voice
                 }));
                 setJournals(mappedJournals);
             }
-            // 4. Fetch activity feedbacks
-            try {
-                const activityFeedbacksRes = await activitiesAPI.getFeedback();
-                if (activityFeedbacksRes.status === 200 && Array.isArray(activityFeedbacksRes.data)) {
-                    const mappedFeedback = activityFeedbacksRes.data.map(f => ({
-                        id: f.id,
-                        activityId: f.activity,
-                        date: f.date,
-                        durationMinutes: f.duration_minutes,
-                        satisfaction: f.satisfaction,
-                        moodImproved: f.mood_improved
-                    }));
-                    setCompletedActivities(mappedFeedback);
-                }
-            } catch (err) {
-                console.error("Failed to load activity completion history:", err);
+
+            // 3. Completed Activities
+            if (activityRes.status === 'fulfilled' && activityRes.value?.status === 200 && Array.isArray(activityRes.value.data)) {
+                const mappedFeedback = activityRes.value.data.map(f => ({
+                    id: f.id,
+                    activityId: f.activity,
+                    date: f.date,
+                    durationMinutes: f.duration_minutes,
+                    satisfaction: f.satisfaction,
+                    moodImproved: f.mood_improved
+                }));
+                setCompletedActivities(mappedFeedback);
             }
 
-            // 5. Fetch today's recommendation
-            try {
-                setRecLoading(true);
-                const recRes = await recommendationAPI.getToday();
-                if (recRes.status === 200 && recRes.data) {
-                    setTodayRecommendation(recRes.data);
-                } else {
-                    setTodayRecommendation(null);
-                }
-            } catch (err) {
-                console.error("Failed to load today's recommendation:", err);
+            // 4. Recommendation
+            if (recRes.status === 'fulfilled' && recRes.value?.status === 200 && recRes.value.data) {
+                setTodayRecommendation(recRes.value.data);
+            } else {
                 setTodayRecommendation(null);
-            } finally {
-                setRecLoading(false);
             }
 
-            // 6. Fetch today's prediction
-            try {
-                setPredictionLoading(true);
-                const predRes = await aiAPI.getPrediction();
-                if (predRes.status === 200 && predRes.data) {
-                    setPredictionData(predRes.data);
-                } else {
-                    setPredictionData(null);
-                }
-            } catch (err) {
-                console.error("Failed to load today's prediction:", err);
+            // 5. AI Prediction
+            if (predRes.status === 'fulfilled' && predRes.value?.status === 200 && predRes.value.data) {
+                setPredictionData(predRes.value.data);
+            } else {
                 setPredictionData(null);
-            } finally {
-                setPredictionLoading(false);
             }
 
-            // 7. Fetch today's AI insights
-            try {
-                setInsightsLoading(true);
-                const insightsRes = await aiAPI.getInsights();
-                if (insightsRes.status === 200 && insightsRes.data) {
-                    setAiInsightsData(insightsRes.data);
-                } else {
-                    setAiInsightsData(null);
-                }
-            } catch (err) {
-                console.error("Failed to load today's AI insights:", err);
+            // 6. AI Insights
+            if (insightsRes.status === 'fulfilled' && insightsRes.value?.status === 200 && insightsRes.value.data) {
+                setAiInsightsData(insightsRes.value.data);
+            } else {
                 setAiInsightsData(null);
-            } finally {
-                setInsightsLoading(false);
             }
 
-            // 8. Fetch analytics data
-            try {
-                setAnalyticsLoading(true);
-                const analyticsRes = await insightsAPI.getAnalytics();
-                if (analyticsRes.status === 200 && analyticsRes.data) {
-                    setAnalyticsData(analyticsRes.data);
-                } else {
-                    setAnalyticsData(null);
-                }
-            } catch (err) {
-                console.error("Failed to load analytics data:", err);
+            // 7. Analytics
+            if (analyticsRes.status === 'fulfilled' && analyticsRes.value?.status === 200 && analyticsRes.value.data) {
+                setAnalyticsData(analyticsRes.value.data);
+            } else {
                 setAnalyticsData(null);
-            } finally {
-                setAnalyticsLoading(false);
             }
         } catch (error) {
             console.error('Failed to refresh dashboard data:', error);
+        } finally {
+            setRecLoading(false);
+            setPredictionLoading(false);
+            setInsightsLoading(false);
+            setAnalyticsLoading(false);
         }
     }, [fetchUserProfile]);
+
+    const [isInitialLoading, setIsInitialLoading] = useState(true);
 
     // Session Hydration on page reload
     useEffect(() => {
         const hydrateSession = async () => {
-            const storedAccess = localStorage.getItem('access_token');
-            const storedRefresh = localStorage.getItem('refresh_token');
+            try {
+                const storedAccess = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+                const storedRefresh = localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token');
 
-            if (storedAccess && storedRefresh) {
-                setToken(storedAccess);
-                setRefreshToken(storedRefresh);
-                // Also hydrate raw user config first
-                const storedUser = localStorage.getItem('currentUser');
-                if (storedUser) {
+                if (storedAccess && storedRefresh) {
+                    setToken(storedAccess);
+                    setRefreshToken(storedRefresh);
+                    // Also hydrate raw user config first
+                    const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+                    if (storedUser) {
+                        try {
+                            const parsed = JSON.parse(storedUser);
+                            setUserProfile((prev) => ({
+                                ...prev,
+                                name: parsed.username || '',
+                                email: parsed.email || '',
+                            }));
+                            if (parsed.profile && typeof parsed.profile.is_onboarded === 'boolean') {
+                                setIsOnboarded(parsed.profile.is_onboarded);
+                            }
+                        } catch (e) {
+                            // invalid details
+                        }
+                    }
+                    // Fetch all backend data and await completion before releasing loading state
                     try {
-                        const parsed = JSON.parse(storedUser);
-                        setUserProfile((prev) => ({
-                            ...prev,
-                            name: parsed.username,
-                            email: parsed.email,
-                        }));
-                        if (parsed.profile && typeof parsed.profile.is_onboarded === 'boolean') {
-                            setIsOnboarded(parsed.profile.is_onboarded);
-                        }
-                        if (parsed.profile) {
-                            setIsOnboarded(parsed.profile.is_onboarded || false);
-                        }
-                    } catch (e) {
-                        // invalid details
+                        await refreshDashboardData();
+                    } catch (err) {
+                        console.error("Error refreshing dashboard during hydration:", err);
                     }
                 }
-                await refreshDashboardData();
+            } catch (error) {
+                console.error("Hydration error:", error);
+            } finally {
+                setAuthLoading(false);
+                setIsInitialLoading(false);
             }
-            setAuthLoading(false);
         };
         hydrateSession();
     }, [refreshDashboardData]);
@@ -268,9 +263,12 @@ export const AppProvider = ({ children }) => {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('currentUser');
         localStorage.removeItem('remembered_username');
+        localStorage.removeItem('ai_chat_messages');
         sessionStorage.removeItem('access_token');
         sessionStorage.removeItem('refresh_token');
         sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('ai_chat_messages');
+        sessionStorage.removeItem('has_checked_daily_checkin_redirect');
         setToken(null);
         setRefreshToken(null);
         setIsOnboarded(false);
@@ -302,7 +300,7 @@ export const AppProvider = ({ children }) => {
     }, [clearAuthData]);
 
     // Context Auth Workflows
-    const login = async (emailOrUsername, password) => {
+    const login = async (emailOrUsername, password, rememberMe = false) => {
         const response = await authAPI.login({
             email: emailOrUsername, // django holds compatibility logic for backend authentication Service
             password,
@@ -312,9 +310,16 @@ export const AppProvider = ({ children }) => {
             const { access, refresh } = response.data.tokens;
             const userObj = response.data.user;
 
-            localStorage.setItem('access_token', access);
-            localStorage.setItem('refresh_token', refresh);
-            localStorage.setItem('currentUser', JSON.stringify(userObj));
+            const storage = rememberMe ? localStorage : sessionStorage;
+            const altStorage = rememberMe ? sessionStorage : localStorage;
+
+            altStorage.removeItem('access_token');
+            altStorage.removeItem('refresh_token');
+            altStorage.removeItem('currentUser');
+
+            storage.setItem('access_token', access);
+            storage.setItem('refresh_token', refresh);
+            storage.setItem('currentUser', JSON.stringify(userObj));
 
             setToken(access);
             setRefreshToken(refresh);
@@ -355,7 +360,7 @@ export const AppProvider = ({ children }) => {
         }
     };
 
-    const googleLogin = async (googleToken, email = null, name = null) => {
+    const googleLogin = async (googleToken, email = null, name = null, rememberMe = true) => {
         const response = await authAPI.googleLogin({
             token: googleToken,
             email,
@@ -366,9 +371,16 @@ export const AppProvider = ({ children }) => {
             const { access, refresh } = response.data.tokens;
             const userObj = response.data.user;
 
-            localStorage.setItem('access_token', access);
-            localStorage.setItem('refresh_token', refresh);
-            localStorage.setItem('currentUser', JSON.stringify(userObj));
+            const storage = rememberMe ? localStorage : sessionStorage;
+            const altStorage = rememberMe ? sessionStorage : localStorage;
+
+            altStorage.removeItem('access_token');
+            altStorage.removeItem('refresh_token');
+            altStorage.removeItem('currentUser');
+
+            storage.setItem('access_token', access);
+            storage.setItem('refresh_token', refresh);
+            storage.setItem('currentUser', JSON.stringify(userObj));
 
             setToken(access);
             setRefreshToken(refresh);
@@ -446,9 +458,20 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    const deleteAccount = async () => {
+        await profileAPI.deleteAccount();
+        // Clear all local storage and session storage
+        localStorage.clear();
+        sessionStorage.clear();
+        setToken(null);
+        setRefreshToken(null);
+    };
+
     const updateProfile = async (updatedProfile) => {
         // Prepare PUT payload matching back-end serializers
         const payload = {
+            username: updatedProfile.name !== undefined ? updatedProfile.name : userProfile.name,
+            email: updatedProfile.email !== undefined ? updatedProfile.email : userProfile.email,
             occupation: updatedProfile.occupation !== undefined ? updatedProfile.occupation : userProfile.occupation,
             sleep_hours: updatedProfile.sleepHours !== undefined ? updatedProfile.sleepHours : userProfile.sleepHours,
             exercise_frequency: updatedProfile.exerciseFrequency !== undefined ? updatedProfile.exerciseFrequency : userProfile.exerciseFrequency,
@@ -456,7 +479,6 @@ export const AppProvider = ({ children }) => {
             water_intake: updatedProfile.waterIntake !== undefined ? updatedProfile.waterIntake : userProfile.waterIntake,
             goals: updatedProfile.goals !== undefined ? updatedProfile.goals : userProfile.goals,
             coping_methods: updatedProfile.copingMethods !== undefined ? updatedProfile.copingMethods : userProfile.copingMethods,
-            voice_preference: updatedProfile.voicePreference !== undefined ? updatedProfile.voicePreference : userProfile.voicePreference,
             // Bundle triggers inside notifications object to persist in backend database
             notifications: {
                 ...(updatedProfile.notifications !== undefined ? updatedProfile.notifications : userProfile.notifications),
@@ -470,6 +492,8 @@ export const AppProvider = ({ children }) => {
         // Sync new data keys
         setUserProfile((prev) => ({
             ...prev,
+            name: profileData.username || prev.name,
+            email: profileData.email || prev.email,
             occupation: profileData.occupation || '',
             sleepHours: profileData.sleep_hours ? Number(profileData.sleep_hours) : 7,
             exerciseFrequency: profileData.exercise_frequency || '',
@@ -477,7 +501,6 @@ export const AppProvider = ({ children }) => {
             waterIntake: profileData.water_intake ? Number(profileData.water_intake) : 2.5,
             goals: profileData.goals || [],
             copingMethods: profileData.coping_methods || [],
-            voicePreference: profileData.voice_preference || 'calm-female',
             theme: profileData.theme || 'light',
             triggers: profileData.notifications?.triggers || [],
             notifications: {
@@ -486,6 +509,18 @@ export const AppProvider = ({ children }) => {
                 wellnessReminders: profileData.notifications?.wellnessReminders ?? false,
             },
         }));
+
+        // Update stored currentUser in storage so sidebar initials/details sync
+        const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+        if (storedUser) {
+            try {
+                const parsed = JSON.parse(storedUser);
+                parsed.username = profileData.username || parsed.username;
+                parsed.email = profileData.email || parsed.email;
+                const storage = localStorage.getItem('currentUser') ? localStorage : sessionStorage;
+                storage.setItem('currentUser', JSON.stringify(parsed));
+            } catch (e) { }
+        }
 
         return response.data;
     };
@@ -562,6 +597,7 @@ export const AppProvider = ({ children }) => {
             value={{
                 token,
                 authLoading,
+                isInitialLoading,
                 isAuthenticated: !!token,
                 userProfile,
                 isOnboarded,
@@ -578,6 +614,7 @@ export const AppProvider = ({ children }) => {
                 googleLogin,
                 onboardUser,
                 retakeAssessment,
+                deleteAccount,
                 updateProfile,
                 addCheckin,
                 addJournal,

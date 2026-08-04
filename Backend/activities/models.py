@@ -15,6 +15,8 @@ class TherapyActivity(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     class Meta:
         verbose_name_plural = "Therapy Activities"
 
@@ -35,5 +37,8 @@ class ActivityFeedback(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     def __str__(self):
-        return f"{self.user.username} feedback for {self.activity.title}"
+        username = getattr(self.user, 'username', str(self.user))
+        return f"{username} feedback for {self.activity.title}"

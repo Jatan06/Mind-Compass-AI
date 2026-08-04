@@ -12,5 +12,11 @@ class AssessmentResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+
     def __str__(self):
-        return f"Assessment Response for {self.user.username} logged at {self.created_at.strftime('%Y-%m-%d')}"
+        username = getattr(self.user, 'username', str(self.user))
+        strftime = getattr(self.created_at, 'strftime', None)
+        date_str = strftime('%Y-%m-%d') if callable(strftime) else 'N/A'
+        return f"Assessment Response for {username} logged at {date_str}"
+

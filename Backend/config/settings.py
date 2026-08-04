@@ -221,10 +221,24 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GROQ_API_KEY = os.getenv('GROQ_API_KEY', '')
 
 
+import logging
+
+class SuppressBrokenPipeFilter(logging.Filter):
+    def filter(self, record):
+        msg = record.getMessage()
+        if msg and ('Broken pipe' in msg or 'WinError 10054' in msg):
+            return False
+        return True
+
 # Logging Config
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'suppress_broken_pipe': {
+            '()': SuppressBrokenPipeFilter,
+        },
+    },
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
@@ -239,17 +253,27 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
+            'filters': ['suppress_broken_pipe'],
         },
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'debug.log',
             'formatter': 'verbose',
+            'filters': ['suppress_broken_pipe'],
         },
     },
     'root': {
         'handlers': ['console', 'file'],
         'level': 'INFO',
+    },
+    'loggers': {
+        'django.server': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+            'filters': ['suppress_broken_pipe'],
+        },
     },
 }
 

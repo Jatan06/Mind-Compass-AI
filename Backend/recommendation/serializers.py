@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from .models import Recommendation
+from activities.models import TherapyActivity
 from activities.serializers import TherapyActivitySerializer
 
 class RecommendationSerializer(serializers.ModelSerializer):
     activity = TherapyActivitySerializer(read_only=True)
     activity_id = serializers.PrimaryKeyRelatedField(
-        queryset=Recommendation.objects.none(),
+        queryset=TherapyActivity.objects.all(),
         source='activity',
         write_only=True
     )
@@ -19,14 +20,9 @@ class RecommendationSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'activity', 'activity_id', 'reason', 'is_active', 
             'created_at', 'updated_at', 'confidence', 'recommendation_score',
-            'historical_matches', 'previous_success_rate', 'rec_type', 'mood_improvement'
+            'historical_matches', 'previous_success_rate', 'rec_type', 'mood_improvement', 'daily_suggestion'
         ]
         read_only_fields = ['id', 'user', 'activity', 'is_active', 'created_at', 'updated_at', 'confidence']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        from activities.models import TherapyActivity
-        self.fields['activity_id'].queryset = TherapyActivity.objects.all()
 
     def get_historical_matches(self, obj):
         # Fall back to dynamic calculation if model field is unset or 0
