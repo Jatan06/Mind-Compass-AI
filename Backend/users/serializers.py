@@ -6,7 +6,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = [
             'id', 'occupation', 'sleep_hours', 'exercise_frequency', 
-            'screen_time', 'water_intake', 'goals', 'coping_methods', 
+            'screen_time', 'water_intake', 'goals', 'coping_methods', 'trigger_keywords', 
             'voice_preference', 'notifications', 'theme', 'streak', 
             'wellness_score', 'is_onboarded', 'is_email_verified', 'created_at', 'updated_at'
         ]

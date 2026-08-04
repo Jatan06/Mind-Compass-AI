@@ -16,6 +16,7 @@ def api_health(request):
 
 
 urlpatterns = [
+    path('', api_health, name='api_health'),
     path('admin/', admin.site.urls),
     
     # App routers

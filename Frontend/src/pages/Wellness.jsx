@@ -12,6 +12,7 @@ import {
     FiStar,
     FiCheckSquare,
     FiArrowLeft,
+    FiX,
     FiWind,
     FiMoon,
     FiSun,
@@ -19,12 +20,15 @@ import {
     FiSmile,
     FiBookOpen,
     FiUsers,
-    FiMapPin
+    FiMapPin,
+    FiMusic
 } from 'react-icons/fi';
 import { PageTransition } from '../components/PageTransition';
 import { Button } from '../components/Button';
 import { useApp } from '../context/AppContext';
 import { activitiesAPI } from '../services/api';
+import { AmbientMusicPlayer } from '../components/AmbientMusicPlayer';
+import { audioEngine, getSoundscapeForCategory } from '../utils/soundscapes';
 
 const categoryIcons = {
     'Breathing': <FiWind className="w-5 h-5" />,
@@ -110,6 +114,57 @@ export const Wellness = () => {
         return isNaN(val) ? 0 : val;
     };
 
+    // ── Fullscreen & Wake Lock ──────────────────────────────────────────────
+    const wakeLockRef = React.useRef(null);
+
+    const enterFullscreen = async () => {
+        try {
+            const el = document.documentElement;
+            if (el.requestFullscreen) await el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        } catch (_) { /* user may deny — gracefully ignore */ }
+        // Keep screen awake during session
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLockRef.current = await navigator.wakeLock.request('screen');
+            }
+        } catch (_) {}
+    };
+
+    const exitFullscreen = async () => {
+        try {
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                if (document.exitFullscreen) await document.exitFullscreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            }
+        } catch (_) {}
+        try {
+            if (wakeLockRef.current) {
+                await wakeLockRef.current.release();
+                wakeLockRef.current = null;
+            }
+        } catch (_) {}
+    };
+
+    // Exit fullscreen if user presses Escape (browser does it automatically,
+    // but we still need to release the wake lock)
+    useEffect(() => {
+        const onFsChange = () => {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (wakeLockRef.current) {
+                    wakeLockRef.current.release().catch(() => {});
+                    wakeLockRef.current = null;
+                }
+            }
+        };
+        document.addEventListener('fullscreenchange', onFsChange);
+        document.addEventListener('webkitfullscreenchange', onFsChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', onFsChange);
+            document.removeEventListener('webkitfullscreenchange', onFsChange);
+        };
+    }, []);
+
     // Handle Category, Difficulty, Duration filter & Search
     const filteredActivities = activities.filter(a => {
         const matchesCategory = categoryFilter === 'All' || a.category.toLowerCase() === categoryFilter.toLowerCase();
@@ -130,9 +185,15 @@ export const Wellness = () => {
     const startTimer = (activity) => {
         setSelectedActivity(activity);
         const mins = getDurationNum(activity.duration) || 5;
-        setTimeLeft(mins * 60);
+        const durSecs = mins * 60;
+        setTimeLeft(durSecs);
         setIsTimerRunning(true);
         setActiveView('details');
+        // Play category-specific ambient sound for the exact session duration
+        const soundscape = getSoundscapeForCategory(activity.category);
+        audioEngine.play(soundscape, durSecs);
+        // Enter fullscreen + request wake lock (triggered by user click — always succeeds)
+        enterFullscreen();
     };
 
     useEffect(() => {
@@ -145,6 +206,7 @@ export const Wellness = () => {
             }, 1000);
         } else if (timeLeft === 0) {
             setIsTimerRunning(false);
+            exitFullscreen();
             setActiveView('feedback');
         }
 
@@ -152,7 +214,12 @@ export const Wellness = () => {
     }, [isTimerRunning, timeLeft, activeView]);
 
     const handleTimerPause = () => {
-        setIsTimerRunning(prev => !prev);
+        setIsTimerRunning(prev => {
+            const next = !prev;
+            if (next) audioEngine.resume();
+            else audioEngine.pause();
+            return next;
+        });
     };
 
     const handleTimerReset = () => {
@@ -163,6 +230,8 @@ export const Wellness = () => {
 
     const handleSkipTimer = () => {
         setIsTimerRunning(false);
+        audioEngine.stop();
+        exitFullscreen();
         setTimeLeft(0);
         setActiveView('feedback');
     };
@@ -398,6 +467,8 @@ export const Wellness = () => {
                                 <button
                                     onClick={() => {
                                         setIsTimerRunning(false);
+                                        audioEngine.stop();
+                                        exitFullscreen();
                                         setActiveView('list');
                                     }}
                                     className="inline-flex items-center gap-1 text-sm font-semibold text-text-dark/65 hover:text-text-dark dark:text-text-light/65 dark:hover:text-text-light cursor-pointer"
@@ -421,6 +492,13 @@ export const Wellness = () => {
                                     {selectedActivity.short_description || selectedActivity.description}
                                 </p>
                             </div>
+
+                            {/* Background Ambient Music — plays for the exact timer duration */}
+                            <AmbientMusicPlayer
+                                category={selectedActivity.category}
+                                isTimerRunning={isTimerRunning}
+                                durationSeconds={(getDurationNum(selectedActivity.duration) || 5) * 60}
+                            />
 
                             {/* Interactive HUD Circle Timer */}
                             <div className="py-6 flex flex-col items-center justify-center">
@@ -540,6 +618,22 @@ export const Wellness = () => {
                             exit={{ opacity: 0, scale: 0.98 }}
                             className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-xl mx-auto w-full space-y-6"
                         >
+                            {/* Close button — top right */}
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={() => {
+                                        audioEngine.stop();
+                                        exitFullscreen();
+                                        setActiveView('list');
+                                        setSelectedActivity(null);
+                                    }}
+                                    title="Close and return to activities"
+                                    className="p-2 rounded-xl hover:bg-secondary/10 dark:hover:bg-secondary/5 text-text-dark/50 dark:text-text-light/50 hover:text-text-dark dark:hover:text-text-light transition-colors cursor-pointer"
+                                >
+                                    <FiX className="w-5 h-5" />
+                                </button>
+                            </div>
+
                             <div className="text-center space-y-2">
                                 <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">
                                     <FiCheckSquare className="w-6 h-6" />
@@ -547,6 +641,7 @@ export const Wellness = () => {
                                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-text-dark dark:text-text-light">
                                     Session Completed!
                                 </h2>
+
                                 <p className="text-xs sm:text-sm text-text-dark/60 dark:text-text-light/65">
                                     How was your experience during "{selectedActivity.title}"?
                                 </p>

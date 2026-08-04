@@ -182,7 +182,11 @@ class PasswordResetTestCase(TestCase):
         token_str = AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
         self.assertEqual(token_str, reset_token_obj.token)
         
-        # 2. Reset with new password
+        # 2. Verify OTP
+        token_str = AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
+        self.assertTrue(token_str)
+
+        # 3. Reset with new password
         AuthService.reset_password_with_otp(
             email_address="resetuser@example.com",
             otp_code=otp_code,
@@ -190,7 +194,7 @@ class PasswordResetTestCase(TestCase):
             new_password_confirm="NewStrongPassword123!"
         )
         
-        # 3. Authenticate with new password
+        # 4. Authenticate with new password
         user, tokens = AuthService.authenticate_user("resetuser", "NewStrongPassword123!")
         self.assertEqual(user, self.user)
         
@@ -200,7 +204,6 @@ class PasswordResetTestCase(TestCase):
 
     def test_expired_reset_token(self):
         reset_token_obj, otp_code = AuthService.send_password_reset_otp("resetuser@example.com")
-        # Shift expires_at into the past
         reset_token_obj.expires_at = timezone.now() - timedelta(minutes=1)
         reset_token_obj.save()
         
@@ -210,16 +213,9 @@ class PasswordResetTestCase(TestCase):
 
     def test_invalid_reset_password_rules(self):
         reset_token_obj, otp_code = AuthService.send_password_reset_otp("resetuser@example.com")
-        
-        # Verify OTP first so reset_password_with_otp doesn't raise verification error
         AuthService.verify_password_reset_otp("resetuser@example.com", otp_code)
         
-        # Password matches username
+        # Password fails validation rules (missing uppercase/special char or matches username)
         with self.assertRaises(ValidationError) as ctx:
-            AuthService.reset_password_with_otp(
-                email_address="resetuser@example.com",
-                otp_code=otp_code,
-                new_password="resetuser",
-                new_password_confirm="resetuser"
-            )
+            AuthService.reset_password_with_otp("resetuser@example.com", otp_code, "resetuser", "resetuser")
         self.assertIn("password", ctx.exception.detail)
