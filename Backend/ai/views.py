@@ -71,22 +71,12 @@ class MoodPredictionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        from django.utils import timezone
-        from mood.models import MoodLog
-        from journal.models import JournalEntry
-        today = timezone.localdate()
-        has_mood = MoodLog.objects.filter(user=request.user, date=today).exists()
-        has_journal = JournalEntry.objects.filter(user=request.user, created_at__date=today).exists()
-        
-        if not (has_mood and has_journal):
-            return Response({
-                'pending': True,
-                'detail': "Complete today's mood check-in and journal to receive today's mood prediction."
-            }, status=status.HTTP_200_OK)
-
+        # Always run the 3-stage prediction pipeline.
+        # The service itself handles Stage 1 (no data), Stage 2, and Stage 3.
+        # No today-gating here — history depth determines the response.
         result = MoodPredictionService.predict(request.user)
-        res_serializer = MoodPredictionResponseSerializer(result)
-        return Response(res_serializer.data, status=status.HTTP_200_OK)
+        return Response(result, status=status.HTTP_200_OK)
+
 
 class AIInsightsView(APIView):
     permission_classes = [IsAuthenticated]

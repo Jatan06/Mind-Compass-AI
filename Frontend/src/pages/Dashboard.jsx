@@ -108,12 +108,9 @@ export const Dashboard = () => {
         refreshDashboardData();
     }, [refreshDashboardData]);
 
-    const getLocalDateString = (d = new Date()) => {
-        const offset = d.getTimezoneOffset();
-        const localDate = new Date(d.getTime() - (offset * 60 * 1000));
-        return localDate.toISOString().split('T')[0];
-    };
-    const todayStr = getLocalDateString();
+    // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
+    const getUTCDateString = () => new Date().toISOString().split('T')[0];
+    const todayStr = getUTCDateString();
 
     const todaysCheckin = checkins.find(c => c.date === todayStr);
 
@@ -130,7 +127,7 @@ export const Dashboard = () => {
     const mockStats = [
         {
             label: 'Wellness Score',
-            val: `${wellnessScore}/100`,
+            val: wellnessScore !== null && wellnessScore !== undefined ? `${wellnessScore}/100` : '--',
             desc: 'Reflects mood, sleep & activity metrics',
             icon: <FiActivity className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />,
             color: 'from-indigo-500/10 to-blue-500/5',
@@ -151,53 +148,44 @@ export const Dashboard = () => {
         }
     ];
 
-    // Helper to estimate tomorrow's mood based on today's inputs
+
+    // Adaptive mood prediction helper — returns a rich descriptor for the card
     const getPrediction = () => {
         if (!isOnboarded) {
-            return {
-                text: "Complete today's assessment to estimate tomorrow's outlook.",
-                status: 'neutral'
-            };
-        }
-        const todaysJournal = journals.find(j => j.created_at.startsWith(todayStr));
-        if (!todaysCheckin || !todaysJournal) {
-            return {
-                text: "Complete today's mood check-in and journal to receive today's mood prediction.",
-                status: 'neutral'
-            };
+            return { case: 'not_onboarded', status: 'neutral', logCount: 0 };
         }
         if (predictionLoading) {
-            return {
-                text: "Calculating mood prediction...",
-                status: 'neutral'
-            };
+            return { case: 'loading', status: 'neutral', logCount: 0 };
         }
-        if (predictionData) {
-            if (predictionData.pending) {
-                return {
-                    text: predictionData.detail,
-                    status: 'neutral'
-                };
-            }
-            const moodLabels = {
-                1: 'Terrible',
-                2: 'Bad',
-                3: 'Neutral',
-                4: 'Good',
-                5: 'Excellent'
-            };
-            const label = moodLabels[predictionData.predicted_mood] || 'Stable';
-            const reasonsText = predictionData.reasons ? predictionData.reasons.join(' ') : '';
-            return {
-                text: `Predicted Tomorrow's Mood: ${label} (${Math.round(predictionData.confidence * 100)}% Confidence). ${reasonsText}`,
-                status: predictionData.predicted_mood >= 4 ? 'positive' : predictionData.predicted_mood <= 2 ? 'warning' : 'neutral'
-            };
+
+        // Real log count from hydrated checkins array
+        const logCount = checkins.length;
+
+        if (!predictionData) {
+            // No API data yet — distinguish 0 logs vs 1-6
+            if (logCount === 0) return { case: 'zero_logs', status: 'neutral', logCount };
+            if (logCount < 7) return { case: 'learning', status: 'neutral', logCount };
+            return { case: 'loading', status: 'neutral', logCount };
         }
+
+        // Stage 1 from API
+        if (!predictionData.has_prediction) {
+            if (logCount === 0) return { case: 'zero_logs', status: 'neutral', logCount };
+            return { case: 'learning', status: 'neutral', logCount };
+        }
+
+        // Stage 2 or 3: real prediction
+        const moodStatus = predictionData.predicted_mood >= 4 ? 'positive'
+            : predictionData.predicted_mood <= 2 ? 'warning'
+                : 'neutral';
         return {
-            text: "Mood prediction will be available after Machine Learning integration.",
-            status: 'neutral'
+            case: predictionData.stage === 3 ? 'personalized' : 'basic',
+            status: moodStatus,
+            logCount,
+            ...predictionData
         };
     };
+
 
     const prediction = getPrediction();
 
@@ -303,6 +291,24 @@ export const Dashboard = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Mixed Emotional Signals Card — shown only when mood and journal conflict */}
+                    {recommendation?.has_conflict && (
+                        <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-400/30 dark:border-amber-500/20 rounded-[2rem] px-6 py-4 flex gap-4 items-start shadow-sm">
+                            <div className="mt-0.5 shrink-0 w-8 h-8 rounded-full bg-amber-400/20 dark:bg-amber-500/10 flex items-center justify-center text-amber-600 dark:text-amber-400 text-base font-bold">
+                                ⚡
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
+                                    Mixed Emotional Signals Detected
+                                </p>
+                                <p className="text-xs text-amber-700/85 dark:text-amber-400/80 leading-relaxed">
+                                    {recommendation.conflict_reason ||
+                                        "Your mood selection and journal express different emotional states. Today's recommendation is based primarily on your journal because written reflections usually provide more context."}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Highly Personalized Wellness Recommendation */}
                     <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] p-6 md:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden">
@@ -448,19 +454,87 @@ export const Dashboard = () => {
                             <FiCompass className="w-5 h-5 text-indigo-500" />
                             Mood Prediction
                         </h3>
-                        <div className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed text-left flex flex-col justify-between flex-grow
-              ${prediction.status === 'warning'
+
+                        {/* Case 1: 0 logs */}
+                        {(prediction.case === 'zero_logs' || prediction.case === 'not_onboarded') && (
+                            <div className="p-4 rounded-2xl bg-secondary/10 text-text-dark/75 dark:text-text-light/80 border border-secondary/15 flex flex-col gap-2">
+                                <p className="text-sm leading-relaxed">
+                                    Complete your first mood check-in to begin building your emotional profile.
+                                </p>
+                                <span className="text-[10px] tracking-wider uppercase opacity-60 font-semibold mt-2">No history yet</span>
+                            </div>
+                        )}
+
+                        {/* Case 2: 1–6 logs — learning phase */}
+                        {prediction.case === 'learning' && (
+                            <div className="p-4 rounded-2xl bg-indigo-500/8 dark:bg-indigo-500/5 border border-indigo-400/20 flex flex-col gap-3">
+                                <div>
+                                    <p className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 mb-1">Learning Your Emotional Patterns</p>
+                                    <p className="text-xs text-text-dark/70 dark:text-text-light/75 leading-relaxed">
+                                        We're learning how your mood changes over time. Continue checking in daily.
+                                        Mood prediction becomes available after at least 7 days of history.
+                                    </p>
+                                </div>
+                                {/* Progress bar */}
+                                <div className="mt-1">
+                                    <div className="flex justify-between items-center text-[11px] font-semibold text-text-dark/60 dark:text-text-light/50 mb-1.5">
+                                        <span>Check-in Progress</span>
+                                        <span>{prediction.logCount} of 7 completed</span>
+                                    </div>
+                                    <div className="w-full h-2 rounded-full bg-secondary/15 dark:bg-secondary/10 overflow-hidden">
+                                        <div
+                                            className="h-full rounded-full bg-indigo-500 dark:bg-indigo-400 transition-all duration-500"
+                                            style={{ width: `${Math.min(100, (prediction.logCount / 7) * 100)}%` }}
+                                        />
+                                    </div>
+                                    <p className="text-[10px] text-text-dark/40 dark:text-text-light/35 mt-1.5">Day {prediction.logCount} / 7</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Case 3 & 4: real prediction (Stage 2 basic / Stage 3 personalized) */}
+                        {(prediction.case === 'basic' || prediction.case === 'personalized') && (
+                            <div className={`p-4 rounded-2xl flex flex-col gap-3 ${prediction.status === 'warning'
                                 ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/15'
                                 : prediction.status === 'positive'
                                     ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/15'
                                     : 'bg-secondary/10 text-text-dark/75 dark:text-text-light/80 border border-secondary/15'
-                            }
-            `}>
-                            <p>{prediction.text}</p>
-                            <span className="text-[10px] tracking-wider uppercase opacity-60 font-semibold block mt-4">
-                                Forecast for tomorrow
-                            </span>
-                        </div>
+                                }`}>
+                                <div className="flex items-center justify-between gap-2">
+                                    <span className="text-lg font-bold">{prediction.mood_label}</span>
+                                    <span className="text-[11px] font-semibold opacity-70 px-2.5 py-1 rounded-full bg-white/20 dark:bg-black/15">
+                                        {prediction.confidence != null ? `${Math.round(prediction.confidence * 100)}%` : ''}
+                                        {prediction.confidence_label ? ` · ${prediction.confidence_label}` : ''}
+                                    </span>
+                                </div>
+                                {prediction.why && (
+                                    <p className="text-xs leading-relaxed opacity-90">{prediction.why}</p>
+                                )}
+                                {prediction.case === 'personalized' && prediction.risk_factors?.length > 0 && (
+                                    <div className="text-[11px] leading-relaxed">
+                                        <p className="font-semibold opacity-75 mb-1">Risk factors</p>
+                                        <ul className="list-disc pl-4 space-y-0.5 opacity-80">
+                                            {prediction.risk_factors.map((r, i) => <li key={i}>{r}</li>)}
+                                        </ul>
+                                    </div>
+                                )}
+                                {prediction.case === 'personalized' && prediction.protective_factors?.length > 0 && (
+                                    <div className="text-[11px] leading-relaxed">
+                                        <p className="font-semibold opacity-75 mb-1">Protective factors</p>
+                                        <ul className="list-disc pl-4 space-y-0.5 opacity-80">
+                                            {prediction.protective_factors.map((p, i) => <li key={i}>{p}</li>)}
+                                        </ul>
+                                    </div>
+                                )}
+                                <span className="text-[10px] tracking-wider uppercase opacity-60 font-semibold mt-1">Forecast for tomorrow</span>
+                            </div>
+                        )}
+
+                        {prediction.case === 'loading' && (
+                            <div className="p-4 rounded-2xl bg-secondary/10 border border-secondary/15 text-xs text-text-dark/50 dark:text-text-light/40">
+                                Calculating mood prediction...
+                            </div>
+                        )}
                     </div>
 
                     {/* Recent Journal entry preview */}

@@ -10,7 +10,7 @@ class MoodService:
 
     @classmethod
     def save_checkin(cls, user, validated_data):
-        date = validated_data.get('date') or timezone.now().date()
+        date = validated_data.get('date') or timezone.localdate()
         
         # Check if already logged for this date and block duplicate
         if MoodLog.objects.filter(user=user, date=date).exists():
@@ -37,7 +37,7 @@ class MoodService:
     @classmethod
     def calculate_streak(cls, user, today=None):
         if today is None:
-            today = timezone.now().date()
+            today = timezone.localdate()
             
         dates = MoodLog.objects.filter(user=user).values_list('date', flat=True).distinct().order_by('-date')
         

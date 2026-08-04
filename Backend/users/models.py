@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     theme = models.CharField(max_length=20, default='light')
     
     streak = models.IntegerField(default=0)
-    wellness_score = models.IntegerField(default=72)
+    wellness_score = models.IntegerField(null=True, blank=True, default=None)
     is_onboarded = models.BooleanField(default=False)
     is_email_verified = models.BooleanField(default=False)
     

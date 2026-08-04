@@ -12,7 +12,7 @@ const api = axios.create({
 // Request Interceptor: Automatically inject Bearer access token if present
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -30,7 +30,7 @@ api.interceptors.response.use(
         // Direct error checks to prevent loop or handle missing parts
         if (error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const refreshToken = localStorage.getItem('refresh_token');
+            const refreshToken = localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token');
 
             if (refreshToken) {
                 try {
@@ -43,9 +43,10 @@ api.interceptors.response.use(
                         const newAccess = refreshRes.data.access;
                         const newRefresh = refreshRes.data.refresh;
 
-                        localStorage.setItem('access_token', newAccess);
+                        const storage = localStorage.getItem('refresh_token') ? localStorage : sessionStorage;
+                        storage.setItem('access_token', newAccess);
                         if (newRefresh) {
-                            localStorage.setItem('refresh_token', newRefresh);
+                            storage.setItem('refresh_token', newRefresh);
                         }
 
                         // Retry original request with new config header
@@ -56,6 +57,8 @@ api.interceptors.response.use(
                     // Refresh verification timed out or was invalid; raise signout triggers
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('refresh_token');
+                    sessionStorage.removeItem('access_token');
+                    sessionStorage.removeItem('refresh_token');
                     // Dispatch a custom event to notify AppContext or routing layer to log out
                     window.dispatchEvent(new Event('auth_session_expired'));
                 }

@@ -7,6 +7,68 @@ from assessment.models import AssessmentResponse
 from journal.models import JournalEntry
 
 class RecommendationService:
+
+    # ─────────────────────────────────────────────────────────────
+    #  Mood–Journal Conflict Detection (70% journal / 30% mood)
+    # ─────────────────────────────────────────────────────────────
+    @classmethod
+    def _detect_conflict(cls, mood_log, journal_entry):
+        """
+        Returns (has_conflict: bool, conflict_reason: str).
+
+        Conflict is true when the mood polarity and journal polarity
+        point in strongly opposite directions under a 70/30 weighting:
+          mood_polarity    = (mood_score - 3) / 2   → [-1, +1]
+          journal_polarity = +1 (Positive) | 0 (Neutral) | -1 (Negative)
+
+        Also fires when journal emotion is explicitly negative
+        (sad/fear/lonely/overwhelmed/grief) while mood >= 4 (Happy/Excellent).
+        """
+        if not mood_log or not journal_entry:
+            return False, ""
+
+        mood_polarity = (mood_log.mood - 3) / 2.0  # [-1, +1]
+
+        journal_polarity = 0.0
+        journal_sent = ""
+        journal_emotion = ""
+        if journal_entry.analysis:
+            journal_sent = journal_entry.analysis.get("sentiment", "Neutral")
+            journal_emotion = (journal_entry.analysis.get("emotion") or "").lower()
+
+        if journal_sent == "Positive":
+            journal_polarity = 1.0
+        elif journal_sent == "Negative":
+            journal_polarity = -1.0
+        else:
+            # Neutral sentiment — check emotion for override
+            negative_emotions = {"sad", "sadness", "fear", "grief", "lonely", "loneliness", "overwhelmed", "hopeless"}
+            if journal_emotion in negative_emotions:
+                journal_polarity = -0.7  # treat as moderately negative
+
+        # Strong opposite directions
+        has_conflict = (
+            (mood_polarity > 0.3 and journal_polarity < -0.3) or
+            (mood_polarity < -0.3 and journal_polarity > 0.3)
+        )
+
+        conflict_reason = ""
+        if has_conflict:
+            if mood_polarity > 0 and journal_polarity < 0:
+                conflict_reason = (
+                    "Your mood selection and journal express different emotional states. "
+                    "Today's recommendation is based primarily on your journal because "
+                    "written reflections usually provide more context."
+                )
+            else:
+                conflict_reason = (
+                    "Your mood check-in indicates distress, but your journal reflects "
+                    "a more positive or hopeful tone. Today's recommendation balances both signals "
+                    "with greater weight on your journal."
+                )
+
+        return has_conflict, conflict_reason
+
     @classmethod
     def get_today_recommendation(cls, user, force_recalculate=False):
         today = timezone.localdate()
@@ -137,31 +199,12 @@ class RecommendationService:
             wellness_ids = ['act-17', 'act-10', 'act-25', 'act-8', 'act-6', 'act-18', 'act-19', 'act-26', 'act-37', 'act-11', 'act-5']
             activities = [act for act in activities if act.id in wellness_ids]
 
-        # Mixed signals detection
-        mixed_signal_observation = None
-        if not is_quick and mood_log and journal_entry:
-            mood_is_positive = mood_log.mood >= 4
-            mood_is_negative = mood_log.mood <= 2
-            
-            journal_sent = journal_entry.analysis.get("sentiment", "Neutral")
-            journal_is_negative = (journal_sent == "Negative")
-            journal_is_positive = (journal_sent == "Positive")
-            
-            journal_themes_lower = [t.lower() for t in journal_themes]
-            has_lonely = "lonely" in journal_themes_lower or "loneliness" in journal_themes_lower or (today_text and any(w in today_text.lower() for w in ["alone", "lonely", "loneliness"]))
-            has_stress = any(t in ["exam", "study", "work", "pressure", "academic", "job", "stress", "anxiety"] for t in journal_themes_lower)
-            
-            if mood_is_positive and (journal_is_negative or has_lonely or has_stress):
-                if has_lonely:
-                    mixed_signal_observation = "Your mood check-in was generally positive, but today's journal suggests feelings of loneliness."
-                elif has_stress:
-                    mixed_signal_observation = "Your mood check-in was generally positive, but today's journal suggests some stress indicators."
-                else:
-                    mixed_signal_observation = "Your mood check-in was positive, but today's journal indicates a more challenging emotional state."
-            elif mood_is_negative and journal_is_positive:
-                mixed_signal_observation = "Your mood check-in was low, but today's journal reflects a positive or hopeful perspective."
+        # ── Conflict detection (70% journal / 30% mood) ──────────────
+        has_conflict, conflict_reason = cls._detect_conflict(mood_log, journal_entry) if not is_quick else (False, "")
 
-        # Base clinical targets (rules match fallback expectations)
+        # ── Clinical target routing ───────────────────────────────────
+        # When has_conflict, journal takes priority — suppress mood>=4 positive path.
+        # Instead route via journal/distress signals (sentiment, emotion, themes).
         target_override_id = None
         target_reason = "A mindful breathing slot to reset your core focus."
 
@@ -184,9 +227,24 @@ class RecommendationService:
             elif mood <= 2 or "worry" in notes or "anxious" in notes or "stuck" in notes:
                 target_override_id = 'act-33'
                 target_reason = "Suggested because you are feeling down or anxious. The 5-4-3-2-1 grounding technique breaks cycles of overthinking."
-            elif mood >= 4:
+            elif mood >= 4 and not has_conflict:
+                # Only recommend gratitude/positive path when mood and journal AGREE it's positive
                 target_override_id = 'act-17'
                 target_reason = "Suggested because your mood is excellent. Practicing gratitude amplifies current positive emotions."
+            elif mood >= 4 and has_conflict:
+                # Journal says something negative despite high mood — route via journal distress
+                j_sent = journal_entry.analysis.get("sentiment", "Neutral") if journal_entry and journal_entry.analysis else "Neutral"
+                j_emotion = (journal_entry.analysis.get("emotion") or "").lower() if journal_entry and journal_entry.analysis else ""
+                j_themes_lower = [t.lower() for t in journal_themes]
+                if j_emotion in ["anxiety", "stress", "fear", "overwhelmed", "frustrated"] or any(t in j_themes_lower for t in ["stress", "anxiety", "pressure", "work", "exam"]):
+                    target_override_id = 'act-1'
+                    target_reason = "Although your mood check-in was positive, your journal indicates stress or anxiety. Box breathing helps regulate the nervous system."
+                elif j_emotion in ["sad", "sadness", "grief", "lonely", "loneliness", "hopeless"] or any(t in j_themes_lower for t in ["loneliness", "lonely", "sadness"]):
+                    target_override_id = 'act-33'
+                    target_reason = "Although your mood check-in was positive, your journal indicates emotional distress. Grounding helps break cycles of sadness."
+                else:
+                    target_override_id = 'act-12'
+                    target_reason = "Your check-in and journal reflect mixed signals. A mindful breathing exercise helps create space for emotional clarity."
 
         # If no acute mood override, fall back to assessment goals
         if not target_override_id and goals:
@@ -524,16 +582,12 @@ class RecommendationService:
         if is_case_a:
             reasons_list.append("You're doing well today. No therapeutic activity is needed today. If you'd like to continue building healthy habits, you can explore an optional wellness activity.")
         else:
-            if mixed_signal_observation:
-                reasons_list.append(mixed_signal_observation)
-            
             detected_today = []
-            if not mixed_signal_observation:
-                detected_today.extend(theme_sentences)
-                detected_today.extend(emotion_sentences)
-                detected_today.extend(mood_sentences)
-                detected_today.extend(journal_sentences)
-            
+            detected_today.extend(theme_sentences)
+            detected_today.extend(emotion_sentences)
+            detected_today.extend(mood_sentences)
+            detected_today.extend(journal_sentences)
+
             reasons_list.extend(detected_today)
             reasons_list.extend(fit_sentences)
             reasons_list.extend(history_sentences)
@@ -564,6 +618,9 @@ class RecommendationService:
             historical_matches=similar_journals_count if not is_quick else 0,
             success_rate=success_rate_str
         )
+        # Attach conflict metadata as transient attributes (not stored in DB)
+        rec._has_conflict = has_conflict
+        rec._conflict_reason = conflict_reason
         return rec
 
     @classmethod

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
 from users.views import ProfileView
 from insights.views import ProgressTrackView
 from activities.views import ActivityFeedbackView

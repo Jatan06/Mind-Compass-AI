@@ -85,6 +85,8 @@ class TodayRecommendationView(APIView):
                 "status": "quick",
                 "confidence": conf_val,
                 "recommendation_score": rec_score or 68,
+                "has_conflict": False,
+                "conflict_reason": "",
                 "reason": data.get("reason", []),
                 "activity": data.get("activity"),
                 "yesterday_recommendation": yesterday_data
@@ -109,12 +111,18 @@ class TodayRecommendationView(APIView):
         if rec.rec_type == 'wellness':
             resp_status = "wellness"
 
+        # Conflict info is attached as transient attributes by the service
+        has_conflict = getattr(rec, '_has_conflict', False)
+        conflict_reason = getattr(rec, '_conflict_reason', "")
+
         return Response({
             "status": resp_status,
             "confidence": conf_val,
             "recommendation_score": rec_score or 91,
             "historical_matches": data.get("historical_matches", 0),
             "previous_success_rate": data.get("previous_success_rate", "80%"),
+            "has_conflict": has_conflict,
+            "conflict_reason": conflict_reason,
             "reason": data.get("reason", []),
             "activity": data.get("activity")
         }, status=status.HTTP_200_OK)

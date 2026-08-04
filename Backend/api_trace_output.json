@@ -1,0 +1,360 @@
+{
+  "profile": {
+    "id": "a6c11ee3-6377-4e55-b51a-29735820828b",
+    "occupation": "Student",
+    "sleep_hours": "7.00",
+    "exercise_frequency": null,
+    "screen_time": "6.00",
+    "water_intake": "2.50",
+    "goals": [
+      "Reduce Stress",
+      "Increase Focus",
+      "Improve Sleep"
+    ],
+    "coping_methods": [
+      "Deep Breathing",
+      "Walking",
+      "Music",
+      "Journaling"
+    ],
+    "voice_preference": "calm-female",
+    "notifications": {},
+    "theme": "light",
+    "streak": 46,
+    "wellness_score": 98,
+    "is_onboarded": true,
+    "is_email_verified": true,
+    "created_at": "2026-08-03T19:42:46.278844Z",
+    "updated_at": "2026-08-04T06:20:48.880216Z",
+    "username": "alex_student",
+    "email": "alex.student@gmail.com",
+    "predicted_mood": {
+      "predicted_mood": 5,
+      "confidence": 0.39,
+      "reasons": [
+        "Positive journaling expressions support wellness."
+      ]
+    }
+  },
+  "mood_history": [
+    {
+      "id": "ada0c25d-9cce-4e6f-9e1c-40ea804cc0b3",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-04",
+      "mood": 3,
+      "mood_label": "Good",
+      "stress": 1,
+      "energy": 6,
+      "sleep": "8.50",
+      "productivity": 5,
+      "social": 6,
+      "notes": "",
+      "created_at": "2026-08-03T19:49:31.549034Z",
+      "updated_at": "2026-08-03T19:49:31.549072Z"
+    },
+    {
+      "id": "d79e5b6e-7d75-4eb4-900e-47de7c23c7d5",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-03",
+      "mood": 5,
+      "mood_label": "Excellent",
+      "stress": 2,
+      "energy": 8,
+      "sleep": "8.20",
+      "productivity": 5,
+      "social": 9,
+      "notes": "Exams completed!",
+      "created_at": "2026-08-03T09:00:00Z",
+      "updated_at": "2026-08-03T09:00:00Z"
+    },
+    {
+      "id": "45af32a9-8d4c-4b22-af3d-301846cf6005",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-02",
+      "mood": 5,
+      "mood_label": "Excellent",
+      "stress": 2,
+      "energy": 8,
+      "sleep": "8.20",
+      "productivity": 5,
+      "social": 9,
+      "notes": "Exams completed!",
+      "created_at": "2026-08-02T09:00:00Z",
+      "updated_at": "2026-08-02T09:00:00Z"
+    }
+  ],
+  "journal_list": [
+    {
+      "id": "d063ccab-5fc5-483f-855d-ff559bb64f12",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-04T06:04:43.102386Z",
+      "text": "Rebuilding healthy daily routines.",
+      "is_voice": false,
+      "analysis": {
+        "themes": [
+          "Relaxation",
+          "School"
+        ],
+        "emotion": "Joy",
+        "sentiment": "Positive",
+        "confidence": 0.92,
+        "crisisStatus": "Safe"
+      },
+      "created_at": "2026-08-04T09:00:00Z",
+      "updated_at": "2026-08-04T09:00:00Z"
+    },
+    {
+      "id": "7332d010-5078-4215-acd1-722f3507d0d3",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-03T19:50:12.366132Z",
+      "text": "feeling happy\n\n",
+      "is_voice": false,
+      "analysis": {
+        "themes": [
+          "Personal Reflections"
+        ],
+        "emotion": "Happy",
+        "sentiment": "Positive",
+        "confidence": 0.95,
+        "crisisStatus": "Safe"
+      },
+      "created_at": "2026-08-03T19:50:12.366210Z",
+      "updated_at": "2026-08-03T19:51:53.237730Z"
+    },
+    {
+      "id": "bfb9aeca-1767-4bac-bd01-3d46c5f79369",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "date": "2026-08-03T19:42:46.662966Z",
+      "text": "Rebuilding healthy daily routines.",
+      "is_voice": false,
+      "analysis": {
+        "themes": [
+          "Relaxation",
+          "School"
+        ],
+        "emotion": "Joy",
+        "sentiment": "Positive",
+        "confidence": 0.92,
+        "crisisStatus": "Safe"
+      },
+      "created_at": "2026-08-03T09:00:00Z",
+      "updated_at": "2026-08-03T09:00:00Z"
+    }
+  ],
+  "activity_feedback": [
+    {
+      "id": "54125ef1-dfb3-4863-98d1-62e4db760fc6",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "activity": "act-33",
+      "date": "2026-08-04",
+      "duration_minutes": 10,
+      "satisfaction": 5,
+      "mood_improved": "Yes",
+      "created_at": "2026-08-04T09:00:00Z",
+      "updated_at": "2026-08-04T09:00:00Z"
+    },
+    {
+      "id": "aac5ed96-9c1d-44e7-a448-518c64fc9b5f",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "activity": "act-33",
+      "date": "2026-08-03",
+      "duration_minutes": 10,
+      "satisfaction": 5,
+      "mood_improved": "Yes",
+      "created_at": "2026-08-03T09:00:00Z",
+      "updated_at": "2026-08-03T09:00:00Z"
+    },
+    {
+      "id": "3e2845a6-21ab-466f-b8ba-174357d3d274",
+      "user": "6f67c08c-1598-4d80-840d-1513e4fc1949",
+      "activity": "act-33",
+      "date": "2026-08-02",
+      "duration_minutes": 10,
+      "satisfaction": 5,
+      "mood_improved": "Yes",
+      "created_at": "2026-08-02T09:00:00Z",
+      "updated_at": "2026-08-02T09:00:00Z"
+    }
+  ],
+  "recommendation": {
+    "status": "complete",
+    "confidence": 90,
+    "recommendation_score": 85,
+    "historical_matches": 3,
+    "previous_success_rate": "80%",
+    "reason": [
+      "Designed to support academic balance.",
+      "Matches stress state."
+    ],
+    "activity": {
+      "id": "act-33",
+      "title": "5-4-3-2-1 Grounding",
+      "category": "Grounding",
+      "duration": "5 min",
+      "difficulty": "Beginner",
+      "description": "Point out objects from each of your senses to anchor yourself in the present moment.\n\n---\n**Clinical Purpose:** Ground attention out of cognitive threat loops into safety of local environment.\n**Suitable Moods:** Panicked, Anxious, Disconnected\n**Suitable Mental Health Conditions:** Panic Attacks, Post-Traumatic Flashbacks\n**Scientific Benefits:** Rapidly reduces acute anxiety and stops derealization.\n**Contraindications/Precautions:** None.\n**Setting:** Both\n**Format:** Individual\n**Equipment Required:** None\n**Scientific Rationale:** Forcing sensory identification engages external perception systems, inhibiting worry loops.\n**Evidence Level:** Level 4",
+      "instructions": [
+        "Take a slow breath and look around you.",
+        "Identify 5 things you can see.",
+        "Identify 4 things you can physically feel.",
+        "Identify 3 things you can hear.",
+        "Identify 2 things you can smell.",
+        "Identify 1 thing you can taste."
+      ],
+      "created_at": "2026-07-25T08:00:06.277855Z",
+      "updated_at": "2026-08-04T06:05:09.589500Z",
+      "short_description": "Point out objects from each of your senses to anchor yourself in the present moment.",
+      "clinical_purpose": "Ground attention out of cognitive threat loops into safety of local environment.",
+      "scientific_benefits": "Rapidly reduces acute anxiety and stops derealization.",
+      "precautions": null,
+      "equipment": null,
+      "setting": "Both",
+      "format": "Individual",
+      "evidence_level": "Level 4",
+      "suitable_moods": "Panicked, Anxious, Disconnected",
+      "suitable_conditions": "Panic Attacks, Post-Traumatic Flashbacks"
+    }
+  },
+  "prediction": {
+    "predicted_mood": 5,
+    "confidence": 0.39,
+    "reasons": [
+      "Positive journaling expressions support wellness."
+    ]
+  },
+  "ai_insights": {
+    "weekly_summary": "Your mood has improved compared to last week, and sleep quality has increased to 7.7 hours. Your recent journals focus on School, Academic Stress with recurring feelings of Anxiety, Joy, suggesting these are your primary emotional triggers. Creating clear boundaries between studying and rest is recommended to prevent exam fatigue.",
+    "cognitive_distortions": [
+      "School",
+      "Academic Stress",
+      "Relaxation"
+    ],
+    "focus_areas": [
+      "Academic Balance"
+    ],
+    "average_mood_score": 2.97,
+    "average_stress_score": 5.23,
+    "data_completeness": "High",
+    "suggested_actions": [
+      "Physiological Sigh",
+      "Box Breathing",
+      "5-4-3-2-1 Grounding"
+    ],
+    "profile_state": "Improving Stability",
+    "supporting_habit": "consistent sleep: Maintaining regular sleep cycles averaging 7.7 hours.",
+    "recovery_spectrum": "Your average stress has reduced by 51% during the last two weeks.",
+    "primary_focus_area": "Academic Balance"
+  },
+  "insights_analytics": {
+    "summary": {
+      "averageMood": 3.3,
+      "averageStress": 4.5,
+      "averageSleep": 6.5,
+      "moodTrend": "Improving Stability"
+    },
+    "recoverySpectrum": "Your stress has reduced by 62% over the last two weeks.",
+    "moodTrends": [
+      {
+        "date": "Wed",
+        "mood": 2,
+        "stress": 9,
+        "sleep": 4.5,
+        "productivity": 6
+      },
+      {
+        "date": "Thu",
+        "mood": 5,
+        "stress": 2,
+        "sleep": 8.2,
+        "productivity": 5
+      },
+      {
+        "date": "Fri",
+        "mood": 5,
+        "stress": 2,
+        "sleep": 8.2,
+        "productivity": 5
+      },
+      {
+        "date": "Sat",
+        "mood": 5,
+        "stress": 2,
+        "sleep": 8.2,
+        "productivity": 5
+      },
+      {
+        "date": "Sun",
+        "mood": 5,
+        "stress": 2,
+        "sleep": 8.2,
+        "productivity": 5
+      },
+      {
+        "date": "Mon",
+        "mood": 5,
+        "stress": 2,
+        "sleep": 8.2,
+        "productivity": 5
+      },
+      {
+        "date": "Tue",
+        "mood": 3,
+        "stress": 1,
+        "sleep": 8.5,
+        "productivity": 5
+      }
+    ],
+    "cognitiveThemes": [
+      {
+        "theme": "Relaxation",
+        "value": 4
+      },
+      {
+        "theme": "School",
+        "value": 4
+      },
+      {
+        "theme": "Personal Reflections",
+        "value": 1
+      }
+    ]
+  },
+  "progress_track": {
+    "wellnessScore": 98,
+    "streak": 46,
+    "badges": [
+      {
+        "id": "onboarding",
+        "name": "Self Compassion",
+        "description": "Completed Onboarding Setup",
+        "unlocked": true
+      },
+      {
+        "id": "streak-5",
+        "name": "Consistency Champion",
+        "description": "Maintained a 5-day checkin streak",
+        "unlocked": true
+      },
+      {
+        "id": "journal-first",
+        "name": "Self-Expression",
+        "description": "Logged your first journal entry",
+        "unlocked": true
+      }
+    ],
+    "history": [
+      {
+        "week": "Week 1",
+        "score": 73
+      },
+      {
+        "week": "Week 2",
+        "score": 65
+      },
+      {
+        "week": "Week 3",
+        "score": 98
+      }
+    ]
+  }
+}

@@ -29,13 +29,10 @@ export const DailyCheckIn = () => {
         { value: 5, emoji: '🤩', label: 'Excellent', desc: 'Inspired, high energy' }
     ];
 
-    const getLocalDateString = (d = new Date()) => {
-        const offset = d.getTimezoneOffset();
-        const localDate = new Date(d.getTime() - (offset * 60 * 1000));
-        return localDate.toISOString().split('T')[0];
-    };
+    // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
+    const getUTCDateString = () => new Date().toISOString().split('T')[0];
 
-    const todayStr = getLocalDateString();
+    const todayStr = getUTCDateString();
     const todaysCheckin = checkins ? checkins.find(c => c.date === todayStr) : null;
 
     React.useEffect(() => {
@@ -67,15 +64,9 @@ export const DailyCheckIn = () => {
         setIsSubmitting(true);
         setError('');
 
-        const getLocalDateString = (d = new Date()) => {
-            const offset = d.getTimezoneOffset();
-            const localDate = new Date(d.getTime() - (offset * 60 * 1000));
-            return localDate.toISOString().split('T')[0];
-        };
-
         try {
             await addCheckin({
-                date: getLocalDateString(),
+                date: getUTCDateString(),
                 mood,
                 moodLabel: currentMoodObj.label,
                 stress,

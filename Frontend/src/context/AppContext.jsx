@@ -5,8 +5,8 @@ const AppContext = createContext(undefined);
 
 export const AppProvider = ({ children }) => {
     // Session State
-    const [token, setToken] = useState(() => localStorage.getItem('access_token') || null);
-    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || null);
+    const [token, setToken] = useState(() => localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || null);
+    const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token') || null);
     const [authLoading, setAuthLoading] = useState(true);
 
     // User Profile settings loaded from Django User profile object
@@ -31,9 +31,20 @@ export const AppProvider = ({ children }) => {
         is_email_verified: false
     });
 
-    const [isOnboarded, setIsOnboarded] = useState(false);
+    const [isOnboarded, setIsOnboarded] = useState(() => {
+        const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+        if (storedUser) {
+            try {
+                const parsed = JSON.parse(storedUser);
+                return parsed.profile?.is_onboarded || false;
+            } catch (e) {
+                return false;
+            }
+        }
+        return false;
+    });
     const [streak, setStreak] = useState(0);
-    const [wellnessScore, setWellnessScore] = useState(72);
+    const [wellnessScore, setWellnessScore] = useState(null);
 
     // Active state from DB
     const [checkins, setCheckins] = useState([]);
@@ -54,12 +65,9 @@ export const AppProvider = ({ children }) => {
     // Fetch user profile from Django backend
     const fetchUserProfile = useCallback(async () => {
         try {
-            const getLocalDateString = (d = new Date()) => {
-                const offset = d.getTimezoneOffset();
-                const localDate = new Date(d.getTime() - (offset * 60 * 1000));
-                return localDate.toISOString().split('T')[0];
-            };
-            const response = await profileAPI.get(getLocalDateString());
+            // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
+            const getUTCDateString = () => new Date().toISOString().split('T')[0];
+            const response = await profileAPI.get(getUTCDateString());
             const profileData = response.data;
 
             // Map backend fields to frontend camelCase formats
@@ -88,7 +96,7 @@ export const AppProvider = ({ children }) => {
 
             setIsOnboarded(profileData.is_onboarded || false);
             setStreak(profileData.streak || 0);
-            setWellnessScore(profileData.wellness_score || 72);
+            setWellnessScore(profileData.wellness_score !== undefined && profileData.wellness_score !== null ? profileData.wellness_score : null);
         } catch (error) {
             console.error('Failed to fetch user profile:', error);
         }
@@ -226,6 +234,9 @@ export const AppProvider = ({ children }) => {
                             name: parsed.username,
                             email: parsed.email,
                         }));
+                        if (parsed.profile) {
+                            setIsOnboarded(parsed.profile.is_onboarded || false);
+                        }
                     } catch (e) {
                         // invalid details
                     }

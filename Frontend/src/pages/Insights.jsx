@@ -196,13 +196,13 @@ export const Insights = () => {
                                                     className="text-primary dark:text-accent"
                                                     fill="transparent"
                                                     strokeDasharray={2 * Math.PI * 60}
-                                                    strokeDashoffset={2 * Math.PI * 60 * (1 - wellnessScore / 100)}
+                                                    strokeDashoffset={2 * Math.PI * 60 * (1 - (wellnessScore || 0) / 100)}
                                                     strokeLinecap="round"
                                                 />
                                             </svg>
                                             {/* Score Overlay */}
                                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                                <span className="text-2xl font-bold font-mono leading-none">{wellnessScore}%</span>
+                                                <span className="text-2xl font-bold font-mono leading-none">{wellnessScore !== null && wellnessScore !== undefined ? `${wellnessScore}%` : '--'}</span>
                                                 <span className="text-[9px] tracking-wider uppercase font-bold text-text-dark/50 dark:text-text-light/50 mt-1">WELLNESS STATUS</span>
                                             </div>
                                         </div>

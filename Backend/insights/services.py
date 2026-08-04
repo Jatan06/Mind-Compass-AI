@@ -105,81 +105,202 @@ class InsightsService:
         from activities.models import ActivityFeedback
         from django.db.models import Avg
 
+        # Query all records within the range
         logs = MoodLog.objects.filter(user=user, date__range=(start_date, end_date))
         journals = JournalEntry.objects.filter(user=user, created_at__date__range=(start_date, end_date))
         recs = Recommendation.objects.filter(user=user, created_at__date__range=(start_date, end_date))
         feedbacks = ActivityFeedback.objects.filter(user=user, created_at__date__range=(start_date, end_date))
 
-        # If no check-ins and no journals logged in this range, it means insufficient history
+        # Check if there is any data in this range
         if logs.count() == 0 and journals.count() == 0:
             return None
 
-        # 1. Mood average: (avg_mood - 1) / 4 * 100
-        avg_mood = logs.aggregate(Avg('mood'))['mood__avg']
-        mood_factor = ((avg_mood - 1.0) / 4.0 * 100.0) if avg_mood is not None else 60.0
+        # Calculate recency-weighted values (using exponential decay relative to end_date)
+        total_weight = 0.0
+        weighted_mood = 0.0
+        weighted_stress = 0.0
+        weighted_sleep = 0.0
+        weighted_energy = 0.0
+        weighted_prod = 0.0
 
-        # 2. Stress average: (10 - avg_stress) / 9 * 100
-        avg_stress = logs.aggregate(Avg('stress'))['stress__avg']
-        stress_factor = ((10.0 - avg_stress) / 9.0 * 100.0) if avg_stress is not None else 60.0
+        for log in logs:
+            diff_days = (end_date - log.date).days
+            if diff_days < 0:
+                diff_days = 0
+            weight = 0.92 ** diff_days
+            
+            total_weight += weight
+            weighted_mood += weight * ((log.mood - 1.0) / 4.0 * 100.0)
+            weighted_stress += weight * ((10.0 - log.stress) / 10.0 * 100.0)
+            weighted_sleep += weight * min(100.0, float(log.sleep) / 8.0 * 100.0)
+            weighted_energy += weight * (log.energy / 10.0 * 100.0)
+            weighted_prod += weight * (log.productivity / 10.0 * 100.0)
 
-        # 3. Sleep average: min(100.0, avg_sleep / 8.0 * 100)
-        avg_sleep = logs.aggregate(Avg('sleep'))['sleep__avg']
-        sleep_factor = (min(100.0, float(avg_sleep) / 8.0 * 100.0)) if avg_sleep is not None else 75.0
+        # Journal sentiment calculations
+        total_j_weight = 0.0
+        weighted_sentiment = 0.0
+        for entry in journals:
+            diff_days = (end_date - entry.created_at.date()).days
+            if diff_days < 0:
+                diff_days = 0
+            weight = 0.92 ** diff_days
+            
+            sentiment_str = entry.analysis.get("sentiment", "Neutral")
+            if sentiment_str == "Positive":
+                sent_val = 100.0
+            elif sentiment_str == "Negative":
+                sent_val = 15.0
+            else:
+                sent_val = 55.0
+            
+            total_j_weight += weight
+            weighted_sentiment += weight * sent_val
 
-        # 4. Energy average: (avg_energy - 1) / 4 * 100
-        avg_energy = logs.aggregate(Avg('energy'))['energy__avg']
-        energy_factor = ((avg_energy - 1.0) / 4.0 * 100.0) if avg_energy is not None else 60.0
+        # Recommendation completion
+        total_recs_weight = 0.0
+        completed_recs_weight = 0.0
+        for rec in recs:
+            diff_days = (end_date - rec.created_at.date()).days
+            if diff_days < 0:
+                diff_days = 0
+            weight = 0.92 ** diff_days
+            
+            total_recs_weight += weight
+            if rec.completed:
+                completed_recs_weight += weight
 
-        # 5. Productivity average: (avg_productivity - 1) / 4 * 100
-        avg_productivity = logs.aggregate(Avg('productivity'))['productivity__avg']
-        prod_factor = ((avg_productivity - 1.0) / 4.0 * 100.0) if avg_productivity is not None else 60.0
+        # Feedbacks
+        total_feed_weight = 0.0
+        weighted_sat = 0.0
+        for fb in feedbacks:
+            diff_days = (end_date - fb.created_at.date()).days
+            if diff_days < 0:
+                diff_days = 0
+            weight = 0.92 ** diff_days
+            
+            total_feed_weight += weight
+            weighted_sat += weight * (float(fb.satisfaction) / 5.0 * 100.0)
 
-        # 6. Check-in consistency: (num_check_ins / 7.0) * 100
-        checkin_consistency = (logs.count() / 7.0) * 100.0
+        # Dynamically build the available factors
+        available_factors = {}
+        default_weights = {
+            "mood": 0.25,
+            "stress": 0.20,
+            "sleep": 0.15,
+            "energy": 0.10,
+            "productivity": 0.10,
+            "sentiment": 0.10,
+            "completion": 0.05,
+            "feedback": 0.05
+        }
 
-        # 7. Journal consistency: (num_journals / 7.0) * 100
-        journal_consistency = (journals.count() / 7.0) * 100.0
+        if total_weight > 0.0:
+            available_factors["mood"] = weighted_mood / total_weight
+            available_factors["stress"] = weighted_stress / total_weight
+            available_factors["sleep"] = weighted_sleep / total_weight
+            available_factors["energy"] = weighted_energy / total_weight
+            available_factors["productivity"] = weighted_prod / total_weight
 
-        # 8. Activity completion rate: completed_recs / total_recs * 100
-        total_recs = recs.count()
-        completed_recs = recs.filter(completed=True).count()
-        completion_factor = (completed_recs / total_recs * 100.0) if total_recs > 0 else 80.0
+        if total_j_weight > 0.0:
+            available_factors["sentiment"] = weighted_sentiment / total_j_weight
 
-        # 9. Recommendation feedback satisfaction: (avg_satisfaction / 5) * 100
-        avg_sat = feedbacks.aggregate(Avg('satisfaction'))['satisfaction__avg']
-        feedback_factor = (float(avg_sat) / 5.0 * 100.0) if avg_sat is not None else 80.0
+        if total_recs_weight > 0.0:
+            available_factors["completion"] = (completed_recs_weight / total_recs_weight) * 100.0
 
-        # Calculate final weighted score
-        calculated_wellness = (
-            mood_factor * 0.20 +
-            stress_factor * 0.15 +
-            sleep_factor * 0.15 +
-            energy_factor * 0.10 +
-            prod_factor * 0.10 +
-            checkin_consistency * 0.10 +
-            journal_consistency * 0.10 +
-            completion_factor * 0.05 +
-            feedback_factor * 0.05
-        )
-        return int(max(10, min(100, calculated_wellness)))
+        if total_feed_weight > 0.0:
+            available_factors["feedback"] = weighted_sat / total_feed_weight
+
+        if not available_factors:
+            return None
+
+        # Normalize weights
+        total_avail_weight = sum(default_weights[f] for f in available_factors.keys())
+        base_score = 0.0
+        for f, val in available_factors.items():
+            norm_w = default_weights[f] / total_avail_weight
+            base_score += val * norm_w
+
+        # --- Trends, Trajectory and Bonuses ---
+        bonus = 0.0
+
+        # 1. Recent mood & stress trends (comparing last half of logs to first half in this range)
+        log_list = list(logs.order_by('date'))
+        if len(log_list) >= 4:
+            mid = len(log_list) // 2
+            recent_logs = log_list[mid:]
+            older_logs = log_list[:mid]
+            
+            recent_avg_mood = sum(l.mood for l in recent_logs) / len(recent_logs)
+            older_avg_mood = sum(l.mood for l in older_logs) / len(older_logs)
+            mood_delta = recent_avg_mood - older_avg_mood
+            # mood delta is between -4 and +4. Scale appropriately.
+            bonus += mood_delta * 4.0
+
+            recent_avg_stress = sum(l.stress for l in recent_logs) / len(recent_logs)
+            older_avg_stress = sum(l.stress for l in older_logs) / len(older_logs)
+            stress_delta = older_avg_stress - recent_avg_stress # positive means stress decreased
+            bonus += stress_delta * 2.0
+
+        # 2. Consistency / streak
+        from mood.services import MoodService
+        profile = getattr(user, 'profile', None)
+        streak = getattr(profile, 'streak', 0) if profile else 0
+        if streak > 0 and end_date >= timezone.localdate() - timezone.timedelta(days=2):
+            bonus += min(10.0, float(streak) * 1.5)
+
+        # 3. Crisis Alert Penalty
+        try:
+            from core.models import CrisisAlert
+            has_crisis = CrisisAlert.objects.filter(
+                user=user, 
+                created_at__date__range=(start_date, end_date)
+            ).exists()
+            if has_crisis:
+                bonus -= 20.0
+        except Exception:
+            pass
+
+        final_score = int(max(10, min(100, base_score + bonus)))
+        return final_score
 
     @classmethod
     def get_user_progress(cls, user, today=None):
         from journal.models import JournalEntry
+        from mood.models import MoodLog
 
         # Resolve date
         today_date = today or timezone.localdate()
 
+        # Get profile safely to avoid RelatedObjectDoesNotExist
+        from users.models import UserProfile
+        profile, _ = UserProfile.objects.get_or_create(user=user)
+
+        # Check if the user is a brand new user with no logs or journals whatsoever
+        if not MoodLog.objects.filter(user=user).exists() and not JournalEntry.objects.filter(user=user).exists():
+            if profile.wellness_score is not None:
+                profile.wellness_score = None
+                profile.save()
+
+            return {
+                "has_wellness_score": False,
+                "wellnessScore": None,
+                "message": "Complete your first check-in to generate your Wellness Score.",
+                "streak": 0,
+                "badges": [
+                    {"id": "onboarding", "name": "Self Compassion", "description": "Completed Onboarding Setup", "unlocked": getattr(profile, 'is_onboarded', False)},
+                    {"id": "streak-5", "name": "Consistency Champion", "description": "Maintained a 5-day checkin streak", "unlocked": False},
+                    {"id": "journal-first", "name": "Self-Expression", "description": "Logged your first journal entry", "unlocked": False}
+                ],
+                "history": []
+            }
+
         # Define 3 weekly ranges (Week 1, Week 2, Week 3)
-        # Week 3: today_date - 6 days to today_date (latest week)
         w3_end = today_date
         w3_start = today_date - timezone.timedelta(days=6)
 
-        # Week 2: today_date - 13 days to today_date - 7 days
         w2_end = today_date - timezone.timedelta(days=7)
         w2_start = today_date - timezone.timedelta(days=13)
 
-        # Week 1: today_date - 20 days to today_date - 14 days
         w1_end = today_date - timezone.timedelta(days=14)
         w1_start = today_date - timezone.timedelta(days=20)
 
@@ -188,11 +309,18 @@ class InsightsService:
         score_w2 = cls._calculate_wellness_for_range(user, w2_start, w2_end)
         score_w1 = cls._calculate_wellness_for_range(user, w1_start, w1_end)
 
-        # Current wellness score is based on the latest week (Week 3)
-        wellness_score = score_w3 if score_w3 is not None else 60
+        # Current wellness score is based on the latest week (Week 3), falling back to earlier weeks or larger ranges if needed
+        if score_w3 is not None:
+            wellness_score = score_w3
+        elif score_w2 is not None:
+            wellness_score = score_w2
+        elif score_w1 is not None:
+            wellness_score = score_w1
+        else:
+            # Fall back to 30 days
+            wellness_score = cls._calculate_wellness_for_range(user, today_date - timezone.timedelta(days=30), today_date)
 
         try:
-            profile = user.profile
             from mood.services import MoodService
             profile.streak = MoodService.calculate_streak(user, today=today_date)
             profile.wellness_score = wellness_score
@@ -203,7 +331,7 @@ class InsightsService:
 
         # Construct progress metrics page details
         badges = [
-            {"id": "onboarding", "name": "Self Compassion", "description": "Completed Onboarding Setup", "unlocked": getattr(user.profile, 'is_onboarded', False)},
+            {"id": "onboarding", "name": "Self Compassion", "description": "Completed Onboarding Setup", "unlocked": getattr(profile, 'is_onboarded', False)},
             {"id": "streak-5", "name": "Consistency Champion", "description": "Maintained a 5-day checkin streak", "unlocked": streak >= 5},
             {"id": "journal-first", "name": "Self-Expression", "description": "Logged your first journal entry", "unlocked": JournalEntry.objects.filter(user=user).exists()}
         ]
@@ -218,7 +346,9 @@ class InsightsService:
             history.append({"week": "Week 3", "score": score_w3})
 
         return {
+            "has_wellness_score": True,
             "wellnessScore": wellness_score,
+            "message": "Wellness Score calculated successfully.",
             "streak": streak,
             "badges": badges,
             "history": history

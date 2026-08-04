@@ -16,15 +16,17 @@ class ProfileView(APIView):
         client_today = parse_date(today_str) if today_str else None
         
         from mood.services import MoodService
-        from ml.services.mood_predictor import MoodPredictorService
+        from ai.prediction.services import MoodPredictionService
+        from insights.services import InsightsService
 
-        profile.streak = MoodService.calculate_streak(request.user, today=client_today)
-        profile.save()
+        # Recalculate wellness score and streak dynamically
+        InsightsService.get_user_progress(request.user, today=client_today)
+        profile.refresh_from_db()
 
         data = UserProfileSerializer(profile).data
         data["username"] = request.user.username
         data["email"] = request.user.email
-        data["predicted_mood"] = MoodPredictorService.predict_next_day_mood(request.user)
+        data["predicted_mood"] = MoodPredictionService.predict(request.user)
         return Response(data, status=status.HTTP_200_OK)
 
     def put(self, request):

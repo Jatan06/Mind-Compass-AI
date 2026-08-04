@@ -32,9 +32,18 @@ class CrisisResponseSerializer(serializers.Serializer):
     reason = serializers.CharField()
 
 class MoodPredictionResponseSerializer(serializers.Serializer):
-    predicted_mood = serializers.IntegerField()
-    confidence = serializers.FloatField()
-    reasons = serializers.ListField(child=serializers.CharField())
+    has_prediction = serializers.BooleanField()
+    stage = serializers.IntegerField()
+    predicted_mood = serializers.IntegerField(allow_null=True, required=False)
+    mood_label = serializers.CharField(allow_null=True, required=False)
+    confidence = serializers.FloatField(allow_null=True, required=False)
+    confidence_label = serializers.CharField(allow_null=True, required=False)
+    why = serializers.CharField(allow_null=True, required=False)
+    evidence = serializers.ListField(child=serializers.DictField(), allow_null=True, required=False)
+    risk_factors = serializers.ListField(child=serializers.CharField(), allow_null=True, required=False)
+    protective_factors = serializers.ListField(child=serializers.CharField(), allow_null=True, required=False)
+    message = serializers.CharField()
+
 
 class AIInsightsResponseSerializer(serializers.Serializer):
     weekly_summary = serializers.CharField()
