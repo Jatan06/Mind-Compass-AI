@@ -205,6 +205,48 @@ class AuthService:
         return user, tokens
 
     @classmethod
+    def _dispatch_email(cls, subject, plain_message, html_message, recipient_email):
+        resend_api_key = os.getenv('RESEND_API_KEY')
+        if resend_api_key:
+            try:
+                import requests
+                from_addr = os.getenv('RESEND_FROM_EMAIL', 'MindCompass <onboarding@resend.dev>')
+                res = requests.post(
+                    "https://api.resend.com/emails",
+                    headers={
+                        "Authorization": f"Bearer {resend_api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "from": from_addr,
+                        "to": [recipient_email],
+                        "subject": subject,
+                        "text": plain_message,
+                        "html": html_message,
+                    },
+                    timeout=10
+                )
+                if res.status_code in [200, 201]:
+                    print(f"[MAIL SUCCESS] Resend HTTPS API email dispatched to {recipient_email}")
+                    return True
+                else:
+                    print(f"[MAIL RESEND ERROR] Resend API returned {res.status_code}: {res.text}")
+            except Exception as resend_err:
+                print(f"[MAIL RESEND EXCEPTION] {resend_err}")
+
+        # Fallback to standard Django SMTP send_mail
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            html_message=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[recipient_email],
+            fail_silently=False,
+        )
+        print(f"[MAIL SUCCESS] SMTP email dispatched to {recipient_email}")
+        return True
+
+    @classmethod
     def send_verification_email(cls, user):
         """
         Generates a secure 32-byte URL verification token and dispatches an actual HTML verification email
@@ -289,19 +331,11 @@ class AuthService:
             </div>
             """
             
-            # Send email via SMTP (using settings from .env)
-            send_mail(
-                subject=subject,
-                message=plain_message,
-                html_message=html_message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            print(f"[MAIL SUCCESS] Real verification email dispatched to {user.email}")
+            # Dispatch via HTTPS Resend API if RESEND_API_KEY is present, or fallback to SMTP
+            cls._dispatch_email(subject, plain_message, html_message, user.email)
         except Exception as mail_err:
-            # Handle potential SMTP connection errors gracefully without breaking user registration record
-            print(f"[MAIL ERROR] Failed to send SMTP email to {user.email}: {mail_err}")
+            # Handle potential connection errors gracefully without breaking user registration record
+            print(f"[MAIL ERROR] Failed to send email to {user.email}: {mail_err}")
         
         log_security_event("EMAIL_VERIFICATION_SENT", user.id, f"Verification code generated and email dispatched.")
         return verification_token
@@ -388,17 +422,9 @@ class AuthService:
             </div>
             """
             
-            send_mail(
-                subject=subject,
-                message=plain_message,
-                html_message=html_message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            print(f"[MAIL SUCCESS] Real OTP email dispatched to {user.email}")
+            cls._dispatch_email(subject, plain_message, html_message, user.email)
         except Exception as mail_err:
-            print(f"[MAIL ERROR] Failed to deliver SMTP email to {user.email}: {mail_err}")
+            print(f"[MAIL ERROR] Failed to deliver email to {user.email}: {mail_err}")
 
         log_security_event("PASSWORD_RESET_OTP_SENT", user.id, f"Issued 6-digit password reset OTP: {otp_code}")
         
