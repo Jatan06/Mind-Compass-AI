@@ -15,7 +15,9 @@ import { Wellness } from './pages/Wellness';
 import { Insights } from './pages/Insights';
 import { Profile } from './pages/Profile';
 import { OnboardingAssessment } from './pages/OnboardingAssessment';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { AppProvider } from './context/AppContext';
+
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -60,7 +62,13 @@ function App() {
                         <Route path="wellness" element={<Wellness />} />
                         <Route path="insights" element={<Insights />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="*" element={<NotFoundPage />} />
                     </Route>
+                    {/* Catch-all 404 for root layout */}
+                    <Route path="*" element={<Layout />}>
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Route>
+
 
                 </Routes>
             </Router>
