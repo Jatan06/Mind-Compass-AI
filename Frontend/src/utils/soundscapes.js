@@ -198,6 +198,7 @@ class CategorySoundEngine {
 
     stop() {
         this.isPlaying = false;
+        this.currentSoundscape = null;
         this._timers.forEach(id => {
             try { clearInterval(id); } catch (_) { }
             try { clearTimeout(id); } catch (_) { }
@@ -225,12 +226,16 @@ class CategorySoundEngine {
 
     async restart(soundscape, durationSeconds = 300) {
         this.stop();
-        Tone.Transport.stop();
-        Tone.Transport.position = 0;
+        try {
+            Tone.Transport.stop();
+            Tone.Transport.position = 0;
+            Tone.Transport.cancel(0);
+        } catch (_) { }
         await this.play(soundscape, durationSeconds);
     }
 
     async play(soundscape, durationSeconds = 300) {
+
         await this._ensureStarted();
         this.stop();
 
@@ -238,8 +243,9 @@ class CategorySoundEngine {
         this.currentSoundscape = sound;
         this.isPlaying = true;
 
-        this.masterVol = this._reg(new Tone.Volume(this._linToDB(this.volume)).toDestination());
+        this.masterVol = this._reg(new Tone.Volume(this.isMuted ? -Infinity : this._linToDB(this.volume)).toDestination());
         Tone.Transport.start();
+
 
 
         switch (sound.soundType) {

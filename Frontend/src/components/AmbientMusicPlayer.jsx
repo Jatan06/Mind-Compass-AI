@@ -24,19 +24,22 @@ export const AmbientMusicPlayer = ({
         const wasRunning = prevRunningRef.current;
         prevRunningRef.current = isTimerRunning;
 
-        if (isTimerRunning && !wasRunning) {
-            // Timer was resumed or started
-            if (audioEngine.currentSoundscape?.id === soundscape.id && audioEngine.masterVol) {
-                audioEngine.resume();
-            } else {
-                setIsLoaded(false);
-                audioEngine.play(soundscape, durationSeconds).then(() => setIsLoaded(true));
+        if (isTimerRunning) {
+            if (!wasRunning) {
+                // Initial start or resume from pause
+                if (audioEngine.currentSoundscape?.id === soundscape.id && audioEngine.masterVol) {
+                    audioEngine.resume();
+                } else {
+                    setIsLoaded(false);
+                    audioEngine.play(soundscape, durationSeconds).then(() => setIsLoaded(true));
+                }
             }
         } else if (!isTimerRunning && wasRunning) {
             // Timer was paused
             audioEngine.pause();
         }
     }, [isTimerRunning]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
 
     // Clean up on unmount
