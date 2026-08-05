@@ -16032,3 +16032,4 @@ INFO 2026-08-05 01:12:16,294 log 8748 25720 "GET /api/profile/?today=2026-08-04 
 INFO 2026-08-05 01:12:19,446 log 8748 15792 "GET /api/ai/insights/ HTTP/1.1" 200 900
 INFO 2026-08-05 01:12:30,837 log 8748 25720 "GET /api/profile/?today=2026-08-04 HTTP/1.1" 200 593
 INFO 2026-08-05 01:12:36,313 log 8748 15792 "GET /api/ai/insights/ HTTP/1.1" 200 900
+INFO 2026-08-05 01:33:18,699 autoreload 30156 340 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\config\settings.py changed, reloading.
