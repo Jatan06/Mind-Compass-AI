@@ -1,9 +1,11 @@
 import logging
 from datetime import timedelta
 import secrets
+import os
 import random
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, ValidationError as DjangoValidationError
+from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -282,7 +284,6 @@ class AuthService:
         
         # Step 5: Dispatch real email using Django's core send_mail function
         try:
-            from django.core.mail import send_mail
             subject = "MindCompass AI - Confirm Your Email Address"
             
             # Plain-text alternative message body for clients without HTML support
@@ -395,7 +396,6 @@ class AuthService:
         
         # Dispatch real email via Django send_mail (uses configured EMAIL_BACKEND / SMTP)
         try:
-            from django.core.mail import send_mail
             subject = "MindCompass - Password Reset Verification Code"
             
             plain_message = (
