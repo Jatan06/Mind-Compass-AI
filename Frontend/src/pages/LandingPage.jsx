@@ -1,3 +1,18 @@
+/**
+ * LandingPage Component
+ * 
+ * What is it?
+ * The main public landing page and entry point for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Introduces unauthenticated visitors to the MindCompass AI mental wellness platform.
+ * 2. Auto-redirects logged-in users directly to the main dashboard (/app).
+ * 3. Supports smooth scrolling to specific sections when requested via URL hash fragments (#features, #how-it-works, etc.).
+ * 4. Highlights key app features: Mood Tracking, Voice Journaling, AI Analysis, Mood Prediction, and Guidance.
+ * 5. Explains the step-by-step user journey, mission statement/ethos, customer testimonials, and FAQs.
+ * 6. Provides calls-to-action (CTAs) directing users to register or log in.
+ */
+
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -23,13 +38,14 @@ export const LandingPage = () => {
     const location = useLocation();
     const { token } = useApp();
 
-    // Auto-redirect authenticated users directly to /app when visiting root landing page
+    // Effect: Auto-redirect authenticated users to the main dashboard if they visit the root landing page
     useEffect(() => {
         if (token && !location.hash) {
             navigate('/app', { replace: true });
         }
     }, [token, location, navigate]);
 
+    // Effect: Smoothly scroll to section anchor tags (e.g., #features, #how-it-works) if specified in the URL hash
     useEffect(() => {
         if (location.hash) {
             const targetId = location.hash.replace('#', '');
@@ -42,6 +58,7 @@ export const LandingPage = () => {
         }
     }, [location]);
 
+    // Feature set highlighting key capabilities of the MindCompass AI platform
     const features = [
         {
             title: 'Mood Tracking',
@@ -75,6 +92,7 @@ export const LandingPage = () => {
         },
     ];
 
+    // Four-step user onboarding flow explaining how users interact with the app
     const steps = [
         {
             number: '01',
@@ -98,6 +116,7 @@ export const LandingPage = () => {
         },
     ];
 
+    // Social proof and testimonials from active users and professionals
     const testimonials = [
         {
             quote: 'MindCompass completely changed how I look at journaling. The voice feature makes reflecting at the end of a long day feel like a conversation with an old friend.',
@@ -119,6 +138,7 @@ export const LandingPage = () => {
         },
     ];
 
+    // Frequently Asked Questions addressing privacy, technical details, and product scope
     const faqs = [
         {
             question: 'Is my mental health data private and secure?',
@@ -140,10 +160,10 @@ export const LandingPage = () => {
 
     return (
         <PageTransition>
-            {/* Hero Section */}
+            {/* 1. HERO SECTION: Main value proposition, primary call to action, and interactive hero illustration */}
             <section id="hero" className="relative min-h-[90vh] flex items-center pt-8 md:pt-12 pb-16 md:pb-24 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    {/* Hero Content */}
+                    {/* Hero Text Content & Action Buttons */}
                     <div className="lg:col-span-7 text-left space-y-6 md:space-y-8 z-10">
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
@@ -186,7 +206,7 @@ export const LandingPage = () => {
                         </div>
                     </div>
 
-                    {/* Hero Illustration */}
+                    {/* Hero Graphic / Animated Visual */}
                     <div className="lg:col-span-5 flex justify-center items-center relative select-none">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -194,7 +214,7 @@ export const LandingPage = () => {
                             transition={{ delay: 0.2, duration: 0.6 }}
                             className="w-full relative"
                         >
-                            {/* Blur background dots to make illustration soft */}
+                            {/* Ambient background glow effects */}
                             <div className="absolute top-1/4 left-1/4 w-48 h-48 rounded-full bg-accent/25 dark:bg-accent/5 filter blur-3xl" />
                             <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full bg-secondary/20 dark:bg-secondary/5 filter blur-3xl" />
                             <HeroIllustration />
@@ -203,7 +223,7 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Features Section */}
+            {/* 2. FEATURES SECTION: Grid detailing core application functionalities */}
             <section id="features" className="py-20 md:py-28 bg-bg-light/50 dark:bg-bg-dark/20 border-t border-b border-secondary/10 dark:border-secondary/5 transition-all">
                 <div className="max-w-7xl mx-auto px-6 md:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24 space-y-4">
@@ -231,7 +251,7 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* How It Works Section */}
+            {/* 3. HOW IT WORKS SECTION: Step-by-step user onboarding flow */}
             <section id="how-it-works" className="py-20 md:py-28">
                 <div className="max-w-7xl mx-auto px-6 md:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24 space-y-4">
@@ -252,7 +272,7 @@ export const LandingPage = () => {
                                 key={idx}
                                 className="relative bg-card-light dark:bg-card-dark p-8 rounded-3xl border border-secondary/15 dark:border-secondary/5 flex flex-col text-left space-y-4 shadow-sm hover:shadow"
                             >
-                                {/* Step number watermark */}
+                                {/* Step number background watermark */}
                                 <div className="text-4xl md:text-5xl font-bold text-secondary/20 dark:text-secondary/10 absolute top-6 right-6">
                                     {step.number}
                                 </div>
@@ -274,7 +294,7 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* About Section */}
+            {/* 4. ABOUT / ETHOS SECTION: Mission statement and privacy/wellbeing focus */}
             <section id="about" className="py-20 md:py-28 bg-primary text-bg-light rounded-[2.5rem] mx-6 md:mx-8 mb-24 overflow-hidden relative shadow-lg">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary/10 dark:bg-accent/5 rounded-full filter blur-3xl pointer-events-none" />
                 <div className="max-w-5xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-left relative z-10">
@@ -303,7 +323,7 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Testimonials Section */}
+            {/* 5. TESTIMONIALS SECTION: Quotes from users and health professionals */}
             <section className="py-20 md:py-28 bg-bg-light/50 dark:bg-bg-dark/20 border-t border-b border-secondary/10 dark:border-secondary/5 transition-all mb-8">
                 <div className="max-w-7xl mx-auto px-6 md:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20 space-y-4">
@@ -351,7 +371,7 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* FAQ Section */}
+            {/* 6. FAQ SECTION: Accordion component answering key questions */}
             <section id="faq" className="py-20 md:py-28 max-w-4xl mx-auto px-6 md:px-8">
                 <div className="text-center mb-16 md:mb-20 space-y-4">
                     <h2 className="text-xs uppercase tracking-[0.2em] text-secondary dark:text-secondary-hover font-semibold">
@@ -368,7 +388,7 @@ export const LandingPage = () => {
                 <Accordion items={faqs} />
             </section>
 
-            {/* Final Call to Action */}
+            {/* 7. CALL TO ACTION SECTION: Final banner encouraging visitor registration */}
             <section className="py-16 md:py-24 text-center bg-accent/20 dark:bg-secondary/5 border-t border-secondary/10 dark:border-secondary/5">
                 <div className="max-w-4xl mx-auto px-6 md:px-8 space-y-6 md:space-y-8">
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-text-dark dark:text-text-light">
@@ -392,3 +412,4 @@ export const LandingPage = () => {
         </PageTransition>
     );
 };
+

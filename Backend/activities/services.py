@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from .models import TherapyActivity, ActivityFeedback
 
 class ActivityService:
@@ -9,7 +10,7 @@ class ActivityService:
     def get_activity(activity_id):
         try:
             return TherapyActivity.objects.get(id=activity_id)
-        except TherapyActivity.DoesNotExist:
+        except ObjectDoesNotExist:
             return None
 
     @staticmethod

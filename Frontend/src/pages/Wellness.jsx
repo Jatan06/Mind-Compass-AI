@@ -74,6 +74,8 @@ export const Wellness = () => {
     // Timer States
     const [timeLeft, setTimeLeft] = useState(0);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
+    const [resetKey, setResetKey] = useState(0);
+
 
     // Feedback States
     const [satisfaction, setSatisfaction] = useState(5);
@@ -189,12 +191,11 @@ export const Wellness = () => {
         setTimeLeft(durSecs);
         setIsTimerRunning(true);
         setActiveView('details');
-        // Play category-specific ambient sound for the exact session duration
-        const soundscape = getSoundscapeForCategory(activity.category);
-        audioEngine.play(soundscape, durSecs);
+        setResetKey(prev => prev + 1);
         // Enter fullscreen + request wake lock (triggered by user click — always succeeds)
         enterFullscreen();
     };
+
 
     useEffect(() => {
         if (activeView !== 'details') return;
@@ -223,10 +224,19 @@ export const Wellness = () => {
     };
 
     const handleTimerReset = () => {
-        setIsTimerRunning(false);
         const mins = getDurationNum(selectedActivity.duration) || 5;
-        setTimeLeft(mins * 60);
+        const durSecs = mins * 60;
+        setTimeLeft(durSecs);
+        setIsTimerRunning(true);
+        setResetKey(prev => prev + 1);
+        // Force restart music completely from 00:00
+        const soundscape = getSoundscapeForCategory(selectedActivity.category);
+        audioEngine.restart(soundscape, durSecs);
     };
+
+
+
+
 
     const handleSkipTimer = () => {
         setIsTimerRunning(false);
@@ -495,10 +505,12 @@ export const Wellness = () => {
 
                             {/* Background Ambient Music — plays for the exact timer duration */}
                             <AmbientMusicPlayer
+                                key={resetKey}
                                 category={selectedActivity.category}
                                 isTimerRunning={isTimerRunning}
                                 durationSeconds={(getDurationNum(selectedActivity.duration) || 5) * 60}
                             />
+
 
                             {/* Interactive HUD Circle Timer */}
                             <div className="py-6 flex flex-col items-center justify-center">
@@ -618,8 +630,25 @@ export const Wellness = () => {
                             exit={{ opacity: 0, scale: 0.98 }}
                             className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-xl mx-auto w-full space-y-6"
                         >
-                            {/* Close button — top right */}
-                            <div className="flex justify-end">
+                            {/* Header controls: Back Arrow — top left, Close button — top right */}
+                            <div className="flex items-center justify-between">
+                                <button
+                                    onClick={() => {
+                                        // Resume/restart active activity view
+                                        setActiveView('details');
+                                        const mins = getDurationNum(selectedActivity.duration) || 5;
+                                        const durSecs = mins * 60;
+                                        setTimeLeft(durSecs);
+                                        setIsTimerRunning(true);
+                                        enterFullscreen();
+                                        setResetKey(prev => prev + 1);
+                                    }}
+                                    title="Back to session"
+                                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-secondary/10 dark:bg-secondary/5 hover:bg-secondary/20 dark:hover:bg-secondary/10 text-xs font-semibold text-text-dark dark:text-text-light transition-all cursor-pointer"
+                                >
+                                    <FiArrowLeft className="w-4 h-4" />
+                                    <span>Back to Session</span>
+                                </button>
                                 <button
                                     onClick={() => {
                                         audioEngine.stop();
@@ -633,6 +662,7 @@ export const Wellness = () => {
                                     <FiX className="w-5 h-5" />
                                 </button>
                             </div>
+
 
                             <div className="text-center space-y-2">
                                 <div className="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2">

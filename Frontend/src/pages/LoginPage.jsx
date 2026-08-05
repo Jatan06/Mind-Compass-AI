@@ -1,3 +1,20 @@
+/**
+ * LoginPage Component
+ * 
+ * What is it?
+ * The user authentication and account recovery page component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Checks session authentication; auto-redirects logged-in users directly to `/app`.
+ * 2. Supports standard email/password authentication with optional "Remember Me" local storage persistence.
+ * 3. Integrates Google OAuth 2.0 social login via `@react-oauth/google` (`useGoogleLogin`).
+ * 4. Provides a full 3-step OTP-based Password Recovery workflow:
+ *    - Step 1: Submits account email to dispatch a 6-digit verification OTP code.
+ *    - Step 2: Renders a 6-digit OTP input form with auto-focus movement, clipboard paste support, and a 60-second resend countdown timer.
+ *    - Step 3: Sets a new account password and updates credentials on the backend.
+ * 5. Animated view switches between Login and Recovery modes using Framer Motion.
+ */
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,16 +38,17 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { login, googleLogin, token } = useApp();
 
-  // If user is already authenticated (token exists in localStorage), auto-redirect to app
+  // Effect: Auto-redirect authenticated users directly to dashboard if token exists
   useEffect(() => {
     if (token) {
       navigate("/app", { replace: true });
     }
   }, [token, navigate]);
 
-  const [mode, setMode] = useState("login"); // 'login' or 'forgot'
+  // Mode state: 'login' for standard authentication, 'forgot' for password recovery
+  const [mode, setMode] = useState("login");
 
-  // Login form fields
+  // Login form field states (hydrates remembered_email if previously saved)
   const [email, setEmail] = useState(() => {
     return localStorage.getItem('remembered_email') || '';
   });
@@ -40,19 +58,21 @@ export const LoginPage = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  // Forgot form fields
+  // Forgot password form email state
   const [forgotEmail, setForgotEmail] = useState("");
 
-  // Error states
+  // Error and feedback alert states
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [forgotEmailError, setForgotEmailError] = useState("");
   const [formError, setFormError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Loading state indicators for standard and Google authentication dispatches
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
+  // Input validation helpers
   const validateEmail = (val) => {
     if (!val) {
       setEmailError("Email address is required");
@@ -90,6 +110,7 @@ export const LoginPage = () => {
     return true;
   };
 
+  // Handles email & password login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
@@ -109,7 +130,6 @@ export const LoginPage = () => {
         } else {
           localStorage.removeItem('remembered_email');
         }
-        // login handles caching context token based on rememberMe flag
         await login(cleanEmail, password, rememberMe);
         setIsLoading(false);
         navigate("/app");
@@ -134,8 +154,8 @@ export const LoginPage = () => {
     }
   };
 
-  // Forgot / OTP recovery fields
-  const [forgotStep, setForgotStep] = useState(1); // 1: Email, 2: 6-Digit OTP, 3: New Password
+  // 3-Step Password Recovery states (1: Send Email, 2: Enter 6-digit OTP, 3: Set New Password)
+  const [forgotStep, setForgotStep] = useState(1);
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -144,7 +164,7 @@ export const LoginPage = () => {
   const [newPasswordError, setNewPasswordError] = useState("");
   const [resendTimer, setResendTimer] = useState(0);
 
-  // Timer countdown effect for OTP resend
+  // Effect: 60-second resend countdown timer for OTP dispatch
   useEffect(() => {
     let interval;
     if (resendTimer > 0) {
@@ -155,6 +175,7 @@ export const LoginPage = () => {
     return () => clearInterval(interval);
   }, [resendTimer]);
 
+  // Step 1: Dispatches forgot password OTP code request to backend
   const handleSendOTP = async (e) => {
     if (e) e.preventDefault();
     setFormError("");
@@ -185,6 +206,7 @@ export const LoginPage = () => {
     }
   };
 
+  // Step 2: Verifies entered 6-digit OTP code against backend
   const handleVerifyOTP = async (e) => {
     if (e) e.preventDefault();
     const fullOtp = otpDigits.join("");
@@ -216,6 +238,7 @@ export const LoginPage = () => {
     }
   };
 
+  // Step 3: Submits new password reset request
   const handleResetPasswordSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
@@ -270,6 +293,7 @@ export const LoginPage = () => {
     setFormError("Google sign in was cancelled or failed.");
   };
 
+  // Google OAuth 2.0 Login Handler
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setIsGoogleLoading(true);
@@ -294,7 +318,7 @@ export const LoginPage = () => {
   return (
     <PageTransition>
       <div className="min-h-[85vh] flex flex-col justify-center items-center px-6 py-12 bg-bg-light/65 dark:bg-bg-dark/10 transition-colors duration-300">
-        {/* Login/Recovery Card */}
+        {/* Main Card Container */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -303,6 +327,7 @@ export const LoginPage = () => {
         >
           <AnimatePresence mode="wait">
             {mode === "login" ? (
+              /* --- MODE 1: STANDARD LOGIN FORM --- */
               <motion.div
                 key="login-form-card"
                 initial={{ opacity: 0, y: 10 }}
@@ -319,7 +344,7 @@ export const LoginPage = () => {
                   </p>
                 </div>
 
-                {/* Social Auth */}
+                {/* Google Social Login Button */}
                 <button
                   type="button"
                   onClick={() => loginWithGoogle()}
@@ -358,7 +383,7 @@ export const LoginPage = () => {
                   )}
                 </button>
 
-                {/* Divider */}
+                {/* Section Divider */}
                 <div className="relative my-8 text-center">
                   <hr className="border-secondary/15 dark:border-secondary/5" />
                   <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card-light dark:bg-card-dark px-3 text-xs uppercase tracking-wider text-text-dark/45 dark:text-text-light/50">
@@ -366,6 +391,7 @@ export const LoginPage = () => {
                   </span>
                 </div>
 
+                {/* General Form Error Alert */}
                 {formError && (
                   <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-600 dark:text-red-400 text-sm">
                     <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -373,8 +399,9 @@ export const LoginPage = () => {
                   </div>
                 )}
 
+                {/* Email & Password Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Email Field */}
+                  {/* Email Input Field */}
                   <div className="relative text-left">
                     <Input
                       label="Email Address"
@@ -395,7 +422,7 @@ export const LoginPage = () => {
                     </div>
                   </div>
 
-                  {/* Password Field */}
+                  {/* Password Input Field with Toggle Visibility */}
                   <div className="relative text-left">
                     <Input
                       label="Password"
@@ -424,7 +451,7 @@ export const LoginPage = () => {
                     </button>
                   </div>
 
-                  {/* Remember Me & Forget Pass */}
+                  {/* Remember Me Checkbox & Forgot Password Link */}
                   <div className="flex items-center justify-between text-xs sm:text-sm pt-1">
                     <label className="flex items-center gap-2 text-xs sm:text-sm text-text-dark/70 dark:text-text-light/75 cursor-pointer select-none">
                       <input
@@ -465,7 +492,7 @@ export const LoginPage = () => {
                   </Button>
                 </form>
 
-                {/* Redirect to Register */}
+                {/* Redirect Link to Register Page */}
                 <p className="text-center text-sm text-text-dark/70 dark:text-text-light/75 mt-8">
                   Don't have a account?{" "}
                   <Link
@@ -477,6 +504,7 @@ export const LoginPage = () => {
                 </p>
               </motion.div>
             ) : (
+              /* --- MODE 2: PASSWORD RECOVERY (3-STEP OTP FLOW) --- */
               <motion.div
                 key="forgot-password-card"
                 initial={{ opacity: 0, y: 10 }}
@@ -497,6 +525,7 @@ export const LoginPage = () => {
                   </p>
                 </div>
 
+                {/* Feedback Alerts */}
                 {formError && (
                   <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-600 dark:text-red-400 text-sm">
                     <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -511,7 +540,7 @@ export const LoginPage = () => {
                   </div>
                 )}
 
-                {/* STEP 1: Email Form */}
+                {/* STEP 1: Email Submission Form for OTP Code */}
                 {forgotStep === 1 && (
                   <form onSubmit={handleSendOTP} className="space-y-5">
                     <div className="relative text-left">
@@ -544,7 +573,7 @@ export const LoginPage = () => {
                   </form>
                 )}
 
-                {/* STEP 2: 6-Digit OTP Form */}
+                {/* STEP 2: 6-Digit OTP Verification Form */}
                 {forgotStep === 2 && (
                   <form onSubmit={handleVerifyOTP} className="space-y-6">
                     <div className="flex justify-center items-center gap-2 my-4">
@@ -621,10 +650,10 @@ export const LoginPage = () => {
                   </form>
                 )}
 
-                {/* STEP 3: New Password Form */}
+                {/* STEP 3: Create New Password Form */}
                 {forgotStep === 3 && (
                   <form onSubmit={handleResetPasswordSubmit} className="space-y-5">
-                    {/* Visible to DOM & Password Manager, visually hidden from layout */}
+                    {/* Hidden input for password manager accessibility */}
                     <input
                       type="email"
                       name="username"
@@ -679,7 +708,7 @@ export const LoginPage = () => {
                   </form>
                 )}
 
-                {/* Back to login trigger */}
+                {/* Back to Sign In button */}
                 <button
                   type="button"
                   onClick={() => {
@@ -701,3 +730,4 @@ export const LoginPage = () => {
     </PageTransition>
   );
 };
+

@@ -1,3 +1,17 @@
+/**
+ * ResetPassword Component
+ * 
+ * What is it?
+ * The password reset verification page component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Extracts the secret password reset token from the URL query parameters (`?token=...`).
+ * 2. Provides form fields for entering and confirming a new secure password.
+ * 3. Evaluates real-time client-side validation (8+ characters minimum, password match confirmation).
+ * 4. Submits token and new password credentials to `authAPI.resetPassword`.
+ * 5. On successful update, displays a success notification banner and auto-redirects the user to `/login` after 3 seconds.
+ */
+
 import React, { useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -10,19 +24,24 @@ import { authAPI } from '../services/api';
 
 export const ResetPassword = () => {
     const navigate = useNavigate();
+    
+    // Extract reset token from URL query parameters (?token=...)
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
 
+    // Input & Visibility States
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+    // Validation & Response Alert States
     const [passwordError, setPasswordError] = useState('');
     const [confirmError, setConfirmError] = useState('');
     const [formError, setFormError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Minimum password length validation helper (8+ chars)
     const validatePassword = (val) => {
         if (!val) {
             setPasswordError('New password is required');
@@ -36,6 +55,7 @@ export const ResetPassword = () => {
         return true;
     };
 
+    // Password confirmation matching validation helper
     const validateConfirmPassword = (val, passVal) => {
         if (!val) {
             setConfirmError('Please confirm your password');
@@ -49,6 +69,7 @@ export const ResetPassword = () => {
         return true;
     };
 
+    // Handles submitting password reset request to backend API
     const handleSubmit = async (e) => {
         e.preventDefault();
         setFormError('');
@@ -57,6 +78,7 @@ export const ResetPassword = () => {
         const isPasswordValid = validatePassword(password);
         const isConfirmValid = validateConfirmPassword(confirmPassword, password);
 
+        // Guard against missing URL token
         if (!token) {
             setFormError('Reset token is missing. Please close this page and navigate from your email link again.');
             return;
@@ -74,6 +96,7 @@ export const ResetPassword = () => {
 
                 if (response.data.success) {
                     setSuccessMessage(response.data.message || 'Password updated successfully!');
+                    // Auto-redirect user to sign-in page after 3-second delay
                     setTimeout(() => {
                         navigate('/login');
                     }, 3000);
@@ -102,10 +125,12 @@ export const ResetPassword = () => {
     return (
         <PageTransition>
             <div className="min-h-[85vh] flex flex-col justify-center items-center px-6 py-12 bg-bg-light/65 dark:bg-bg-dark/10 transition-colors duration-300">
+                {/* Brand Logo Header */}
                 <div className="mb-8">
                     <Logo showText={true} size={42} />
                 </div>
 
+                {/* Reset Password Form Card */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -121,6 +146,7 @@ export const ResetPassword = () => {
                         </p>
                     </div>
 
+                    {/* Error Alert Banner */}
                     {formError && (
                         <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-650 dark:text-red-400 text-sm">
                             <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -128,6 +154,7 @@ export const ResetPassword = () => {
                         </div>
                     )}
 
+                    {/* Success Confirmation Banner */}
                     {successMessage && (
                         <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250 dark:border-emerald-900/40 rounded-2xl flex items-start gap-3 text-emerald-600 dark:text-emerald-400 text-sm">
                             <FiCheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -140,9 +167,10 @@ export const ResetPassword = () => {
                         </div>
                     )}
 
+                    {/* New Password Form */}
                     {!successMessage && (
                         <form onSubmit={handleSubmit} className="space-y-5">
-                            {/* New Password */}
+                            {/* New Password Input */}
                             <div className="relative text-left">
                                 <Input
                                     label="New Password"
@@ -168,7 +196,7 @@ export const ResetPassword = () => {
                                 </button>
                             </div>
 
-                            {/* Confirm Password */}
+                            {/* Confirm New Password Input */}
                             <div className="relative text-left">
                                 <Input
                                     label="Confirm New Password"
@@ -186,6 +214,7 @@ export const ResetPassword = () => {
                                 />
                             </div>
 
+                            {/* Submit Button */}
                             <Button
                                 type="submit"
                                 variant="primary"
@@ -203,6 +232,7 @@ export const ResetPassword = () => {
                         </form>
                     )}
 
+                    {/* Back to Sign In Link */}
                     <div className="text-center mt-6">
                         <Link
                             to="/login"
@@ -216,4 +246,6 @@ export const ResetPassword = () => {
         </PageTransition>
     );
 };
+
 export default ResetPassword;
+

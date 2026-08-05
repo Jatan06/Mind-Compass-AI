@@ -17461,3 +17461,5 @@ INFO 2026-08-05 16:59:32,573 log 15872 25148 "GET /api/profile/?today=2026-08-05
 INFO 2026-08-05 16:59:33,004 log 15872 8828 "GET /api/insights/ HTTP/1.1" 200 832
 INFO 2026-08-05 16:59:35,556 log 15872 1384 "GET /api/profile/?today=2026-08-05 HTTP/1.1" 200 628
 INFO 2026-08-05 16:59:36,002 log 15872 26752 "GET /api/profile/?today=2026-08-05 HTTP/1.1" 200 628
+INFO 2026-08-05 17:06:35,580 autoreload 15872 4040 C:\Users\HP\Documents\mindCompass\Backend\activities\services.py changed, reloading.
+INFO 2026-08-05 17:06:38,808 autoreload 6516 26784 Watching for file changes with StatReloader

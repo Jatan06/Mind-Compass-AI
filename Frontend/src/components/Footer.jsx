@@ -1,16 +1,32 @@
+/**
+ * Footer Component
+ * 
+ * What is it?
+ * The global footer component displayed at the bottom of pages across MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Displays brand identity including logo icon, brand title, and tagline description.
+ * 2. Renders social media links (Twitter, Instagram, LinkedIn).
+ * 3. Provides Product navigation links (Features, About Us, FAQ) that support smooth scrolling to homepage sections.
+ * 4. Supplies Legal & Support links (Sign In, Sign Up, Privacy Policy, Terms of Service).
+ * 5. Handles policy disclosures via interactive dialog alerts for Privacy and Terms.
+ * 6. Displays current year copyright notice, medical/therapy disclaimer, and well-being credit line.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LogoIcon } from './Logo';
 import { FiTwitter, FiInstagram, FiLinkedin, FiHeart } from 'react-icons/fi';
 
 export const Footer = () => {
+    // Dynamic year calculation for copyright notice
     const currentYear = new Date().getFullYear();
 
     return (
         <footer className="w-full bg-bg-light dark:bg-bg-dark border-t border-secondary/15 dark:border-secondary/5 transition-all duration-300">
             <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-16">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12">
-                    {/* Logo & Description */}
+                    {/* Brand Identity: Animated Logo, Description, and Social Links */}
                     <div className="col-span-1 md:col-span-2 space-y-4">
                         <Link to="/" className="flex items-center gap-3 group focus:outline-none w-fit">
                             <LogoIcon size={36} className="transform transition-transform duration-500 group-hover:rotate-45" />
@@ -21,7 +37,8 @@ export const Footer = () => {
                         <p className="text-sm leading-relaxed text-text-dark/70 dark:text-text-light/75 max-w-sm">
                             Navigate Your Mind. Discover Your Balance. A thoughtful mental wellness companion designed to support your daily emotional journey.
                         </p>
-                        {/* Social Icons */}
+                        
+                        {/* Social Media Links */}
                         <div className="flex gap-4 pt-2">
                             <a href="#" className="p-2 rounded-full text-text-dark/65 dark:text-text-light/65 hover:text-primary dark:hover:text-accent hover:bg-secondary/10 dark:hover:bg-secondary/5 transition-all" aria-label="Twitter">
                                 <FiTwitter className="w-5 h-5" />
@@ -35,7 +52,7 @@ export const Footer = () => {
                         </div>
                     </div>
 
-                    {/* Links Column 1 */}
+                    {/* Product Links Column: Anchor navigation to landing page sections */}
                     <div className="space-y-4">
                         <h4 className="text-xs font-semibold uppercase tracking-wider text-secondary dark:text-secondary-hover">
                             Product
@@ -71,7 +88,7 @@ export const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Links Column 2 */}
+                    {/* Legal & Support Links Column: Sign-in/up routes and Policy alerts */}
                     <div className="space-y-4">
                         <h4 className="text-xs font-semibold uppercase tracking-wider text-secondary dark:text-secondary-hover">
                             Legal & Support
@@ -107,7 +124,7 @@ export const Footer = () => {
                     </div>
                 </div>
 
-                {/* Separator & Bottom bar */}
+                {/* Bottom Bar: Copyright notice, medical disclaimer, and well-being badge */}
                 <div className="border-t border-secondary/15 dark:border-secondary/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-xs text-text-dark/60 dark:text-text-light/60 text-center md:text-left">
                         &copy; {currentYear} MindCompass. All rights reserved. Not replacement for professional medical help.
@@ -120,3 +137,4 @@ export const Footer = () => {
         </footer>
     );
 };
+

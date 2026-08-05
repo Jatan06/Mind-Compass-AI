@@ -1,3 +1,21 @@
+/**
+ * AppLayout Component
+ * 
+ * What is it?
+ * The main authenticated layout shell component for the MindCompass AI application (`/app/*`).
+ * 
+ * What does it do?
+ * 1. Enforces authentication and onboarding route guards:
+ *    - Unauthenticated users -> redirected to `/login`.
+ *    - Authenticated but non-onboarded users -> redirected to `/app/onboarding`.
+ *    - Onboarded users visiting onboarding -> redirected to `/app`.
+ * 2. Implements daily check-in auto-reminders: Redirects users to `/app/checkin` on initial entry if today's check-in is pending.
+ * 3. Renders the persistent Desktop Sidebar (`w-64`) with branding, user profile card (name initials + streak counter), navigation items, theme toggle, and logout.
+ * 4. Renders a fixed Glassmorphic Mobile Bottom Navigation Bar (`md:hidden`) for small viewports.
+ * 5. Provides full-screen loading transitions (`PageLoader`) during initial dashboard hydration (`isInitialLoading`).
+ * 6. Renders nested page routes via React Router's `<Outlet />`.
+ */
+
 import React, { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,9 +42,10 @@ export const AppLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Check if the current active route is the onboarding page
     const isOnboardingPage = location.pathname === '/app/onboarding';
 
-    // Route guard logic: Protect pages from unauthorized accesses
+    // Route Guard Effect: Protects routes against unauthenticated or non-onboarded accesses
     React.useEffect(() => {
         if (!authLoading) {
             if (!isAuthenticated) {
@@ -39,7 +58,7 @@ export const AppLayout = () => {
         }
     }, [isAuthenticated, authLoading, isOnboarded, isOnboardingPage, navigate]);
 
-    // Daily morning check-in reminder redirect logic on site entry
+    // Daily Check-in Reminder Effect: Redirects users to check-in if not yet completed today
     React.useEffect(() => {
         if (!authLoading && isAuthenticated && isOnboarded) {
             const hasRedirected = sessionStorage.getItem('has_checked_daily_checkin_redirect');
@@ -61,6 +80,7 @@ export const AppLayout = () => {
         }
     }, [isAuthenticated, authLoading, isOnboarded, userProfile, checkins, location.pathname, navigate]);
 
+    // Main navigation menu items configuration
     const menuItems = [
         { name: 'Dashboard', path: '/app', icon: <FiGrid className="w-5 h-5" /> },
         { name: 'Check-in', path: '/app/checkin', icon: <FiCheckSquare className="w-5 h-5" /> },
@@ -70,6 +90,7 @@ export const AppLayout = () => {
         { name: 'Profile', path: '/app/profile', icon: <FiUser className="w-5 h-5" /> }
     ];
 
+    // Handles user logout confirmation and dispatch
     const handleLogout = async () => {
         if (confirm('Are you sure you want to log out?')) {
             await logout();
@@ -82,16 +103,17 @@ export const AppLayout = () => {
         return null;
     }
 
+    // Format user name initials for avatar icon
     const nameInitials = userProfile.name
         ? userProfile.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
         : 'U';
 
     return (
         <div className="min-h-screen bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light flex transition-colors duration-300">
-            {/* Sidebar - Desktop */}
+            {/* --- DESKTOP SIDEBAR --- */}
             {!isOnboardingPage && (
                 <aside className="hidden md:flex flex-col w-64 bg-card-light dark:bg-card-dark border-r border-secondary/15 dark:border-secondary/5 sticky top-0 h-screen transition-all select-none">
-                    {/* Branding Brand logo */}
+                    {/* Brand Logo & Title Header */}
                     <div className="p-6 flex items-center gap-3 border-b border-secondary/15 dark:border-secondary/5 h-20">
                         <LogoIcon size={34} className="text-primary dark:text-accent" />
                         <div className="flex flex-col">
@@ -104,7 +126,7 @@ export const AppLayout = () => {
                         </div>
                     </div>
 
-                    {/* Profile Card Summary */}
+                    {/* User Profile Card Summary & Streak Counter */}
                     <div className="p-6 border-b border-secondary/10 dark:border-secondary/5 bg-secondary/5 dark:bg-secondary/5">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-primary/25 dark:bg-accent/20 flex items-center justify-center font-bold text-primary dark:text-accent">
@@ -120,7 +142,7 @@ export const AppLayout = () => {
                         </div>
                     </div>
 
-                    {/* Nav Menu */}
+                    {/* Desktop Navigation Links */}
                     <nav className="flex-grow p-4 space-y-1.5 pt-6 text-left">
                         {menuItems.map((item) => {
                             const isActive = location.pathname === item.path || (item.path === '/app' && location.pathname === '/app/');
@@ -142,7 +164,7 @@ export const AppLayout = () => {
                         })}
                     </nav>
 
-                    {/* Footer and controls */}
+                    {/* Sidebar Footer: Theme Toggle & Logout Controls */}
                     <div className="p-4 border-t border-secondary/15 dark:border-secondary/5 space-y-1.5">
                         <button
                             onClick={toggleTheme}
@@ -171,14 +193,14 @@ export const AppLayout = () => {
                 </aside>
             )}
 
-            {/* Main Content Area */}
+            {/* --- MAIN CONTENT AREA: Renders active nested route --- */}
             <main className={`flex-grow flex flex-col min-w-0 h-screen overflow-y-auto ${isOnboardingPage ? '' : 'pb-20 md:pb-0'}`}>
                 <div className="p-6 md:p-10 max-w-7xl w-full mx-auto flex-grow flex flex-col">
                     <Outlet />
                 </div>
             </main>
 
-            {/* Bottom Navigation - Mobile */}
+            {/* --- MOBILE BOTTOM NAVIGATION BAR --- */}
             {!isOnboardingPage && (
                 <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card-light/95 dark:bg-card-dark/95 backdrop-blur-md border-t border-secondary/15 dark:border-secondary/5 py-2 px-4 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] select-none">
                     <div className="flex justify-around items-center">
@@ -211,4 +233,6 @@ export const AppLayout = () => {
         </div>
     );
 };
+
 export default AppLayout;
+

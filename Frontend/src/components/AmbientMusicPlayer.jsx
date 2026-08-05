@@ -1,53 +1,73 @@
+/**
+ * AmbientMusicPlayer Component
+ * 
+ * What is it?
+ * A procedural ambient soundscape player & status bar component embedded inside wellness activity sessions.
+ * 
+ * What does it do?
+ * 1. Maps activity categories (`category`) to synthesized Web Audio soundscapes via `getSoundscapeForCategory()`.
+ * 2. Automatically synchronizes audio synthesis playback (play, pause, resume, stop) with external timer state (`isTimerRunning`).
+ * 3. Renders a live animated waveform equalizer (`motion.span`) when audio is actively playing.
+ * 4. Provides a mute/unmute toggle control (`handleMuteToggle`) communicating directly with `audioEngine`.
+ * 5. Cleans up audio nodes and stops sound synthesis on unmount (`audioEngine.stop()`).
+ * 
+ * @param {string} category - Activity category (e.g. 'Breathing', 'Meditation') used to pick the audio soundscape
+ * @param {boolean} isTimerRunning - External session timer running state triggering playback/pause
+ * @param {number} durationSeconds - Target activity session duration in seconds (default 300)
+ */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMusic, FiVolume2, FiVolumeX } from 'react-icons/fi';
 import { audioEngine, getSoundscapeForCategory } from '../utils/soundscapes';
 
-/**
- * AmbientMusicPlayer
- * A minimal ambient sound status bar embedded inside the Guided Session view.
- * All play/pause control is driven externally by isTimerRunning + durationSeconds.
- * Users can only mute/unmute from this component.
- */
 export const AmbientMusicPlayer = ({
     category = 'All',
     isTimerRunning = false,
     durationSeconds = 300
 }) => {
+    // Component audio states
     const [isMuted, setIsMuted] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const prevRunningRef = useRef(false);
+
+    // Retrieve synthesized soundscape object for current category
     const soundscape = getSoundscapeForCategory(category);
 
-    // Start / pause / stop sound in sync with timer
+    // Audio Engine Synchronization Effect: Starts, pauses, or resumes Web Audio synthesis when timer changes
     useEffect(() => {
         const wasRunning = prevRunningRef.current;
         prevRunningRef.current = isTimerRunning;
 
-        if (isTimerRunning && !wasRunning) {
-            // Timer just started — play the full soundscape for the session duration
-            setIsLoaded(false);
-            audioEngine.play(soundscape, durationSeconds).then(() => setIsLoaded(true));
+        if (isTimerRunning) {
+            if (!wasRunning) {
+                // Initial session start or resume after pause
+                if (audioEngine.currentSoundscape?.id === soundscape.id && audioEngine.masterVol) {
+                    audioEngine.resume();
+                } else {
+                    setIsLoaded(false);
+                    audioEngine.play(soundscape, durationSeconds).then(() => setIsLoaded(true));
+                }
+            }
         } else if (!isTimerRunning && wasRunning) {
-            // Timer just paused
+            // Pause audio playback when session timer is paused
             audioEngine.pause();
-        } else if (isTimerRunning && wasRunning) {
-            // Timer resumed after a pause
-            audioEngine.resume();
         }
-    }, [isTimerRunning]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [isTimerRunning]);
 
-    // Clean up on unmount
+    // Unmount Cleanup Effect: Stops active Web Audio synthesis nodes
     useEffect(() => {
         return () => { audioEngine.stop(); };
     }, []);
 
+    // Handles user mute/unmute toggle action
     const handleMuteToggle = () => {
         const next = !isMuted;
         setIsMuted(next);
         audioEngine.setMuted(next);
     };
 
+    // Render nothing if timer was never started
     if (!isTimerRunning && !prevRunningRef.current) return null;
 
     return (
@@ -60,9 +80,9 @@ export const AmbientMusicPlayer = ({
                 transition={{ duration: 0.4 }}
                 className="flex items-center justify-between gap-3 px-5 py-3 rounded-2xl border border-secondary/15 dark:border-secondary/10 bg-secondary/5 dark:bg-secondary/5"
             >
-                {/* Left: sound info */}
+                {/* Left Section: Soundscape Title & Indicator Icon */}
                 <div className="flex items-center gap-3 min-w-0">
-                    {/* Animated music icon */}
+                    {/* Animated Music Icon Badge */}
                     <div className="relative flex-shrink-0">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center
                             ${isTimerRunning ? 'bg-primary/15 dark:bg-accent/15 text-primary dark:text-accent' : 'bg-secondary/10 text-text-dark/40 dark:text-text-light/40'}`}>
@@ -75,7 +95,7 @@ export const AmbientMusicPlayer = ({
                         )}
                     </div>
 
-                    {/* Soundscape name */}
+                    {/* Active Soundscape Name */}
                     <div className="min-w-0">
                         <p className="text-[10px] uppercase font-bold tracking-wider text-secondary">
                             Ambient Soundscape
@@ -86,9 +106,9 @@ export const AmbientMusicPlayer = ({
                     </div>
                 </div>
 
-                {/* Right: waveform visualizer + mute button */}
+                {/* Right Section: Equalizer Waveform & Mute Button */}
                 <div className="flex items-center gap-3 flex-shrink-0">
-                    {/* Simple waveform animation when playing */}
+                    {/* Animated Equalizer Waveform Bars */}
                     {isTimerRunning && !isMuted && (
                         <div className="flex items-end gap-[3px] h-5">
                             {[0.4, 0.7, 1, 0.7, 0.5, 0.8, 0.6].map((h, i) => (
@@ -108,7 +128,7 @@ export const AmbientMusicPlayer = ({
                         </div>
                     )}
 
-                    {/* Mute toggle */}
+                    {/* Mute / Unmute Toggle Button */}
                     <button
                         onClick={handleMuteToggle}
                         title={isMuted ? 'Unmute sound' : 'Mute sound'}
@@ -124,3 +144,6 @@ export const AmbientMusicPlayer = ({
         </AnimatePresence>
     );
 };
+
+export default AmbientMusicPlayer;
+

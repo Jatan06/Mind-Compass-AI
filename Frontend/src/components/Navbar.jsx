@@ -1,3 +1,18 @@
+/**
+ * Navbar Component
+ * 
+ * What is it?
+ * The main top navigation header bar component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Displays the brand logo and main navigation links (Home, Features, About, FAQ).
+ * 2. Monitors window scroll position to apply a sticky glassmorphism backdrop blur on scroll.
+ * 3. Provides theme toggling (Light/Dark mode) via ThemeContext.
+ * 4. Enables smooth-scroll navigation to in-page anchor sections (#hero, #features, #about, #faq), routing to homepage first if clicked from another route.
+ * 5. Displays call-to-action (CTA) buttons for Login and Get Started (Register).
+ * 6. Features a fully responsive mobile menu with slide/fade dropdown animations via Framer Motion.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,13 +21,19 @@ import { useTheme } from '../context/ThemeContext';
 import { Logo } from './Logo';
 
 export const Navbar = () => {
+    // Access current theme mode (light/dark) and theme toggle handler from context
     const { theme, toggleTheme } = useTheme();
+
+    // Mobile drawer menu state (open/closed)
     const [isOpen, setIsOpen] = useState(false);
+
+    // Track scroll position to change navbar background from transparent to glassmorphic blur
     const [scrolled, setScrolled] = useState(false);
 
     const location = useLocation();
     const navigate = useNavigate();
 
+    // Effect: Listen for window scroll events to trigger glassmorphic styling when scrolled past 10px
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 10) {
@@ -25,18 +46,23 @@ export const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
+    // Effect: Automatically close mobile dropdown menu whenever the route location changes
     useEffect(() => {
         setIsOpen(false);
     }, [location]);
 
+    /**
+     * Handles navigation link clicks.
+     * Supports smooth scrolling to section anchors (#hero, #features, etc.).
+     * If the user is on a different route (e.g. /login), navigates back to / first before scrolling.
+     */
     const handleNavClick = (e, path) => {
         e.preventDefault();
         if (path.startsWith('#')) {
             const targetId = path.replace('#', '');
             if (location.pathname !== '/') {
                 navigate(`/#${targetId}`);
-                // Let homepage handle scrolling on render
+                // Let homepage handle scrolling after navigation render
                 setTimeout(() => {
                     const el = document.getElementById(targetId);
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -51,6 +77,7 @@ export const Navbar = () => {
         setIsOpen(false);
     };
 
+    // Navigation items pointing to homepage anchor sections
     const navLinks = [
         { name: 'Home', href: '#hero' },
         { name: 'Features', href: '#features' },
@@ -66,9 +93,10 @@ export const Navbar = () => {
                 }`}
         >
             <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
+                {/* MindCompass Brand Logo */}
                 <Logo />
 
-                {/* Desktop Navigation */}
+                {/* Desktop Navigation Links */}
                 <nav className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
                         <a
@@ -82,8 +110,9 @@ export const Navbar = () => {
                     ))}
                 </nav>
 
-                {/* Actions (Desktop) */}
+                {/* Desktop Actions: Dark Mode Toggle, Login, and Registration CTA */}
                 <div className="hidden md:flex items-center gap-4">
+                    {/* Theme Toggle Button */}
                     <button
                         onClick={toggleTheme}
                         className="p-2.5 rounded-full text-text-dark/70 dark:text-text-light/75 hover:bg-secondary/15 dark:hover:bg-secondary/5 transition-all duration-200 cursor-pointer"
@@ -92,6 +121,7 @@ export const Navbar = () => {
                         {theme === 'dark' ? <FiSun className="w-5 h-5 text-accent" /> : <FiMoon className="w-5 h-5" />}
                     </button>
 
+                    {/* Auth Action Links */}
                     <Link
                         to="/login"
                         className="text-sm font-semibold text-text-dark/95 dark:text-text-light/95 hover:text-primary dark:hover:text-accent px-4 py-2 transition-colors duration-200"
@@ -108,7 +138,7 @@ export const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Mobile controls */}
+                {/* Mobile Header Controls: Theme toggle & Hamburger menu toggle */}
                 <div className="flex items-center gap-2 md:hidden">
                     <button
                         onClick={toggleTheme}
@@ -128,7 +158,7 @@ export const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Animated Dropdown Drawer Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -139,6 +169,7 @@ export const Navbar = () => {
                         className="md:hidden border-t border-secondary/10 dark:border-secondary/5 bg-bg-light dark:bg-bg-dark overflow-hidden shadow-lg"
                     >
                         <div className="flex flex-col gap-4 px-6 py-6">
+                            {/* Mobile Navigation Links */}
                             {navLinks.map((link) => (
                                 <a
                                     key={link.name}
@@ -152,6 +183,7 @@ export const Navbar = () => {
 
                             <hr className="border-secondary/10 dark:border-secondary/5 my-2" />
 
+                            {/* Mobile Auth Buttons */}
                             <div className="flex flex-col gap-3">
                                 <Link
                                     to="/login"
@@ -173,3 +205,4 @@ export const Navbar = () => {
         </header>
     );
 };
+

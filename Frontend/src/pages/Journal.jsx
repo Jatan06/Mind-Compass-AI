@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     FiMic,
@@ -23,7 +23,11 @@ export const Journal = () => {
     const [text, setText] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     const [recordTime, setRecordTime] = useState(0);
-    const [recordIntervalId, setRecordIntervalId] = useState(null);
+    const [interimTranscript, setInterimTranscript] = useState('');
+
+    const recognitionRef = useRef(null);
+    const timerRef = useRef(null);
+    const baseTextRef = useRef('');
 
     const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
     const [latestAnalysis, setLatestAnalysis] = useState(null);
@@ -42,28 +46,111 @@ export const Journal = () => {
         "Describe a quiet moment you enjoyed today."
     ];
 
-    // Simulated dictation scripts
-    const mockTranscripts = [
-        "Today was a mix of things. I felt pretty stressed during my morning work meeting because of the code refactoring timeline. But afterwards, I went for a brief 10-minute walk through the park. Seeing the calm trees and breathing slowly really helped me cool down.",
-        "I was thinking about how much progress I have made recently. I used to get so anxious whenever my code threw warnings, but today I just breathed through it and resolved it step by step. Feeling content and proud of my growth.",
-        "Really tired today. Didn't sleep well last night, worrying about project requirements. Hopefully, some quiet breathing exercises will help me relax tonight."
-    ];
+    // Cleanup active recording & timer on unmount
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+            if (recognitionRef.current) {
+                try {
+                    recognitionRef.current.stop();
+                } catch (e) { }
+            }
+        };
+    }, []);
+
+    const stopRecordingCleanup = () => {
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+        setIsRecording(false);
+        setInterimTranscript('');
+    };
 
     const toggleRecording = () => {
-        if (!isRecording) {
-            setIsRecording(true);
-            setRecordTime(0);
-            const interval = setInterval(() => {
-                setRecordTime(prev => prev + 1);
-            }, 1000);
-            setRecordIntervalId(interval);
-        } else {
-            clearInterval(recordIntervalId);
-            setIsRecording(false);
-            setIsVoiceEntry(true);
-            // Select a random transcript and append it to our text
-            const randomIdx = Math.floor(Math.random() * mockTranscripts.length);
-            setText(prev => (prev ? prev + ' ' : '') + mockTranscripts[randomIdx]);
+        if (isRecording) {
+            if (recognitionRef.current) {
+                try {
+                    recognitionRef.current.stop();
+                } catch (e) { }
+            }
+            stopRecordingCleanup();
+            return;
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            setError('Speech Recognition is not supported in your browser. Please use Chrome, Edge, or Safari for voice journal.');
+            return;
+        }
+
+        setError('');
+        baseTextRef.current = text;
+
+        try {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                setIsRecording(true);
+                setIsVoiceEntry(true);
+                setRecordTime(0);
+                timerRef.current = setInterval(() => {
+                    setRecordTime(prev => prev + 1);
+                }, 1000);
+            };
+
+            recognition.onresult = (event) => {
+                let finalTranscript = '';
+                let interim = '';
+
+                for (let i = 0; i < event.results.length; i++) {
+                    const resultPiece = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += resultPiece;
+                    } else {
+                        interim += resultPiece;
+                    }
+                }
+
+                setInterimTranscript(interim);
+
+                const newDictatedText = finalTranscript ? (finalTranscript + (interim ? ' ' + interim : '')) : interim;
+                if (newDictatedText) {
+                    const prefix = baseTextRef.current
+                        ? baseTextRef.current + (baseTextRef.current.endsWith(' ') || baseTextRef.current.endsWith('\n') ? '' : ' ')
+                        : '';
+                    setText(prefix + newDictatedText);
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                let errText = 'Speech recognition encountered an issue.';
+                if (event.error === 'not-allowed') {
+                    errText = 'Microphone access was denied. Please allow microphone access in browser settings to use voice journal.';
+                } else if (event.error === 'no-speech') {
+                    errText = 'No speech detected. Please speak into your microphone.';
+                } else if (event.error === 'network') {
+                    errText = 'Speech recognition network error. Please check your internet connection.';
+                }
+                setError(errText);
+                stopRecordingCleanup();
+            };
+
+            recognition.onend = () => {
+                stopRecordingCleanup();
+            };
+
+            recognitionRef.current = recognition;
+            recognition.start();
+        } catch (err) {
+            console.error('Failed to initialize speech recognition:', err);
+            setError('Could not access microphone. Please check browser permissions.');
+            stopRecordingCleanup();
         }
     };
 
@@ -203,7 +290,7 @@ export const Journal = () => {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             exit={{ opacity: 0 }}
-                                            className="absolute inset-0 bg-bg-light/95 dark:bg-bg-dark/95 rounded-2xl flex flex-col items-center justify-center gap-4 p-6"
+                                            className="absolute inset-0 bg-bg-light/95 dark:bg-bg-dark/95 rounded-2xl flex flex-col items-center justify-center gap-4 p-6 z-10 text-center"
                                         >
                                             <div className="flex gap-1.5 items-center">
                                                 <span className="w-2.5 h-6 bg-red-500 rounded-full animate-bounce" />
@@ -211,10 +298,18 @@ export const Journal = () => {
                                                 <span className="w-2.5 h-8 bg-red-500 rounded-full animate-bounce [animation-delay:0.3s]" />
                                                 <span className="w-2.5 h-5 bg-red-500 rounded-full animate-bounce [animation-delay:0.45s]" />
                                             </div>
-                                            <div className="text-center">
-                                                <div className="text-xl font-bold font-mono tracking-tight">{formatTime(recordTime)}</div>
-                                                <p className="text-xs text-text-dark/60 dark:text-text-light/60 mt-1">
-                                                    Speaking your mind... Click stop to transcribe.
+                                            <div className="text-center max-w-sm">
+                                                <div className="text-xl font-bold font-mono tracking-tight text-text-dark dark:text-text-light">{formatTime(recordTime)}</div>
+                                                <p className="text-xs text-text-dark/70 dark:text-text-light/70 mt-1 font-medium">
+                                                    Listening to your voice... Speak naturally.
+                                                </p>
+                                                {interimTranscript && (
+                                                    <p className="text-xs italic text-secondary mt-2 bg-secondary/10 dark:bg-secondary/15 px-3 py-1.5 rounded-xl border border-secondary/20 truncate">
+                                                        "{interimTranscript}"
+                                                    </p>
+                                                )}
+                                                <p className="text-[10px] text-text-dark/40 dark:text-text-light/40 mt-2">
+                                                    Click the mic/stop button when finished.
                                                 </p>
                                             </div>
                                         </motion.div>
@@ -235,11 +330,11 @@ export const Journal = () => {
                                     type="button"
                                     onClick={toggleRecording}
                                     className={`p-3 rounded-full flex items-center justify-center transition-all cursor-pointer outline-none
-                    ${isRecording
+                                        ${isRecording
                                             ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                                             : 'bg-secondary/15 hover:bg-secondary/25 dark:bg-secondary/10 text-primary dark:text-accent'
                                         }
-                   `}
+                                     `}
                                     title={isRecording ? 'Stop Recording' : 'Start Voice Journaling'}
                                 >
                                     {isRecording ? <FiSquare className="w-5 h-5" /> : <FiMic className="w-5 h-5" />}
