@@ -208,7 +208,7 @@ class AuthService:
 
     @classmethod
     def _dispatch_email(cls, subject, plain_message, html_message, recipient_email):
-        # 0. Try Google Apps Script Webhook (100% FREE via your Gmail, HTTPS Port 443, sends to ANY recipient)
+        # 1. Try Google Apps Script Webhook (100% FREE via your Gmail, HTTPS Port 443)
         google_webhook_url = os.getenv('GOOGLE_MAIL_WEBHOOK_URL')
         if google_webhook_url:
             try:
@@ -231,72 +231,7 @@ class AuthService:
             except Exception as gerr:
                 print(f"[MAIL GOOGLE WEBHOOK EXCEPTION] {gerr}")
 
-        # 1. Try Resend HTTPS API (Port 443)
-        resend_api_key = os.getenv('RESEND_API_KEY')
-        if resend_api_key:
-            try:
-                import requests
-                from_addr = os.getenv('RESEND_FROM_EMAIL', 'MindCompass <onboarding@resend.dev>')
-                res = requests.post(
-                    "https://api.resend.com/emails",
-                    headers={
-                        "Authorization": f"Bearer {resend_api_key}",
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "from": from_addr,
-                        "to": [recipient_email],
-                        "subject": subject,
-                        "text": plain_message,
-                        "html": html_message,
-                    },
-                    timeout=10
-                )
-                if res.status_code in [200, 201]:
-                    print(f"[MAIL SUCCESS] Resend HTTPS API email dispatched to {recipient_email}")
-                    return True
-                else:
-                    print(f"[MAIL RESEND ERROR] Resend API returned {res.status_code}: {res.text}")
-            except Exception as resend_err:
-                print(f"[MAIL RESEND EXCEPTION] {resend_err}")
-
-        # 2. Try Brevo HTTPS API (300 emails/day FREE to ANY recipient, no domain required)
-        brevo_api_key = os.getenv('BREVO_API_KEY')
-        if brevo_api_key:
-            try:
-                import requests
-                from_email = os.getenv('DEFAULT_FROM_EMAIL', 'MindCompass <satsanguse@gmail.com>')
-                sender_name = "MindCompass AI"
-                sender_email = settings.EMAIL_HOST_USER or "satsanguse@gmail.com"
-                if "<" in from_email and ">" in from_email:
-                    sender_name = from_email.split("<")[0].strip()
-                    sender_email = from_email.split("<")[1].replace(">", "").strip()
-                
-                res = requests.post(
-                    "https://api.brevo.com/v3/smtp/email",
-                    headers={
-                        "api-key": brevo_api_key,
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                    },
-                    json={
-                        "sender": {"name": sender_name, "email": sender_email},
-                        "to": [{"email": recipient_email}],
-                        "subject": subject,
-                        "textContent": plain_message,
-                        "htmlContent": html_message,
-                    },
-                    timeout=10
-                )
-                if res.status_code in [200, 201]:
-                    print(f"[MAIL SUCCESS] Brevo HTTPS API email dispatched to {recipient_email}")
-                    return True
-                else:
-                    print(f"[MAIL BREVO ERROR] Brevo API returned {res.status_code}: {res.text}")
-            except Exception as brevo_err:
-                print(f"[MAIL BREVO EXCEPTION] {brevo_err}")
-
-        # Fallback to standard Django SMTP send_mail
+        # 2. Fallback to standard Django SMTP send_mail
         send_mail(
             subject=subject,
             message=plain_message,
