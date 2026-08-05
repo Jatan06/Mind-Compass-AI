@@ -64,8 +64,9 @@ class AIInsightsService:
         top_themes = [t[0] for t in repeated_themes[:3]]
 
         # 4. Successful coping activities (feedback ratings satisfaction >= 4)
-        feedbacks = ActivityFeedback.objects.filter(user=user, satisfaction__gte=4)
-        successful_coping = list(set([f.activity.title for f in feedbacks]))
+        feedbacks = ActivityFeedback.objects.filter(user=user, satisfaction__gte=4).select_related('activity')
+        successful_coping = list(set([f.activity.title for f in feedbacks if f.activity]))
+
 
         # Calculate Active Twin Profile state using Trajectory deltas
         mood_delta = avg_recent_mood - avg_older_mood
