@@ -111,8 +111,11 @@ class AuthService:
             log_security_event("LOGIN_FAILURE_INACTIVE", user.id, f"Attempted login on inactive account: {user.username}")
             raise ValidationError({"non_field_errors": ["This account is inactive."]})
 
-        # Ensure UserProfile exists
-        UserProfile.objects.get_or_create(user=user)
+        # Ensure UserProfile exists & check email verification
+        profile, _ = UserProfile.objects.get_or_create(user=user)
+        if not profile.is_email_verified:
+            log_security_event("LOGIN_FAILURE_UNVERIFIED", user.id, f"Attempted login with unverified email: {user.email}")
+            raise ValidationError({"non_field_errors": ["Please verify your email address before logging in. Check your inbox for the verification link."]})
 
         log_security_event("LOGIN_SUCCESS", user.id, f"User {user.username} logged in successfully.")
         tokens = cls.generate_tokens_for_user(user)
