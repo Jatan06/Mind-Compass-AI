@@ -22,6 +22,7 @@ Mind Compass AI is a modern, full-stack mental health and wellness application d
 ## 🏗️ Architecture & Technology Stack
 
 ### **Frontend**
+
 - **Core Framework**: React 19, Vite
 - **Styling**: Tailwind CSS v4, Vanilla CSS Design System
 - **Animations & Micro-interactions**: Framer Motion
@@ -31,6 +32,7 @@ Mind Compass AI is a modern, full-stack mental health and wellness application d
 - **OAuth**: `@react-oauth/google`
 
 ### **Backend**
+
 - **Web Framework**: Django 5.x, Django REST Framework (DRF)
 - **Authentication**: `djangorestframework-simplejwt`, Google OAuth2
 - **Task Queue & Async Processing**: Celery, Redis
@@ -42,7 +44,7 @@ Mind Compass AI is a modern, full-stack mental health and wellness application d
 
 ## 📁 Repository Structure
 
-```
+```text
 Mind-Compass-AI/
 ├── Backend/                      # Django REST Framework Backend
 │   ├── activities/               # Wellness library & feedback logs
@@ -90,6 +92,7 @@ Mind-Compass-AI/
 ### Prerequisites
 
 Ensure you have the following installed on your system:
+
 - **Node.js**: v18.x or higher
 - **Python**: v3.10 or higher
 - **PostgreSQL**: v14.x or higher
@@ -157,11 +160,13 @@ GROQ_API_KEY=your_groq_api_key
 ### 3. Backend Setup (Django)
 
 1. **Navigate to the Backend directory**:
+
    ```bash
    cd Backend
    ```
 
 2. **Create and activate a virtual environment**:
+
    ```bash
    # On Windows
    python -m venv .venv
@@ -173,29 +178,35 @@ GROQ_API_KEY=your_groq_api_key
    ```
 
 3. **Install Python dependencies**:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Prepare the PostgreSQL Database**:
    Create a database named `MindCompass` in PostgreSQL:
+
    ```sql
    CREATE DATABASE MindCompass;
    ```
 
 5. **Run Django Database Migrations**:
+
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
 6. **Start the Django Development Server**:
+
    ```bash
    python manage.py runserver
    ```
+
    *The backend will be running at `http://127.0.0.1:8000/`.*
 
 7. **Start Celery Worker** *(in a separate terminal window)*:
+
    ```bash
    celery -A config worker --loglevel=info
    ```
@@ -205,19 +216,23 @@ GROQ_API_KEY=your_groq_api_key
 ### 4. Frontend Setup (React + Vite)
 
 1. **Navigate to the Frontend directory**:
+
    ```bash
    cd Frontend
    ```
 
 2. **Install Node.js dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Start the Vite Development Server**:
+
    ```bash
    npm run dev
    ```
+
    *The frontend application will be running at `http://localhost:5173/`.*
 
 ---
@@ -256,6 +271,7 @@ This project is released under the **MIT License**.
 
 ---
 
+<!-- markdownlint-disable-next-line MD033 -->
 <p align="center">
   Designed & Developed with ❤️ for mental health & well-being.
 </p>
