@@ -111,13 +111,13 @@ class MoodPredictorModel:
 
     @classmethod
     def get_model(cls):
-        if not os.path.exists(MODEL_PATH):
-            cls.train_model()
-        try:
-            return joblib.load(MODEL_PATH)
-        except Exception:
-            cls.train_model()
-            return joblib.load(MODEL_PATH)
+        if os.path.exists(MODEL_PATH):
+            try:
+                return joblib.load(MODEL_PATH)
+            except Exception:
+                pass
+        return cls.train_model()
+
 
     @classmethod
     def train_model(cls):
@@ -145,7 +145,12 @@ class MoodPredictorModel:
 
         clf = RandomForestClassifier(n_estimators=150, max_depth=7, random_state=42)
         clf.fit(X, y)
-        joblib.dump(clf, MODEL_PATH)
+        try:
+            joblib.dump(clf, MODEL_PATH)
+        except Exception:
+            pass
+        return clf
+
 
     # ─────────────────────────────────────────────────────────────
     #  Main prediction entry point
