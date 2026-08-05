@@ -15,59 +15,36 @@ class RecommendationService:
     def _detect_conflict(cls, mood_log, journal_entry):
         """
         Returns (has_conflict: bool, conflict_reason: str).
-
-        Conflict is true when the mood polarity and journal polarity
-        point in strongly opposite directions under a 70/30 weighting:
-          mood_polarity    = (mood_score - 3) / 2   → [-1, +1]
-          journal_polarity = +1 (Positive) | 0 (Neutral) | -1 (Negative)
-
-        Also fires when journal emotion is explicitly negative
-        (sad/fear/lonely/overwhelmed/grief) while mood >= 4 (Happy/Excellent).
         """
         if not mood_log or not journal_entry:
             return False, ""
 
-        mood_polarity = (mood_log.mood - 3) / 2.0  # [-1, +1]
-
-        journal_polarity = 0.0
         journal_sent = ""
-        journal_emotion = ""
         if journal_entry.analysis:
             journal_sent = journal_entry.analysis.get("sentiment", "Neutral")
-            journal_emotion = (journal_entry.analysis.get("emotion") or "").lower()
 
-        if journal_sent == "Positive":
-            journal_polarity = 1.0
-        elif journal_sent == "Negative":
-            journal_polarity = -1.0
-        else:
-            # Neutral sentiment — check emotion for override
-            negative_emotions = {"sad", "sadness", "fear", "grief", "lonely", "loneliness", "overwhelmed", "hopeless"}
-            if journal_emotion in negative_emotions:
-                journal_polarity = -0.7  # treat as moderately negative
-
-        # Strong opposite directions
-        has_conflict = (
-            (mood_polarity > 0.3 and journal_polarity < -0.3) or
-            (mood_polarity < -0.3 and journal_polarity > 0.3)
-        )
-
+        mood_val = mood_log.mood
+        has_conflict = False
         conflict_reason = ""
-        if has_conflict:
-            if mood_polarity > 0 and journal_polarity < 0:
-                conflict_reason = (
-                    "Your mood selection and journal express different emotional states. "
-                    "Today's recommendation is based primarily on your journal because "
-                    "written reflections usually provide more context."
-                )
-            else:
-                conflict_reason = (
-                    "Your mood check-in indicates distress, but your journal reflects "
-                    "a more positive or hopeful tone. Today's recommendation balances both signals "
-                    "with greater weight on your journal."
-                )
+
+        # Case 2: Mood = Happy (>= 4), Journal = Negative
+        if mood_val >= 4 and journal_sent == "Negative":
+            has_conflict = True
+            conflict_reason = (
+                "Although your mood check-in indicates a positive mood, today's journal "
+                "reflects emotional distress. Recommendations are therefore based on your journal."
+            )
+
+        # Case 3: Mood = Sad (<= 2), Journal = Positive
+        elif mood_val <= 2 and journal_sent == "Positive":
+            has_conflict = True
+            conflict_reason = (
+                "Although your mood check-in suggests a difficult day, today's journal "
+                "reflects a positive emotional state. Recommendations are therefore based on your journal."
+            )
 
         return has_conflict, conflict_reason
+
 
     @classmethod
     def get_today_recommendation(cls, user, force_recalculate=False):
@@ -127,10 +104,6 @@ class RecommendationService:
                 if journal_entry.analysis:
                     journal_themes = [t.lower() for t in journal_entry.analysis.get("themes", [])]
 
-            # Define keywords for theme matching (Module 1)
-            matching_keywords = ["exam", "study", "assignments", "placement", "deadlines", "work", "relationship", "family", "sleep", "stress", "anxiety"]
-            today_matched_keywords = [kw for kw in matching_keywords if kw in today_text]
-
             # Search previous journals for similar themes in past 30 days
             past_journals = JournalEntry.objects.filter(
                 user=user,
@@ -141,15 +114,13 @@ class RecommendationService:
 
             similar_journals_count = 0
             for pj in past_journals:
-                pj_text = (pj.text or "").lower()
                 pj_themes = []
                 if pj.analysis:
                     pj_themes = [t.lower() for t in pj.analysis.get("themes", [])]
                 
                 has_theme_overlap = any(t in pj_themes for t in journal_themes) if journal_themes else False
-                has_keyword_overlap = any(kw in pj_text for kw in today_matched_keywords) if today_matched_keywords else False
                 
-                if has_theme_overlap or has_keyword_overlap:
+                if has_theme_overlap:
                     similar_journals_count += 1
 
             # Search EmotionAnalysis (Module 4 request)
@@ -174,37 +145,35 @@ class RecommendationService:
         if not activities:
             return None
 
-        # Check Case A: User has positive mood, positive journal, low stress, good sleep, stable energy
-        is_case_a = False
-        if not is_quick and mood_log:
-            val_sleep = float(mood_log.sleep or 7.0)
-            is_journal_positive_or_neutral = True
-            if journal_entry and journal_entry.analysis:
-                sent = journal_entry.analysis.get("sentiment", "Neutral")
-                themes = [t.lower() for t in journal_entry.analysis.get("themes", [])]
-                has_negative_themes = any(t in ["loneliness", "lonely", "sad", "sadness", "stress", "anxiety", "depression", "overwhelmed"] for t in themes)
-                if sent == "Negative" or has_negative_themes:
-                    is_journal_positive_or_neutral = False
-            elif journal_entry:
-                is_journal_positive_or_neutral = False
+        # Evaluate conflict, Case 1, Case 3, and Wellness conditions
+        has_conflict, conflict_reason = False, ""
+        is_case_1 = False
+        is_case_3 = False
+        is_wellness_only = False
 
-            if (mood_log.mood >= 4 and 
-                mood_log.stress <= 3 and 
-                val_sleep >= 7.0 and 
-                mood_log.energy >= 3 and 
-                is_journal_positive_or_neutral):
-                is_case_a = True
+        if mood_log:
+            journal_sent = ""
+            if not is_quick and journal_entry and journal_entry.analysis:
+                journal_sent = journal_entry.analysis.get("sentiment", "Neutral")
 
-        if is_case_a:
+            has_conflict, conflict_reason = cls._detect_conflict(mood_log, journal_entry) if not is_quick else (False, "")
+
+            if not is_quick:
+                if mood_log.mood >= 4 and journal_sent == "Positive":
+                    is_case_1 = True
+                    is_wellness_only = True
+                elif mood_log.mood <= 2 and journal_sent == "Positive":
+                    is_case_3 = True
+                    is_wellness_only = True
+            else:
+                if mood_log.mood >= 4:
+                    is_wellness_only = True
+
+        if is_wellness_only:
             wellness_ids = ['act-17', 'act-10', 'act-25', 'act-8', 'act-6', 'act-18', 'act-19', 'act-26', 'act-37', 'act-11', 'act-5']
             activities = [act for act in activities if act.id in wellness_ids]
 
-        # ── Conflict detection (70% journal / 30% mood) ──────────────
-        has_conflict, conflict_reason = cls._detect_conflict(mood_log, journal_entry) if not is_quick else (False, "")
-
         # ── Clinical target routing ───────────────────────────────────
-        # When has_conflict, journal takes priority — suppress mood>=4 positive path.
-        # Instead route via journal/distress signals (sentiment, emotion, themes).
         target_override_id = None
         target_reason = "A mindful breathing slot to reset your core focus."
 
@@ -215,39 +184,51 @@ class RecommendationService:
             mood = mood_log.mood
             notes = (mood_log.notes or "").lower()
 
-            if stress >= 7:
-                target_override_id = 'act-1'
-                target_reason = "Suggested because your stress level today is high. Box breathing promotes immediate physiological calm."
-            elif energy <= 3:
-                target_override_id = 'act-37'
-                target_reason = "Suggested because your energy levels are low. A somatic release helps discharge physical fatigue."
-            elif sleep < 6.0:
-                target_override_id = 'act-15'
-                target_reason = "Suggested because you logged less than 6 hours of sleep. A sleep protocol helps optimize rest quality."
-            elif mood <= 2 or "worry" in notes or "anxious" in notes or "stuck" in notes:
-                target_override_id = 'act-33'
-                target_reason = "Suggested because you are feeling down or anxious. The 5-4-3-2-1 grounding technique breaks cycles of overthinking."
-            elif mood >= 4 and not has_conflict:
-                # Only recommend gratitude/positive path when mood and journal AGREE it's positive
+            if is_case_1:
                 target_override_id = 'act-17'
                 target_reason = "Suggested because your mood is excellent. Practicing gratitude amplifies current positive emotions."
-            elif mood >= 4 and has_conflict:
-                # Journal says something negative despite high mood — route via journal distress
-                j_sent = journal_entry.analysis.get("sentiment", "Neutral") if journal_entry and journal_entry.analysis else "Neutral"
-                j_emotion = (journal_entry.analysis.get("emotion") or "").lower() if journal_entry and journal_entry.analysis else ""
-                j_themes_lower = [t.lower() for t in journal_themes]
-                if j_emotion in ["anxiety", "stress", "fear", "overwhelmed", "frustrated"] or any(t in j_themes_lower for t in ["stress", "anxiety", "pressure", "work", "exam"]):
+            elif is_case_3:
+                target_override_id = 'act-10'
+                target_reason = "Suggested because you reported a positive journal reflection."
+            else:
+                from ai.utils.preprocessing import analyze_text_nlp
+                notes_analysis = analyze_text_nlp(notes) if notes else None
+                has_negative_notes_emotion = notes_analysis and notes_analysis["primary_emotion"] in [
+                    "Sad", "Angry", "Fear", "Anxiety", "Stress", "Frustrated", "Lonely", "Overwhelmed"
+                ]
+                has_negative_notes_sentiment = notes_analysis and notes_analysis["sentiment"] == "Negative"
+
+                if stress >= 7:
                     target_override_id = 'act-1'
-                    target_reason = "Although your mood check-in was positive, your journal indicates stress or anxiety. Box breathing helps regulate the nervous system."
-                elif j_emotion in ["sad", "sadness", "grief", "lonely", "loneliness", "hopeless"] or any(t in j_themes_lower for t in ["loneliness", "lonely", "sadness"]):
+                    target_reason = "Suggested because your stress level today is high. Box breathing promotes immediate physiological calm."
+                elif energy <= 3:
+                    target_override_id = 'act-37'
+                    target_reason = "Suggested because your energy levels are low. A somatic release helps discharge physical fatigue."
+                elif sleep < 6.0:
+                    target_override_id = 'act-15'
+                    target_reason = "Suggested because you logged less than 6 hours of sleep. A sleep protocol helps optimize rest quality."
+                elif mood <= 2 or has_negative_notes_emotion or has_negative_notes_sentiment:
                     target_override_id = 'act-33'
-                    target_reason = "Although your mood check-in was positive, your journal indicates emotional distress. Grounding helps break cycles of sadness."
-                else:
-                    target_override_id = 'act-12'
-                    target_reason = "Your check-in and journal reflect mixed signals. A mindful breathing exercise helps create space for emotional clarity."
+                    target_reason = "Suggested because you are feeling down or anxious. The 5-4-3-2-1 grounding technique breaks cycles of overthinking."
+                elif mood >= 4 and not has_conflict:
+                    target_override_id = 'act-17'
+                    target_reason = "Suggested because your mood is excellent. Practicing gratitude amplifies current positive emotions."
+                elif mood >= 4 and has_conflict:
+                    j_sent = journal_entry.analysis.get("sentiment", "Neutral") if journal_entry and journal_entry.analysis else "Neutral"
+                    j_emotion = (journal_entry.analysis.get("emotion") or "").lower() if journal_entry and journal_entry.analysis else ""
+                    j_themes_lower = [t.lower() for t in journal_themes]
+                    if j_emotion in ["anxiety", "stress", "fear", "overwhelmed", "frustrated"] or any(t in j_themes_lower for t in ["stress", "anxiety", "pressure", "work", "exam"]):
+                        target_override_id = 'act-1'
+                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
+                    elif j_emotion in ["sad", "sadness", "grief", "lonely", "loneliness", "hopeless"] or any(t in j_themes_lower for t in ["loneliness", "lonely", "sadness"]):
+                        target_override_id = 'act-33'
+                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
+                    else:
+                        target_override_id = 'act-12'
+                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
 
         # If no acute mood override, fall back to assessment goals
-        if not target_override_id and goals:
+        if not target_override_id and goals and not is_wellness_only:
             if any(word in g for g in goals for word in ["sleep", "insomnia", "rest"]):
                 target_override_id = 'act-16'
                 target_reason = "Recommended based on your goal to improve sleep quality."
@@ -304,20 +285,20 @@ class RecommendationService:
             desc_lower = act.description.lower()
             
             matched_themes_activity = []
-            for theme in journal_themes:
+            journal_themes_lower = [t.lower() for t in journal_themes]
+            for theme in journal_themes_lower:
                 if theme in category_lower or theme in title_lower or theme in desc_lower:
                     matched_themes_activity.append(theme)
-            for kw in today_matched_keywords:
-                if kw in ["exam", "study", "assignments", "placement", "deadlines"] and act.id in ["act-1", "act-2", "act-8", "act-12"]:
-                    matched_themes_activity.append(kw)
-                if kw in ["work", "deadlines"] and act.id in ["act-25", "act-26", "act-35", "act-36"]:
-                    matched_themes_activity.append(kw)
-                if kw in ["sleep"] and act.id in ["act-14", "act-15", "act-16"]:
-                    matched_themes_activity.append(kw)
-                if kw in ["relationship", "family"] and act.id in ["act-6", "act-18", "act-49", "act-50"]:
-                    matched_themes_activity.append(kw)
+                if theme in ["exam", "study", "assignments", "placement", "deadlines"] and act.id in ["act-1", "act-2", "act-8", "act-12"]:
+                    matched_themes_activity.append(theme)
+                if theme in ["work", "deadlines"] and act.id in ["act-25", "act-26", "act-35", "act-36"]:
+                    matched_themes_activity.append(theme)
+                if theme in ["sleep"] and act.id in ["act-14", "act-15", "act-16"]:
+                    matched_themes_activity.append(theme)
+                if theme in ["relationship", "family"] and act.id in ["act-6", "act-18", "act-49", "act-50"]:
+                    matched_themes_activity.append(theme)
 
-            # Check EmotionAnalysis (Module 4 request)
+            # Check EmotionAnalysis
             has_matching_emotion = False
             for emotion in recent_primary_emotions:
                 if emotion in ["sad", "lonely", "grief"] and ("gratitude" in category_lower or "relaxation" in category_lower):
@@ -364,7 +345,8 @@ class RecommendationService:
                     else:
                         theme_reasons.append(f"Similar {matched_themes_activity[0]}-related stress was detected {similar_journals_count} times previously.")
                 else:
-                    theme_reasons.append(f"Your journal indicates {matched_themes_activity[0]}-related stress.")
+                    # Non-implied theme matching (avoid auto workplace stress statements)
+                    theme_reasons.append(f"Your journal indicates {matched_themes_activity[0]}-related concerns.")
             
             if avg_impr is not None:
                 if avg_impr >= 1.5:
@@ -404,7 +386,6 @@ class RecommendationService:
             total_score = max(1.0, total_score)
             
             activity_scores[act] = total_score
-
             
             # Combine point explanations
             all_reasons = []
@@ -413,7 +394,7 @@ class RecommendationService:
             all_reasons.extend(success_reasons)
             all_reasons.extend(feedback_reasons)
             if not all_reasons:
-                all_reasons.append(f"Recommended tool to support your goals and maintain emotional stability.")
+                all_reasons.append(f"Recommended tool to support your goals.")
             
             reasons_map[act] = all_reasons
 
@@ -423,7 +404,6 @@ class RecommendationService:
         
         confidence_val = min(0.99, max(0.50, top_score / 100.0))
         
-        # Save recommendation with deep history metadata
         rec_theme = ", ".join(journal_themes) if journal_themes else ""
         rec_trigger = today_text[:200] if today_text else ""
 
@@ -438,160 +418,298 @@ class RecommendationService:
             success_rate_str = None
 
         # Build explanation sentences dynamically based ONLY on factors that actually contributed
-        theme_sentences = []
-        emotion_sentences = []
-        mood_sentences = []
-        journal_sentences = []
-        fit_sentences = []
-        history_sentences = []
-        success_sentences = []
-
-        category_lower = selected_act.category.lower()
-        title_lower = selected_act.title.lower()
-        desc_lower = selected_act.description.lower()
-
-        # Check theme/keyword activations for activity-specific context fits
-        has_sleep_theme = any(t in ["sleep", "insomnia", "rest"] for t in journal_themes) or (mood_log and float(mood_log.sleep or 7.0) < 6.0)
-        has_lonely_theme = any(t in ["lonely", "loneliness", "isolation"] for t in journal_themes) or (today_text and any(w in today_text.lower() for w in ["alone", "lonely", "loneliness"]))
-        has_stress_theme = any(t in ["exam", "study", "work", "pressure", "academic", "job"] for t in journal_themes) or (mood_log and mood_log.stress >= 7)
-
-        # 1. Today's detected themes (Highest priority)
-        if not is_quick and journal_themes:
-            for theme in journal_themes:
-                theme_lower = theme.lower().strip()
-                if "loneliness" in theme_lower or "lonely" in theme_lower:
-                    theme_sentences.append("Today's journal indicates feelings of loneliness.")
-                elif "exam" in theme_lower or "study" in theme_lower or "academic" in theme_lower or "pressure" in theme_lower:
-                    theme_sentences.append("Today's journal indicates academic stress.")
-                elif "work" in theme_lower or "job" in theme_lower or "career" in theme_lower:
-                    theme_sentences.append("Today's journal indicates workplace stress.")
-                elif "relationship" in theme_lower or "family" in theme_lower or "interpersonal" in theme_lower:
-                    theme_sentences.append("Today's journal indicates relational stress.")
-                elif "sleep" in theme_lower or "insomnia" in theme_lower or "rest" in theme_lower:
-                    theme_sentences.append("Today's journal indicates sleep difficulties.")
-                else:
-                    theme_sentences.append(f"Today's journal indicates {theme_lower}-related concerns.")
-
-        # 2. Today's detected emotions (Only if contributing / relevant)
-        if not is_quick and journal_entry and journal_entry.analysis:
-            today_emotion = journal_entry.analysis.get("emotion")
-            if today_emotion:
-                emo_lower = today_emotion.lower().strip()
-                if emo_lower in ["anxiety", "stress", "fear", "overwhelmed", "frustrated"] and category_lower in ["breathing", "mindfulness", "grounding", "somatic", "stress management"]:
-                    emotion_sentences.append(f"Emotion analysis detected feelings of {emo_lower} today.")
-                elif emo_lower in ["sadness", "sad", "lonely", "loneliness", "grief"] and category_lower in ["gratitude", "mindfulness", "relaxation"]:
-                    emotion_sentences.append(f"Emotion analysis highlighted feelings of {emo_lower} today.")
-
-        # 3. Today's mood check-in values
-        if mood_log:
-            if selected_act.id == target_override_id:
-                if mood_log.stress >= 7:
-                    mood_sentences.append("Suggested because your stress level today is high.")
-                elif mood_log.energy <= 3:
-                    mood_sentences.append("Suggested because your energy levels are low.")
-                elif float(mood_log.sleep or 7.0) < 6.0:
-                    mood_sentences.append("Reduced sleep was detected during today's check-in.")
-                elif mood_log.mood <= 2 or any(w in (mood_log.notes or "").lower() for w in ["worry", "anxious", "stuck"]):
-                    mood_sentences.append("Suggested because you are feeling down or anxious.")
-                elif mood_log.mood >= 4:
-                    mood_sentences.append("Suggested because your mood is excellent.")
-            else:
-                if mood_log.stress >= 7:
-                    mood_sentences.append("High stress levels were detected in today's check-in.")
-                if float(mood_log.sleep or 7.0) < 6.0:
-                    mood_sentences.append("Reduced sleep was detected during today's check-in.")
-                if mood_log.energy <= 3:
-                    mood_sentences.append("Low energy levels were noted in today's check-in.")
-                if mood_log.mood <= 2:
-                    mood_sentences.append("Low mood was detected in today's check-in.")
-                elif mood_log.mood >= 4:
-                    mood_sentences.append("Positive mood was highlighted in today's check-in.")
-
-        # 4. Today's journal text keywords
-        if not is_quick and today_text:
-            text_lower = today_text.lower()
-            if "exam" in text_lower and not any("academic" in s for s in theme_sentences):
-                journal_sentences.append("Journal references upcoming academic deadlines.")
-            elif "work" in text_lower and not any("workplace" in s for s in theme_sentences):
-                journal_sentences.append("Journal mentions work-related stress factors.")
-            elif "alone" in text_lower and not any("loneliness" in s for s in theme_sentences):
-                journal_sentences.append("Journal text references feeling isolated or wanting to be alone.")
-            elif "sleep" in text_lower and not any("sleep" in s for s in theme_sentences):
-                journal_sentences.append("Journal references difficulty sleeping or wakefulness last night.")
-
-        # 5. Activity-specific fit explanation
+        reasons_list = []
+        
+        # 1. Conflict Explanation (Rule 4)
+        if has_conflict and conflict_reason:
+            reasons_list.append(conflict_reason)
+            
+        # 2. Activity Justification
         act_id = selected_act.id
-        if "cognitive shuffle" in title_lower or act_id == "act-13":
-            fit_sentences.append("Cognitive Shuffle interrupts repetitive thoughts, reduces mental rumination, and prepares the mind for sleep.")
-        elif act_id == "act-3" or "alternate nostril" in title_lower:
-            if has_lonely_theme:
-                fit_sentences.append("Alternate Nostril Breathing promotes calmness and emotional regulation during periods of isolation.")
+        title = selected_act.title
+        category = selected_act.category.lower()
+        
+        # Analyze journal emotions/topics if available (and not quick recommender)
+        journal_pos = False
+        journal_neg = False
+        journal_distress = False
+        journal_topics = []
+        journal_emotions = []
+        sentences = []
+        has_sad_sent = has_anx_sent = has_stress_sent = has_lonely_sent = has_overwhelmed_sent = has_exhausted_sent = False
+        
+        if not is_quick and journal_entry:
+            sentences = []
+            if journal_entry.analysis:
+                sentences = journal_entry.analysis.get("sentences", [])
+            if not isinstance(sentences, list):
+                sentences = []
+            if not sentences and journal_entry.text:
+                from ai.utils.preprocessing import analyze_text_nlp
+                try:
+                    sentences = analyze_text_nlp(journal_entry.text).get("sentences", [])
+                except Exception:
+                    sentences = []
+            if not isinstance(sentences, list):
+                sentences = []
+                
+            # Collect topics and emotions
+            for s in sentences:
+                if isinstance(s, dict):
+                    for t in s.get("topics", []):
+                        journal_topics.append(t.lower())
+                    if s.get("emotion"):
+                        journal_emotions.append(s.get("emotion"))
+                    if s.get("sentiment") == "Negative" or s.get("status") == "distress":
+                        journal_distress = True
+            
+            # Determine if journal is positive or negative
+            if journal_entry.analysis:
+                j_sentiment = journal_entry.analysis.get("sentiment", "Neutral")
+                # Fallback if themes are defined without sentences
+                if not journal_topics and "themes" in journal_entry.analysis:
+                    for theme in journal_entry.analysis.get("themes", []):
+                        journal_topics.append(theme.lower())
             else:
-                fit_sentences.append("Alternate Nostril Breathing promotes emotional balance, mental calmness, and nervous system regulation.")
-        elif act_id == "act-1" or "box breathing" in title_lower:
-            fit_sentences.append("Box Breathing helps regulate acute stress and anxiety.")
-        elif act_id == "act-2" or "4-7-8" in title_lower:
-            fit_sentences.append("4-7-8 Breathing supports relaxation and sleep preparation.")
-        elif act_id == "act-10" or "mindful walk" in title_lower or act_id == "act-26":
-            fit_sentences.append("Mindful Walking is useful during loneliness, emotional fatigue, and mental overload.")
-        elif act_id == "act-12" or "breathing space" in title_lower:
-            fit_sentences.append("A brief breathing space halts automatic stress reactions.")
-        elif act_id == "act-33" or "grounding" in title_lower or "5-4-3-2-1" in title_lower or act_id == "act-34":
-            fit_sentences.append("Grounding exercises reduce anxiety and overthinking.")
-        else:
-            if category_lower == "breathing":
-                fit_sentences.append("This paced breathing exercise targets the nervous system to restore mental clarity.")
-            elif category_lower == "mindfulness":
-                fit_sentences.append("Mindfulness practices train you to anchor attention in the present moment, calming overactivity.")
-            elif category_lower == "sleep hygiene":
-                fit_sentences.append("Structuring evening routines supports healthy circadian alignment and natural sleep onset.")
-            elif category_lower == "gratitude":
-                fit_sentences.append("Practicing gratitude trains the brain to recognize positive aspects of daily life.")
-            elif category_lower == "stress management":
-                fit_sentences.append("Stress reduction techniques help release mental tension and physical tightness.")
+                j_sentiment = "Neutral"
+            if j_sentiment == "Positive":
+                journal_pos = True
+            elif j_sentiment == "Negative" or journal_distress:
+                journal_neg = True
+                
+        # Gather check-in evidence summary
+        mood_check_aspects = []
+        if mood_log:
+            if mood_log.mood <= 2:
+                mood_check_aspects.append("low mood")
+            elif mood_log.mood >= 4:
+                if mood_log.mood >= 5:
+                    mood_check_aspects.append("that your mood is excellent")
+                else:
+                    mood_check_aspects.append("a positive mood")
+            
+            if mood_log.stress >= 7:
+                mood_check_aspects.append("elevated stress levels")
+            if mood_log.energy <= 3:
+                mood_check_aspects.append("low energy levels")
+            if mood_log.sleep is not None and float(mood_log.sleep) < 6.0:
+                val_fmt_sleep = val_fmt(mood_log.sleep)
+                mood_check_aspects.append(f"short sleep duration of {val_fmt_sleep} hours")
 
-        # 6. Historical journal matches
+        if mood_check_aspects:
+            if len(mood_check_aspects) == 1:
+                reasons_list.append(f"Today's mood check-in reflects {mood_check_aspects[0]}.")
+            elif len(mood_check_aspects) == 2:
+                reasons_list.append(f"Today's mood check-in reflects {mood_check_aspects[0]} and {mood_check_aspects[1]}.")
+            else:
+                reasons_list.append(f"Today's mood check-in reflects {', '.join(mood_check_aspects[:-1])}, and {mood_check_aspects[-1]}.")
+
+        # Gather journal evidence summary
+        if not is_quick and journal_entry:
+            # Check for study topic
+            journal_items = []
+            if "study" in journal_topics or "exam" in journal_topics or "exams" in journal_topics:
+                has_academic_distress = journal_neg or (mood_log and mood_log.stress >= 7)
+                if has_academic_distress:
+                    if any(w in journal_entry.text.lower() for w in ["academic", "exam", "midterm", "final", "grade"]):
+                        journal_items.append("academic stress")
+                    else:
+                        journal_items.append("study-related stress")
+                else:
+                    journal_items.append("studies")
+                    
+            if "work" in journal_topics or "career" in journal_topics:
+                has_work_distress = journal_neg or (mood_log and mood_log.stress >= 7)
+                if has_work_distress:
+                    if "workplace" in journal_entry.text.lower():
+                        journal_items.append("workplace stress")
+                    else:
+                        journal_items.append("work-related stress")
+                else:
+                    journal_items.append("work")
+                    
+            if "family" in journal_topics:
+                has_family_distress = journal_neg or (mood_log and mood_log.stress >= 7)
+                if has_family_distress:
+                    journal_items.append("family concerns")
+                else:
+                    journal_items.append("family time")
+                    
+            if "friends" in journal_topics:
+                journal_items.append("interactions with friends")
+                
+            if "exercise" in journal_topics:
+                journal_items.append("physical activity")
+                
+            if "sleep" in journal_topics:
+                has_sleep_distress = journal_neg or (mood_log and float(mood_log.sleep or 7.0) < 6.0)
+                if has_sleep_distress:
+                    journal_items.append("difficulty relaxing before sleep")
+                else:
+                    journal_items.append("sleep patterns")
+                    
+            # Emotions
+            if has_sad_sent or "Sad" in journal_emotions:
+                journal_items.append("sadness")
+            if has_anx_sent or "Anxiety" in journal_emotions:
+                journal_items.append("findings of anxiety and anxious thoughts")
+            if has_stress_sent or "Stress" in journal_emotions:
+                journal_items.append("stressful thoughts")
+            if has_lonely_sent or "Lonely" in journal_emotions:
+                journal_items.append("loneliness")
+            if has_overwhelmed_sent or "Overwhelmed" in journal_emotions:
+                journal_items.append("feeling overwhelmed")
+            if has_exhausted_sent or "Emotionally exhausted" in journal_emotions:
+                journal_items.append("emotional exhaustion")
+
+            if journal_items:
+                concern_keywords = ["stress", "concerns", "difficulty", "sadness", "anxiety", "anxious", "loneliness", "overwhelmed", "exhaustion"]
+                has_concerns = any(any(cw in ji for cw in concern_keywords) for ji in journal_items)
+                
+                if len(journal_items) == 1:
+                    item = journal_items[0]
+                    if has_concerns:
+                        journal_sentence = f"Today's journal indicates {item}."
+                    else:
+                        journal_sentence = f"Today's journal describes notes regarding {item}."
+                elif len(journal_items) == 2:
+                    item1, item2 = journal_items[0], journal_items[1]
+                    if has_concerns:
+                        journal_sentence = f"Today's journal highlights {item1} alongside {item2}."
+                    else:
+                        journal_sentence = f"Today's journal reflects positive elements of {item1} and {item2}."
+                else:
+                    first_part = ", ".join(journal_items[:-1])
+                    last_part = journal_items[-1]
+                    if has_concerns:
+                        journal_sentence = f"Today's journal expresses details of {first_part}, along with {last_part}."
+                    else:
+                        journal_sentence = f"Today's journal reflects positive experiences involving {first_part}, and {last_part}."
+                        
+                reasons_list.append(journal_sentence)
+
+        # 3. Build Activity Justification (explicitly connecting today's state)
+        mood_details = []
+        if mood_log:
+            if mood_log.mood <= 2:
+                mood_details.append("a low mood")
+            elif mood_log.mood >= 5:
+                mood_details.append("that your mood is excellent")
+            elif mood_log.mood >= 4:
+                mood_details.append("a positive mood")
+            if mood_log.stress >= 7:
+                mood_details.append("elevated stress")
+            if mood_log.energy <= 3:
+                mood_details.append("decreased energy levels")
+                
+        mood_str = " and ".join(mood_details[:2]) if mood_details else ""
+        
+        journal_details = []
+        if not is_quick and journal_entry:
+            present_em_list = []
+            if has_sad_sent or "Sad" in journal_emotions: present_em_list.append("sadness")
+            if has_anx_sent or "Anxiety" in journal_emotions: present_em_list.append("anxious thoughts")
+            if has_stress_sent or "Stress" in journal_emotions: present_em_list.append("stress")
+            if has_lonely_sent or "Lonely" in journal_emotions: present_em_list.append("loneliness")
+            if has_overwhelmed_sent or "Overwhelmed" in journal_emotions: present_em_list.append("feeling overwhelmed")
+            if has_exhausted_sent or "Emotionally exhausted" in journal_emotions: present_em_list.append("emotional exhaustion")
+            
+            if present_em_list:
+                journal_details.append(f"feelings of {' and '.join(present_em_list[:2])}")
+            if journal_topics:
+                natural_topics = []
+                for t in journal_topics:
+                    if t == "study" or t == "exam" or t == "exams":
+                        natural_topics.append("academic studies")
+                    elif t == "work" or t == "career":
+                        natural_topics.append("work demands")
+                    elif t == "family":
+                        natural_topics.append("family relationships")
+                    elif t == "friends":
+                        natural_topics.append("social connections")
+                    elif t == "exercise":
+                        natural_topics.append("exercise")
+                if natural_topics:
+                    journal_details.append(f"topics concerning {', '.join(natural_topics[:2])}")
+                    
+        journal_str = " alongside ".join(journal_details[:2]) if journal_details else ""
+        
+        conflict_str = "an emotional conflict between check-in states and written reflections" if has_conflict else ""
+        
+        connection_parts = []
+        if mood_str:
+            connection_parts.append(f"today's mood check-in indicates {mood_str}")
+        if journal_str:
+            connection_parts.append(f"today's journal describes {journal_str}")
+        if conflict_str:
+            connection_parts.append(f"there is {conflict_str}")
+            
+        if len(connection_parts) == 1:
+            state_summary = connection_parts[0]
+        elif len(connection_parts) == 2:
+            state_summary = f"{connection_parts[0]} and {connection_parts[1]}"
+        elif len(connection_parts) >= 3:
+            state_summary = f"{connection_parts[0]}, {connection_parts[1]}, and {connection_parts[2]}"
+        else:
+            state_summary = "your logs suggest a neutral state"
+            
+        justification = ""
+        # Let's map explanations to each activity class using natural language
+        if act_id == "act-1": # Box Breathing
+            justification = f"Box Breathing was selected because {state_summary}. Paced breathing directly targets autonomic regulation to restore mental clarity and reduce acute stress."
+        elif act_id == "act-37": # Somatic Shakeout
+            justification = f"Somatic Shakeout was selected because {state_summary}. Active physical movement helps release bodily stress and boost physical energy."
+        elif act_id in ["act-15", "act-16", "act-14"] or category == "sleep hygiene":
+            justification = f"{title} was selected because {state_summary}. Structuring your evening routine reduces repetitive thoughts before bed to support natural sleep onset."
+        elif act_id in ["act-33", "act-34"] or category == "grounding":
+            justification = f"{title} was selected because {state_summary}. Shifting focus to immediate sensory inputs helps anchor your attention and stop emotional overthinking."
+        elif act_id == "act-12" or category == "mindfulness":
+            justification = f"{title} was selected because {state_summary}. This mindful breathing exercise helps you pause and break automatic stress responses."
+        elif act_id == "act-17" or category == "gratitude":
+            justification = f"Three Good Things was selected because {state_summary}. Reflecting on positive events amplifies gratitude and reinforces emotional wellbeing."
+        elif act_id == "act-10" or act_id == "act-26" or "walk" in title.lower():
+            justification = f"Mindful Walking was selected because {state_summary}. Light movement and grounding help maintain your current wellbeing."
+        else:
+            if category == "breathing":
+                justification = f"{title} was selected because {state_summary}. Paced breathing regulates your nervous system to calm emotional activity."
+            elif category == "mindfulness":
+                justification = f"{title} was selected because {state_summary}. Grounding observations regulate anxiety and bring focus."
+            elif category == "sleep hygiene":
+                justification = f"{title} was selected because {state_summary}. A relaxing bedtime routine supports healthy circadian rest."
+            elif category == "gratitude":
+                justification = f"{title} was selected because {state_summary}. Reflecting on positive daily elements encourages wellbeing."
+            elif category == "stress management":
+                justification = f"{title} was selected because {state_summary}. Relaxing activities support down-regulation of stress."
+            else:
+                justification = f"{title} was selected because {state_summary}. This activity helps release both physical and mental tension."
+
+        # 4. Append historical context and success rate if present
         if not is_quick and similar_journals_count > 0:
             if similar_journals_count == 1:
-                history_sentences.append("1 journal match was found previously.")
+                reasons_list.append("1 journal match was found previously.")
             else:
-                history_sentences.append(f"{similar_journals_count} journal matches were found previously.")
-
-        # 7. Previous successful activity history
+                reasons_list.append(f"{similar_journals_count} journal matches were found previously.")
+ 
         if total_p > 0:
             if act_id == "act-1":
-                success_sentences.append("Box Breathing has helped reduce stress during similar situations.")
+                reasons_list.append("Box Breathing has helped reduce stress during similar situations in your history.")
             elif act_id == "act-2":
-                success_sentences.append("4-7-8 Breathing is a proven tool to help you unwind and prepare for rest.")
+                reasons_list.append("4-7-8 Breathing is a proven tool in your history to help you unwind and prepare for rest.")
             elif act_id == "act-10":
-                success_sentences.append("Mindful Walking has previously helped refresh your mood and outlook.")
+                reasons_list.append("Mindful Walking has previously helped refresh your mood and outlook.")
             else:
-                success_sentences.append(f"{selected_act.title} previously helped improve your mood.")
+                reasons_list.append(f"{title} previously helped improve your mood.")
             
             if success_rate_str:
-                success_sentences.append(f"Previous success rate: {success_rate_str}.")
+                reasons_list.append(f"Previous success rate: {success_rate_str}.")
+ 
+        fbs_list = ActivityFeedback.objects.filter(user=user, activity=selected_act)
+        if fbs_list.exists():
+            avg_satisfaction = sum(f.satisfaction for f in fbs_list) / fbs_list.count()
+            reasons_list.append(f"You rated this activity {int(avg_satisfaction)}/5 recently.")
 
-        # Include average satisfaction rating from ActivityFeedback if it exists
-        fbs = ActivityFeedback.objects.filter(user=user, activity=selected_act)
-        if fbs.exists():
-            avg_satisfaction = sum(f.satisfaction for f in fbs) / fbs.count()
-            success_sentences.append(f"You rated this activity {int(avg_satisfaction)}/5 recently.")
-
-        # Assemble in strict priority order
-        reasons_list = []
-        if is_case_a:
-            reasons_list.append("You're doing well today. No therapeutic activity is needed today. If you'd like to continue building healthy habits, you can explore an optional wellness activity.")
-        else:
-            detected_today = []
-            detected_today.extend(theme_sentences)
-            detected_today.extend(emotion_sentences)
-            detected_today.extend(mood_sentences)
-            detected_today.extend(journal_sentences)
-
-            reasons_list.extend(detected_today)
-            reasons_list.extend(fit_sentences)
-            reasons_list.extend(history_sentences)
-            reasons_list.extend(success_sentences)
+        # Always append activity justification at the end!
+        reasons_list.append(justification)
 
         if not reasons_list:
             reasons_list.append("Recommended to support your wellness goals.")
@@ -599,8 +717,11 @@ class RecommendationService:
         rectype = 'complete'
         if is_quick:
             rectype = 'quick'
-        elif is_case_a:
+        elif is_wellness_only:
             rectype = 'wellness'
+
+        # Generate recommendation's independent personal suggestion
+        daily_suggestion = cls._generate_suggestion(journal_entry, mood_log)
 
         rec = Recommendation.objects.create(
             user=user,
@@ -616,12 +737,107 @@ class RecommendationService:
             reasons_list=reasons_list,
             rec_type=rectype,
             historical_matches=similar_journals_count if not is_quick else 0,
-            success_rate=success_rate_str
+            success_rate=success_rate_str,
+            daily_suggestion=daily_suggestion
         )
-        # Attach conflict metadata as transient attributes (not stored in DB)
         rec._has_conflict = has_conflict
         rec._conflict_reason = conflict_reason
         return rec
+
+    @classmethod
+    def _generate_suggestion(cls, journal_entry, mood_log=None):
+        text_lower = journal_entry.text.lower() if (journal_entry and journal_entry.text) else ""
+        
+        # 1. Determine topics
+        detected_topics = set()
+        if journal_entry and journal_entry.analysis:
+            sentences = journal_entry.analysis.get("sentences", [])
+            if isinstance(sentences, list):
+                for s in sentences:
+                    if isinstance(s, dict):
+                        for topic in s.get("topics", []):
+                            detected_topics.add(topic.lower())
+            
+            # Fallback to themes if sentences is empty
+            if not detected_topics and "themes" in journal_entry.analysis:
+                for theme in journal_entry.analysis.get("themes", []):
+                    detected_topics.add(theme.lower())
+                    
+        # If no journal text or no detected topics, use fallback suggestions
+        if not text_lower or not detected_topics:
+            mood_val = mood_log.mood if mood_log else 3
+            if mood_val <= 2:
+                return "Take a short mindful walk."
+            elif mood_val >= 4:
+                return "Continue your healthy routine."
+            elif mood_log and float(mood_log.sleep or 7.0) < 6.0:
+                return "Take a few minutes to relax today."
+            else:
+                return "Stay hydrated today."
+                
+        # Primary topic determination
+        has_work = "work" in detected_topics or "career" in detected_topics
+        has_sleep = "sleep" in detected_topics
+        has_study = "study" in detected_topics or "exam" in detected_topics or "exams" in detected_topics
+        has_family = "family" in detected_topics
+        has_friends = "friends" in detected_topics
+        has_exercise = "exercise" in detected_topics
+        
+        # 2. Topic-based suggestion logic with priority on primary emotional issue
+        
+        # Work + Sleep Co-occurrence
+        if has_work and has_sleep:
+            if any(w in text_lower for w in ["thinking", "worry", "worried", "deadline", "task", "night", "bed", "sleep", "mind"]):
+                if any(w in text_lower for w in ["task", "priority", "finish"]):
+                    return "Finish your highest-priority task first tomorrow."
+                elif any(w in text_lower for w in ["deadline", "late", "evening"]):
+                    return "Avoid continuing work immediately before bedtime."
+                else:
+                    return "Write tomorrow's task list before bed."
+            
+        # Work only
+        if has_work:
+            if any(w in text_lower for w in ["break", "hour", "session", "continuous", "interval"]):
+                return "Take short breaks between work sessions."
+            elif any(w in text_lower for w in ["task", "priority", "tomorrow", "plan"]):
+                return "Plan tomorrow's highest-priority task before ending today's work."
+            else:
+                return "Maintain a healthy work-life balance."
+                
+        # Sleep only
+        if has_sleep:
+            if any(w in text_lower for w in ["screen", "phone", "tv", "laptop", "device"]):
+                return "Avoid screens before sleeping."
+            elif any(w in text_lower for w in ["thinking", "worry", "thought", "mind", "tomorrow"]):
+                return "Write tomorrow's tasks before bed to reduce bedtime overthinking."
+            else:
+                return "Follow a relaxing bedtime routine tonight."
+                
+        # Family
+        if has_family:
+            return "Continue spending quality time with your family this week."
+            
+        # Friends
+        if has_friends:
+            return "Stay connected with your friends this week."
+            
+        # Study
+        if has_study:
+            return "Continue taking regular study breaks to maintain focus."
+            
+        # Exercise
+        if has_exercise:
+            return "Maintain your exercise routine."
+            
+        # Fallback suggestions if topics don't map to specified lists
+        mood_val = mood_log.mood if mood_log else 3
+        if mood_val <= 2:
+            return "Take a short mindful walk."
+        elif mood_val >= 4:
+            return "Continue your healthy routine."
+        else:
+            return "Take a few minutes to relax today."
+
 
     @classmethod
     def get_recommendation_history(cls, user):

@@ -363,6 +363,12 @@ export const Dashboard = () => {
                                                 )}
                                             </ul>
                                         </div>
+                                        {recommendation?.daily_suggestion && (
+                                            <div className="p-4 bg-indigo-500/10 border border-indigo-500/15 dark:bg-indigo-400/5 dark:border-indigo-400/10 rounded-2xl text-xs text-indigo-800 dark:text-indigo-300 flex flex-col gap-1 shadow-sm">
+                                                <span className="font-bold text-[10px] uppercase tracking-wider text-indigo-500">💡 Personalized Suggestion</span>
+                                                <p className="text-xs text-text-dark/85 dark:text-text-light/95 leading-relaxed">{recommendation.daily_suggestion}</p>
+                                            </div>
+                                        )}
                                         <div className="p-3 bg-amber-500/10 border border-amber-500/15 rounded-2xl text-[11px] text-amber-800 dark:text-amber-300">
                                             💡 <strong>Heads Up:</strong> Log today's journal entry to complete details and unlock deeper personalized recommendation parameters (Journal Theme Similarity, Emotion Analysis).
                                         </div>
@@ -409,6 +415,12 @@ export const Dashboard = () => {
                                                 )}
                                             </ul>
                                         </div>
+                                        {recommendation?.daily_suggestion && (
+                                            <div className="p-4 bg-indigo-500/10 border border-indigo-500/15 dark:bg-indigo-400/5 dark:border-indigo-400/10 rounded-2xl text-xs text-indigo-800 dark:text-indigo-300 flex flex-col gap-1 shadow-sm">
+                                                <span className="font-bold text-[10px] uppercase tracking-wider text-indigo-500">💡 Personalized Suggestion</span>
+                                                <p className="text-xs text-text-dark/85 dark:text-text-light/95 leading-relaxed">{recommendation.daily_suggestion}</p>
+                                            </div>
+                                        )}
                                         <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold">
                                             <span className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
                                                 Confidence: {recommendation?.confidence}%

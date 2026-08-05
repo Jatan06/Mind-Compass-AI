@@ -26,7 +26,7 @@ class KeywordExtractionService:
     def extract(cls, text):
         """
         Extracts top keywords, matches them with configured wellness themes,
-        and identifies active stressors.
+        and identifies active stressors using sentence-level NLP analysis.
         
         Returns:
             dict: {
@@ -42,9 +42,19 @@ class KeywordExtractionService:
                 "keywords": []
             }
 
-        # Clean, tokenize, and lemmatize text
+        # 1. Analyze text using new sentence-by-sentence NLP
+        from ai.utils.preprocessing import analyze_text_nlp
+        nlp_res = analyze_text_nlp(text)
+        
+        # 2. Clean, tokenize, and lemmatize text for top raw keywords and themes
         preprocess_res = preprocess_text(text)
         tokens = preprocess_res["tokens"]
+
+        detected_themes = set()
+        for token in tokens:
+            for theme, kws in cls.THEME_KEYWORDS.items():
+                if token in kws:
+                    detected_themes.add(theme)
 
         if not tokens:
             return {
@@ -53,34 +63,32 @@ class KeywordExtractionService:
                 "keywords": []
             }
 
-        # Find matching themes in the preprocessed tokens
-        detected_themes = set()
-        for token in tokens:
-            for theme, keywords in cls.THEME_KEYWORDS.items():
-                if token in keywords:
-                    detected_themes.add(theme)
-
         # Count frequencies of tokens to extract top keywords
         counter = Counter(tokens)
-        # Filter for words longer than 2 characters
         top_kws = [word for word, count in counter.most_common() if len(word) > 2]
         
-        # Deduce stressors based on active themes
+        # Deduce stressors based on sentence-level stress_sources
         stressors = []
-        if "Work" in detected_themes or "Career" in detected_themes:
-            stressors.append("Workload pressure")
-        if "Finance" in detected_themes:
-            stressors.append("Financial stress")
-        if "Exam" in detected_themes or "Study" in detected_themes:
-            stressors.append("Academic pressure")
-        if "Relationship" in detected_themes or "Family" in detected_themes:
-            stressors.append("Interpersonal relationship friction")
-        if "Sleep" in detected_themes:
-            stressors.append("Sleep quality issues")
-        if "Health" in detected_themes:
-            stressors.append("Physical health concern")
-        if "Stress" in detected_themes or "Anxiety" in detected_themes:
-            stressors.append("Emotional overload")
+        sentences = nlp_res.get("sentences", []) if isinstance(nlp_res, dict) else []
+        if isinstance(sentences, list):
+            for sent in sentences:
+                if isinstance(sent, dict):
+                    for stress_topic in sent.get("stress_sources", []):
+                        t_capital = stress_topic.capitalize()
+                        if t_capital in ["Work", "Career"]:
+                            stressors.append("Workload pressure")
+                        elif t_capital == "Finance":
+                            stressors.append("Financial stress")
+                        elif t_capital in ["Exam", "Study"]:
+                            stressors.append("Academic pressure")
+                        elif t_capital in ["Relationship", "Family"]:
+                            stressors.append("Interpersonal relationship friction")
+                        elif t_capital == "Sleep":
+                            stressors.append("Sleep quality issues")
+                        elif t_capital == "Health":
+                            stressors.append("Physical health concern")
+                        elif t_capital in ["Stress", "Anxiety"]:
+                            stressors.append("Emotional overload")
 
         return {
             "topics": list(detected_themes) if detected_themes else ["Personal Reflections"],

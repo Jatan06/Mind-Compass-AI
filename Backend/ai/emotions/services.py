@@ -28,77 +28,11 @@ class EmotionDetectionService:
 
     @classmethod
     def _rule_based_detect(cls, text):
-        if not text or not text.strip():
-            return {
-                "primary_emotion": "Calm",
-                "secondary_emotion": "Hopeful",
-                "confidence": 1.0
-            }
-
-        # Run NLP preprocessing tokenization
-        preprocess_res = preprocess_text(text)
-        tokens = preprocess_res["tokens"]
-        cleaned_text = preprocess_res["cleaned_text"]
-
-        # Run sentiment helper to guide default/fallback predictions
-        sentiment_res = SentimentAnalysisService.analyze(text)
-        sentiment = sentiment_res["sentiment"]
-        sent_confidence = sentiment_res["confidence"]
-
-        # Count keyword occurrences for each emotion category
-        scores = {emotion: 0 for emotion in cls.EMOTION_KEYWORDS}
-        
-        # Match tokens against lemmatized keywords
-        for token in tokens:
-            for emotion, keywords in cls.EMOTION_KEYWORDS.items():
-                if token in keywords:
-                    scores[emotion] += 1
-
-        # Sort candidate emotions by match frequency
-        sorted_emotions = sorted(scores.items(), key=lambda item: item[1], reverse=True)
-        top_emotion, top_score = sorted_emotions[0]
-        second_emotion, second_score = sorted_emotions[1]
-
-        # Determine output primary and secondary emotions
-        primary = None
-        secondary = None
-        confidence = 0.5
-
-        if top_score > 0:
-            primary = top_emotion
-            if second_score > 0:
-                secondary = second_emotion
-            else:
-                # Deduce secondary based on VADER polarity if no secondary keyword matched
-                if sentiment == "Positive" and primary != "Happy":
-                    secondary = "Happy"
-                elif sentiment == "Negative" and primary != "Sad":
-                    secondary = "Sad"
-                else:
-                    secondary = "Calm" if primary != "Calm" else "Hopeful"
-            
-            # Confidence calculation based on relative match density and VADER confidence
-            total_score = sum(scores.values())
-            confidence = (top_score / total_score) * 0.7 + (sent_confidence * 0.3)
-        else:
-            # Fallback logic using VADER polarity context when no direct keywords matched
-            if sentiment == "Positive":
-                primary = "Calm"
-                secondary = "Happy"
-            elif sentiment == "Negative":
-                primary = "Sad"
-                secondary = "Anxiety"
-            else:
-                primary = "Calm"
-                secondary = "Hopeful"
-            confidence = sent_confidence
-
-        # Prevent primary equals secondary
-        if primary == secondary:
-            secondary = "Hopeful" if primary != "Hopeful" else "Calm"
-
+        from ai.utils.preprocessing import analyze_text_nlp
+        res = analyze_text_nlp(text)
         return {
-            "primary_emotion": primary,
-            "secondary_emotion": secondary,
-            "confidence": round(float(confidence), 2)
+            "primary_emotion": res["primary_emotion"],
+            "secondary_emotion": res["secondary_emotion"],
+            "confidence": res["confidence"]
         }
+

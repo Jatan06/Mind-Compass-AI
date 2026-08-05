@@ -278,27 +278,35 @@ export const DailyCheckIn = () => {
                                 </div>
                             )}
 
-                            {todaysCheckin && (
-                                <div className="p-4 bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent rounded-2xl text-xs sm:text-sm border border-primary/15 dark:border-accent/15 flex items-center gap-2">
-                                    <FiCheckCircle className="w-5 h-5 flex-shrink-0" />
-                                    <div>
-                                        <p className="font-bold">You've already completed today's mood check-in.</p>
-                                        <p className="text-[11px] opacity-80 mt-0.5">Next check-in available tomorrow.</p>
+                            {todaysCheckin ? (
+                                <div className="space-y-6 pt-4 border-t border-secondary/10 dark:border-secondary/5">
+                                    <div className="p-4 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl text-xs sm:text-sm border border-emerald-500/15 flex items-center gap-2">
+                                        <FiCheckCircle className="w-5 h-5 flex-shrink-0" />
+                                        <span>✅ You have already completed today's mood check-in. Come back tomorrow for your next check-in.</span>
+                                    </div>
+                                    <div className="flex justify-end">
+                                        <Button
+                                            type="button"
+                                            variant="primary"
+                                            size="lg"
+                                            onClick={() => navigate('/app')}
+                                        >
+                                            Return to Dashboard
+                                        </Button>
                                     </div>
                                 </div>
+                            ) : (
+                                <div className="pt-4 flex justify-end">
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        size="lg"
+                                        disabled={isSubmitting || mood === null}
+                                    >
+                                        {isSubmitting ? 'Logging Headspace...' : 'Save Check-in'}
+                                    </Button>
+                                </div>
                             )}
-
-                            {/* Submit */}
-                            <div className="pt-4 flex justify-end">
-                                <Button
-                                    type="submit"
-                                    variant="primary"
-                                    size="lg"
-                                    disabled={isSubmitting || mood === null || !!todaysCheckin}
-                                >
-                                    {isSubmitting ? 'Logging Headspace...' : 'Save Check-in'}
-                                </Button>
-                            </div>
                         </motion.form>
                     ) : (
                         <motion.div

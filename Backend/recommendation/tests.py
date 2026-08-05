@@ -298,6 +298,8 @@ class RecommendationServiceTestCase(TestCase):
         self.assertEqual(response.data['status'], 'quick')
         self.assertIsNotNone(response.data['activity'])
         self.assertEqual(response.data['activity']['id'], 'act-1') # stress override Box Breathing
+        self.assertIn('daily_suggestion', response.data)
+        self.assertIsNotNone(response.data['daily_suggestion'])
         self.assertIsNotNone(response.data['yesterday_recommendation'])
 
         # 3. Complete State: Both exist
@@ -309,6 +311,8 @@ class RecommendationServiceTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['status'], 'complete')
         self.assertIsNotNone(response.data['activity'])
+        self.assertIn('daily_suggestion', response.data)
+        self.assertIsNotNone(response.data['daily_suggestion'])
         self.assertIsNone(response.data.get('yesterday_recommendation'))
         self.assertEqual(response.data['historical_matches'], 0) # No journals past 30 days except today
         self.assertIsNone(response.data['previous_success_rate'])

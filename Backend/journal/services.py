@@ -38,13 +38,19 @@ class JournalService:
         # 4. Run Crisis detection
         crisis_res = CrisisDetectionService.detect(text, user=entry.user, journal_entry=entry)
         
+        # Get raw sentences from analyze_text_nlp to save
+        from ai.utils.preprocessing import analyze_text_nlp
+        nlp_res = analyze_text_nlp(text)
+        
         # Save structured analysis in journal entry format
         entry.analysis = {
             "sentiment": sent_res["sentiment"],
             "emotion": em_res["primary_emotion"],
+            "secondary_emotion": em_res["secondary_emotion"],
             "confidence": em_res["confidence"],
             "themes": kw_res["topics"],
-            "crisisStatus": crisis_res["risk_level"]
+            "crisisStatus": crisis_res["risk_level"],
+            "sentences": nlp_res["sentences"]
         }
         entry.save()
         

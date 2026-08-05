@@ -89,6 +89,7 @@ class TodayRecommendationView(APIView):
                 "conflict_reason": "",
                 "reason": data.get("reason", []),
                 "activity": data.get("activity"),
+                "daily_suggestion": data.get("daily_suggestion"),
                 "yesterday_recommendation": yesterday_data
             }, status=status.HTTP_200_OK)
             
@@ -124,7 +125,8 @@ class TodayRecommendationView(APIView):
             "has_conflict": has_conflict,
             "conflict_reason": conflict_reason,
             "reason": data.get("reason", []),
-            "activity": data.get("activity")
+            "activity": data.get("activity"),
+            "daily_suggestion": data.get("daily_suggestion")
         }, status=status.HTTP_200_OK)
 
 class RecommendationHistoryView(APIView):

@@ -53,6 +53,9 @@ export const AppLayout = () => {
                     navigate('/app/checkin');
                 } else if (hasCheckedInToday || location.pathname === '/app/checkin') {
                     sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+                    if (hasCheckedInToday && location.pathname === '/app/checkin') {
+                        navigate('/app', { replace: true });
+                    }
                 }
             }
         }
