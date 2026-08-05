@@ -208,9 +208,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# Network Socket Timeout (prevents hanging SMTP connections on cloud providers like Render)
+# Force IPv4 socket resolution on cloud hosts (like Render) that do not support outbound IPv6
 import socket
-socket.setdefaulttimeout(5.0)
+_old_getaddrinfo = socket.getaddrinfo
+def _getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    return _old_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+socket.getaddrinfo = _getaddrinfo_ipv4
+socket.setdefaulttimeout(10.0)
 
 # Email configuration (required for password reset & email verification)
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
