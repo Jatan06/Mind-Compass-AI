@@ -12,12 +12,14 @@ class EmotionAnalysis(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
+    DoesNotExist: type[Exception]
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Emotion for entry {self.journal_entry.id}: {self.primary_emotion} ({self.confidence:.2f})"
+        entry_id = getattr(self, 'journal_entry_id', getattr(self.journal_entry, 'id', 'N/A'))
+        return f"Emotion for entry {entry_id}: {self.primary_emotion} ({self.confidence:.2f})"
 
 class MoodPrediction(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -28,12 +30,15 @@ class MoodPrediction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
+    DoesNotExist: type[Exception]
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"Prediction for {self.user.username}: Mood {self.predicted_mood} on {self.created_at.date()}"
+        get_date = getattr(self.created_at, 'date', None)
+        date_val = get_date() if callable(get_date) else self.created_at
+        return f"Prediction for {self.user}: Mood {self.predicted_mood} on {date_val}"
 
 class AIInsight(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -42,9 +47,12 @@ class AIInsight(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
+    DoesNotExist: type[Exception]
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"AI Insight for {self.user.username} on {self.created_at.date()}"
+        get_date = getattr(self.created_at, 'date', None)
+        date_val = get_date() if callable(get_date) else self.created_at
+        return f"AI Insight for {self.user} on {date_val}"

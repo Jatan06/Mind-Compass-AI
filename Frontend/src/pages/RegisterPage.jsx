@@ -10,7 +10,7 @@
  * 3. Evaluates real-time client-side field validation (length bounds, email regex match, password confirmation matching).
  * 4. Calculates real-time password strength score (1-4: Weak, Fair, Good, Strong) with visual progress meter.
  * 5. Integrates Google OAuth 2.0 social sign-up (`useGoogleLogin`).
- * 6. Displays post-registration instructions asking users to verify their email inbox (`regSuccess === true`).
+ * 6. Displays post-registration instructions asking users to verify their email inbox (`regSuccess === true`), showing the exact destination email address.
  * 7. Offers a "Resend Verification Email" action button triggering `authAPI.resendVerification`.
  */
 
@@ -196,7 +196,7 @@ export const RegisterPage = () => {
         if (data.success) {
           setResendEmail(cleanEmail);
           setSuccessMessage(
-            data.message || "Registration successful. Verification required.",
+            data.message || "Registration successful. Please check your email to verify your account.",
           );
           setRegSuccess(true);
         } else {
@@ -232,7 +232,7 @@ export const RegisterPage = () => {
     setResendSuccess("");
     setIsLoading(true);
     try {
-      const response = await authAPI.resendVerification(resendEmail);
+      const response = await authAPI.resendVerification(resendEmail || email);
       setIsLoading(false);
       if (response.data.success) {
         setResendSuccess(
@@ -415,7 +415,7 @@ export const RegisterPage = () => {
                     <Input
                       label="Password"
                       id="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => {
@@ -430,6 +430,18 @@ export const RegisterPage = () => {
                       error={passwordError}
                       required
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-10.5 text-secondary/60 hover:text-secondary focus:outline-none"
+                      tabIndex="-1"
+                    >
+                      {showPassword ? (
+                        <FiEyeOff className="w-5 h-5" />
+                      ) : (
+                        <FiEye className="w-5 h-5" />
+                      )}
+                    </button>
                   </div>
 
                   {/* Visual Password Strength Progress Bar */}
@@ -530,7 +542,12 @@ export const RegisterPage = () => {
                 </p>
               </motion.div>
             ) : (
-              /* --- VIEW 2: POST-REGISTRATION VERIFICATION INSTRUCTIONS --- */
+              /* 
+                --- VIEW 2: POST-REGISTRATION VERIFICATION INSTRUCTIONS --- 
+                Displayed immediately after successful account creation.
+                Instructs the user to open their email inbox, find the MindCompass verification email,
+                and click the unique link to verify their account.
+              */
               <motion.div
                 key="verify-instruct-card"
                 initial={{ opacity: 0, y: 10 }}
@@ -548,14 +565,20 @@ export const RegisterPage = () => {
 
                 <div>
                   <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    Confirm Verification
+                    Check Your Email
                   </h2>
-                  <p className="text-sm text-text-dark/65 dark:text-text-light/70 mt-2 px-1">
-                    {successMessage}
+                  <p className="text-sm text-text-dark/70 dark:text-text-light/75 mt-2 px-1">
+                    We sent an official verification email to{" "}
+                    <span className="font-bold text-primary dark:text-accent underline">
+                      {resendEmail || email}
+                    </span>
+                  </p>
+                  <p className="text-xs text-text-dark/60 dark:text-text-light/60 mt-3 bg-secondary/10 p-3 rounded-xl">
+                    Open your email inbox and click the <strong>Verify Email Address</strong> button inside to confirm your account.
                   </p>
                 </div>
 
-                {/* Error Banner */}
+                {/* Form / API Error Banner */}
                 {formError && (
                   <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-600 dark:text-red-400 text-sm text-left">
                     <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -563,7 +586,7 @@ export const RegisterPage = () => {
                   </div>
                 )}
 
-                {/* Resend Success Banner */}
+                {/* Resend Link Success Banner */}
                 {resendSuccess && (
                   <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 rounded-2xl flex items-start gap-3 text-emerald-600 dark:text-emerald-400 text-sm text-left">
                     <FiCheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -571,8 +594,11 @@ export const RegisterPage = () => {
                   </div>
                 )}
 
-                {/* Resend Verification Action & Sign In Link */}
-                <div className="space-y-4 pt-4">
+                {/* Resend Verification Action & Sign In Navigation */}
+                <div className="space-y-4 pt-2">
+                  <p className="text-xs text-text-dark/50 dark:text-text-light/50">
+                    Didn't receive the email? Check your spam folder or request a new link:
+                  </p>
                   <Button
                     type="button"
                     variant="secondary"

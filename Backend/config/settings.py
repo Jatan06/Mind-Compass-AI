@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 import sys
 from pathlib import Path
+from typing import Any, cast
 from dotenv import load_dotenv
 from datetime import timedelta
 
@@ -33,6 +34,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-mindcompass')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# Frontend URL Configuration (for email verification & password reset links)
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173').rstrip('/')
 
 
 # Application definition
@@ -100,7 +104,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 import dj_database_url
 
-DATABASES = {
+DATABASES: dict[str, dict[str, Any]] = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'mindcompass'),
@@ -113,10 +117,13 @@ DATABASES = {
 
 database_url = os.getenv('DATABASE_URL')
 if database_url:
-    DATABASES['default'] = dj_database_url.config(
-        default=database_url,
-        conn_max_age=600,
-        conn_health_checks=True,
+    DATABASES['default'] = cast(
+        dict[str, Any],
+        dj_database_url.config(
+            default=database_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        ),
     )
 
 if 'test' in sys.argv:
