@@ -223,10 +223,17 @@ export const Wellness = () => {
     };
 
     const handleTimerReset = () => {
-        setIsTimerRunning(false);
         const mins = getDurationNum(selectedActivity.duration) || 5;
-        setTimeLeft(mins * 60);
+        const durSecs = mins * 60;
+        setTimeLeft(durSecs);
+        setIsTimerRunning(true);
+        // Force restart music completely from 00:00
+        const soundscape = getSoundscapeForCategory(selectedActivity.category);
+        audioEngine.restart(soundscape, durSecs);
     };
+
+
+
 
     const handleSkipTimer = () => {
         setIsTimerRunning(false);

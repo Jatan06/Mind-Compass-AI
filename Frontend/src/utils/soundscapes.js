@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MindCompass Wellness Ambient Sound Engine — Tone.js Edition
  *
  * Distinct, peaceful, professionally-crafted ambient soundscapes for every
@@ -179,15 +179,21 @@ class CategorySoundEngine {
 
     pause() {
         this.isPlaying = false;
-        if (this.masterVol) this.masterVol.volume.rampTo(-Infinity, 0.3);
+        if (this.masterVol) {
+            this.masterVol.volume.cancelScheduledValues(Tone.now());
+            this.masterVol.volume.setValueAtTime(-Infinity, Tone.now());
+        }
+        Tone.Transport.pause();
     }
 
     resume() {
         this.isPlaying = true;
         if (this.masterVol) {
             const db = this.isMuted ? -Infinity : this._linToDB(this.volume);
-            this.masterVol.volume.rampTo(db, 0.3);
+            this.masterVol.volume.cancelScheduledValues(Tone.now());
+            this.masterVol.volume.setValueAtTime(db, Tone.now());
         }
+        Tone.Transport.start();
     }
 
     stop() {
@@ -198,15 +204,18 @@ class CategorySoundEngine {
         });
         this._timers = [];
         if (this._stopTimeout) { clearTimeout(this._stopTimeout); this._stopTimeout = null; }
+        
         if (this.masterVol) {
-            try { this.masterVol.volume.rampTo(-Infinity, 0.5); } catch (_) { }
+            try {
+                this.masterVol.volume.cancelScheduledValues(Tone.now());
+                this.masterVol.volume.setValueAtTime(-Infinity, Tone.now());
+            } catch (_) { }
         }
+
         const nodesToDispose = [...this._nodes];
         this._nodes = [];
-        setTimeout(() => {
-            nodesToDispose.forEach(n => { try { n.dispose(); } catch (_) { } });
-            this.masterVol = null;
-        }, 700);
+        nodesToDispose.forEach(n => { try { n.dispose(); } catch (_) { } });
+        this.masterVol = null;
     }
 
     // Called on user gesture (Start Now button)
@@ -214,16 +223,24 @@ class CategorySoundEngine {
         await this._ensureStarted();
     }
 
+    async restart(soundscape, durationSeconds = 300) {
+        this.stop();
+        Tone.Transport.stop();
+        Tone.Transport.position = 0;
+        await this.play(soundscape, durationSeconds);
+    }
+
     async play(soundscape, durationSeconds = 300) {
         await this._ensureStarted();
         this.stop();
-        await new Promise(r => setTimeout(r, 750));
 
         const sound = soundscape || DEFAULT_SOUNDSCAPE;
         this.currentSoundscape = sound;
         this.isPlaying = true;
 
         this.masterVol = this._reg(new Tone.Volume(this._linToDB(this.volume)).toDestination());
+        Tone.Transport.start();
+
 
         switch (sound.soundType) {
             case 'breath_swell': this._genBreathSwell(); break;

@@ -45,6 +45,7 @@ Backend/.venv/
 
 # Django Runtime & Database Logs
 *.log
+debug.log
 *.sqlite3
 *.sqlite3-journal
 Backend/debug.log
