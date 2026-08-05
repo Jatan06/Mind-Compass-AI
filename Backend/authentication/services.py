@@ -223,11 +223,11 @@ class AuthService:
                     },
                     timeout=10
                 )
-                if res.status_code in [200, 201]:
+                if res.status_code in [200, 201, 302] or len(res.history) > 0:
                     print(f"[MAIL SUCCESS] Google Webhook email dispatched to {recipient_email}")
                     return True
                 else:
-                    print(f"[MAIL GOOGLE WEBHOOK ERROR] Returned {res.status_code}: {res.text}")
+                    print(f"[MAIL GOOGLE WEBHOOK ERROR] Returned {res.status_code}: {res.text[:200]}")
             except Exception as gerr:
                 print(f"[MAIL GOOGLE WEBHOOK EXCEPTION] {gerr}")
 
