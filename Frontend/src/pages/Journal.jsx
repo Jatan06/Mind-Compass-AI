@@ -330,11 +330,11 @@ export const Journal = () => {
                                     type="button"
                                     onClick={toggleRecording}
                                     className={`p-3 rounded-full flex items-center justify-center transition-all cursor-pointer outline-none
-                    ${isRecording
+                                        ${isRecording
                                             ? 'bg-red-500 text-white hover:bg-red-600 animate-pulse'
                                             : 'bg-secondary/15 hover:bg-secondary/25 dark:bg-secondary/10 text-primary dark:text-accent'
                                         }
-                   `}
+                                     `}
                                     title={isRecording ? 'Stop Recording' : 'Start Voice Journaling'}
                                 >
                                     {isRecording ? <FiSquare className="w-5 h-5" /> : <FiMic className="w-5 h-5" />}
