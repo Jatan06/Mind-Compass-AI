@@ -5,8 +5,9 @@ import { FiCompass, FiHome, FiArrowLeft } from 'react-icons/fi';
 
 export const NotFoundPage = () => {
     return (
-        <div className="min-h-[80vh] flex items-center justify-center px-6 py-16 text-center">
+        <div className="min-h-screen w-full bg-bg-light dark:bg-bg-dark flex items-center justify-center px-6 py-16 text-center">
             <div className="max-w-md mx-auto">
+
                 {/* Animated Floating Compass Icon */}
                 <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}

@@ -62,12 +62,11 @@ function App() {
                         <Route path="wellness" element={<Wellness />} />
                         <Route path="insights" element={<Insights />} />
                         <Route path="profile" element={<Profile />} />
-                        <Route path="*" element={<NotFoundPage />} />
                     </Route>
-                    {/* Catch-all 404 for root layout */}
-                    <Route path="*" element={<Layout />}>
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Route>
+
+                    {/* Standalone 404 page without Navbar, Footer, or Sidebar */}
+                    <Route path="*" element={<NotFoundPage />} />
+
 
 
                 </Routes>
