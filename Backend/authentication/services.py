@@ -296,7 +296,7 @@ class AuthService:
                 html_message=html_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
-                fail_silently=True,
+                fail_silently=False,
             )
             print(f"[MAIL SUCCESS] Real verification email dispatched to {user.email}")
         except Exception as mail_err:
@@ -394,8 +394,9 @@ class AuthService:
                 html_message=html_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
-                fail_silently=True,
+                fail_silently=False,
             )
+            print(f"[MAIL SUCCESS] Real OTP email dispatched to {user.email}")
         except Exception as mail_err:
             print(f"[MAIL ERROR] Failed to deliver SMTP email to {user.email}: {mail_err}")
 
