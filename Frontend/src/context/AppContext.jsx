@@ -1,15 +1,32 @@
+/**
+ * AppContext State Management Provider
+ * 
+ * What is it?
+ * The core global React Context Provider (AppProvider) and custom hook (useApp) for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Manages global session state (JWT access/refresh tokens, authentication loading, logged-in user profile).
+ * 2. Hydrates user sessions automatically on page load or browser reload from localStorage/sessionStorage.
+ * 3. Handles authentication workflows: Login, Register, Logout, and Google OAuth integration.
+ * 4. Synchronizes dashboard data concurrently via `refreshDashboardData()` using `Promise.allSettled`
+ *    (fetches User Profile, Mood Check-ins, Journals, Completed Activities, AI Recommendations, AI Predictions, AI Insights, and Analytics).
+ * 5. Handles user onboarding assessments (`onboardUser`), assessment retakes (`retakeAssessment`), profile updates (`updateProfile`), and account deletion (`deleteAccount`).
+ * 6. Provides CRUD API handlers for mood check-ins (`addCheckin`), text/voice journals (`addJournal`, `updateJournal`, `deleteJournal`), and activity feedback (`completeActivity`).
+ * 7. Exposes `useApp()` custom hook for clean, error-safe context consumption across frontend views.
+ */
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authAPI, assessmentAPI, profileAPI, moodAPI, journalAPI, activitiesAPI, recommendationAPI, insightsAPI, aiAPI } from '../services/api';
 
 const AppContext = createContext(undefined);
 
 export const AppProvider = ({ children }) => {
-    // Session State
+    // Session & Auth Tokens (loaded from storage if previously authenticated)
     const [token, setToken] = useState(() => localStorage.getItem('access_token') || sessionStorage.getItem('access_token') || null);
     const [refreshToken, setRefreshToken] = useState(() => localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token') || null);
     const [authLoading, setAuthLoading] = useState(true);
 
-    // User Profile settings loaded from Django User profile object
+    // User Profile state populated from Django User Profile model
     const [userProfile, setUserProfile] = useState({
         name: '',
         email: '',
@@ -31,6 +48,7 @@ export const AppProvider = ({ children }) => {
         is_email_verified: false
     });
 
+    // Onboarding status flag initialized from storage or defaults to false
     const [isOnboarded, setIsOnboarded] = useState(() => {
         try {
             const storedUser = localStorage.getItem('currentUser');
@@ -43,16 +61,20 @@ export const AppProvider = ({ children }) => {
         } catch (e) { }
         return false;
     });
+
+    // User metrics: Check-in streak count and calculated overall wellness score
     const [streak, setStreak] = useState(0);
     const [wellnessScore, setWellnessScore] = useState(null);
 
-    // Active state from DB
+    // Active records: Mood check-ins log and journal entries
     const [checkins, setCheckins] = useState([]);
     const [journals, setJournals] = useState([]);
 
+    // Activity records & favorites tracking
     const [completedActivities, setCompletedActivities] = useState([]);
-
     const [favorites, setFavorites] = useState(['act-1', 'act-5']);
+
+    // Dashboard dynamic AI data states & loading indicators
     const [todayRecommendation, setTodayRecommendation] = useState(null);
     const [recLoading, setRecLoading] = useState(true);
     const [predictionData, setPredictionData] = useState(null);
@@ -62,15 +84,18 @@ export const AppProvider = ({ children }) => {
     const [analyticsData, setAnalyticsData] = useState(null);
     const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
-    // Fetch user profile from Django backend
+    /**
+     * Fetches user profile metadata from the Django backend API.
+     * Maps backend snake_case fields into frontend camelCase properties.
+     */
     const fetchUserProfile = useCallback(async () => {
         try {
-            // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
+            // Use UTC date string to match backend UTC timezone requirement
             const getUTCDateString = () => new Date().toISOString().split('T')[0];
             const response = await profileAPI.get(getUTCDateString());
             const profileData = response.data;
 
-            // Map backend fields to frontend camelCase formats
+            // Map backend fields to frontend state properties
             setUserProfile((prev) => ({
                 ...prev,
                 name: profileData.username || prev.name,
@@ -85,7 +110,6 @@ export const AppProvider = ({ children }) => {
                 voicePreference: profileData.voice_preference || 'calm-female',
                 theme: profileData.theme || 'light',
                 is_email_verified: profileData.is_email_verified || false,
-                // Load triggers from serializations inside notifications object keys
                 triggers: profileData.notifications?.triggers || [],
                 notifications: {
                     dailyCheckin: profileData.notifications?.dailyCheckin ?? true,
@@ -96,8 +120,9 @@ export const AppProvider = ({ children }) => {
 
             setIsOnboarded(profileData.is_onboarded || false);
             setStreak(profileData.streak || 0);
-            setWellnessScore(profileData.wellness_score || 72);
+            setWellnessScore(profileData.wellness_score !== undefined && profileData.wellness_score !== null ? profileData.wellness_score : null);
 
+            // Sync onboarding flag to stored currentUser object in localStorage
             const storedUser = localStorage.getItem('currentUser');
             if (storedUser) {
                 try {
@@ -107,13 +132,15 @@ export const AppProvider = ({ children }) => {
                     localStorage.setItem('currentUser', JSON.stringify(parsed));
                 } catch (e) { }
             }
-            setWellnessScore(profileData.wellness_score !== undefined && profileData.wellness_score !== null ? profileData.wellness_score : null);
         } catch (error) {
             console.error('Failed to fetch user profile:', error);
         }
     }, []);
 
-    // Refresh all central dashboard and histories variables from backend APIs concurrently
+    /**
+     * Concurrently re-fetches all dashboard data from backend APIs using Promise.allSettled.
+     * Updates check-ins, journals, activities, AI recommendations, AI predictions, insights, and analytics.
+     */
     const refreshDashboardData = useCallback(async () => {
         try {
             setRecLoading(true);
@@ -121,7 +148,7 @@ export const AppProvider = ({ children }) => {
             setInsightsLoading(true);
             setAnalyticsLoading(true);
 
-            // Execute independent API calls concurrently for massive performance speedup
+            // Execute independent API requests concurrently for optimal loading performance
             const [
                 profileRes,
                 moodRes,
@@ -142,7 +169,7 @@ export const AppProvider = ({ children }) => {
                 insightsAPI.getAnalytics()
             ]);
 
-            // 1. Mood Checkins
+            // 1. Mood Check-ins Processing
             if (moodRes.status === 'fulfilled' && moodRes.value?.status === 200 && Array.isArray(moodRes.value.data)) {
                 const mappedCheckins = moodRes.value.data.map(c => ({
                     ...c,
@@ -152,7 +179,7 @@ export const AppProvider = ({ children }) => {
                 setCheckins(mappedCheckins.reverse());
             }
 
-            // 2. Journals
+            // 2. Journals Processing
             if (journalRes.status === 'fulfilled' && journalRes.value?.status === 200 && Array.isArray(journalRes.value.data)) {
                 const mappedJournals = journalRes.value.data.map(j => ({
                     ...j,
@@ -161,7 +188,7 @@ export const AppProvider = ({ children }) => {
                 setJournals(mappedJournals);
             }
 
-            // 3. Completed Activities
+            // 3. Completed Activities Processing
             if (activityRes.status === 'fulfilled' && activityRes.value?.status === 200 && Array.isArray(activityRes.value.data)) {
                 const mappedFeedback = activityRes.value.data.map(f => ({
                     id: f.id,
@@ -174,28 +201,28 @@ export const AppProvider = ({ children }) => {
                 setCompletedActivities(mappedFeedback);
             }
 
-            // 4. Recommendation
+            // 4. Recommendation Processing
             if (recRes.status === 'fulfilled' && recRes.value?.status === 200 && recRes.value.data) {
                 setTodayRecommendation(recRes.value.data);
             } else {
                 setTodayRecommendation(null);
             }
 
-            // 5. AI Prediction
+            // 5. AI Prediction Processing
             if (predRes.status === 'fulfilled' && predRes.value?.status === 200 && predRes.value.data) {
                 setPredictionData(predRes.value.data);
             } else {
                 setPredictionData(null);
             }
 
-            // 6. AI Insights
+            // 6. AI Insights Processing
             if (insightsRes.status === 'fulfilled' && insightsRes.value?.status === 200 && insightsRes.value.data) {
                 setAiInsightsData(insightsRes.value.data);
             } else {
                 setAiInsightsData(null);
             }
 
-            // 7. Analytics
+            // 7. Analytics Metrics Processing
             if (analyticsRes.status === 'fulfilled' && analyticsRes.value?.status === 200 && analyticsRes.value.data) {
                 setAnalyticsData(analyticsRes.value.data);
             } else {
@@ -213,7 +240,7 @@ export const AppProvider = ({ children }) => {
 
     const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-    // Session Hydration on page reload
+    // Effect: Session Hydration on initial application mount
     useEffect(() => {
         const hydrateSession = async () => {
             try {
@@ -223,7 +250,8 @@ export const AppProvider = ({ children }) => {
                 if (storedAccess && storedRefresh) {
                     setToken(storedAccess);
                     setRefreshToken(storedRefresh);
-                    // Also hydrate raw user config first
+
+                    // Hydrate cached user info from storage first for immediate rendering
                     const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
                     if (storedUser) {
                         try {
@@ -237,10 +265,11 @@ export const AppProvider = ({ children }) => {
                                 setIsOnboarded(parsed.profile.is_onboarded);
                             }
                         } catch (e) {
-                            // invalid details
+                            // Invalid stored format
                         }
                     }
-                    // Fetch all backend data and await completion before releasing loading state
+
+                    // Await full backend refresh to populate active context state
                     try {
                         await refreshDashboardData();
                     } catch (err) {
@@ -257,7 +286,7 @@ export const AppProvider = ({ children }) => {
         hydrateSession();
     }, [refreshDashboardData]);
 
-    // Handle token session expiry broadcast events
+    // Clears all stored tokens and resets context state on logout or session expiration
     const clearAuthData = useCallback(() => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -292,6 +321,7 @@ export const AppProvider = ({ children }) => {
         setJournals([]);
     }, []);
 
+    // Effect: Listen for session expiration events broadcasted by Axios interceptors
     useEffect(() => {
         window.addEventListener('auth_session_expired', clearAuthData);
         return () => {
@@ -299,10 +329,12 @@ export const AppProvider = ({ children }) => {
         };
     }, [clearAuthData]);
 
-    // Context Auth Workflows
+    /**
+     * Authenticates user credentials via Django API and initializes active session.
+     */
     const login = async (emailOrUsername, password, rememberMe = false) => {
         const response = await authAPI.login({
-            email: emailOrUsername, // django holds compatibility logic for backend authentication Service
+            email: emailOrUsername,
             password,
         });
 
@@ -332,12 +364,15 @@ export const AppProvider = ({ children }) => {
                 email: userObj.email,
             }));
 
-            // Sync full details
+            // Sync dashboard records after login
             await refreshDashboardData();
         }
         return response.data;
     };
 
+    /**
+     * Registers a new user account on the backend.
+     */
     const register = async (username, email, password, password_confirm) => {
         const response = await authAPI.register({
             username,
@@ -348,6 +383,9 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    /**
+     * Logs out the user session, revoking refresh tokens on backend and clearing local state.
+     */
     const logout = async () => {
         try {
             if (refreshToken) {
@@ -360,6 +398,9 @@ export const AppProvider = ({ children }) => {
         }
     };
 
+    /**
+     * Handles Google OAuth authentication and session creation.
+     */
     const googleLogin = async (googleToken, email = null, name = null, rememberMe = true) => {
         const response = await authAPI.googleLogin({
             token: googleToken,
@@ -398,8 +439,10 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    /**
+     * Saves user onboarding questionnaire answers to backend assessment API.
+     */
     const onboardUser = async (onboardingData) => {
-        // Build assessment payload matching Django backend expectation
         const rawPayload = {
             demographic: {
                 occupation: onboardingData.occupation,
@@ -416,7 +459,6 @@ export const AppProvider = ({ children }) => {
             stressContributors: onboardingData.stressContributors,
         };
 
-        // Save assessment payload directly to Django backend
         let response;
         try {
             response = await assessmentAPI.save(rawPayload);
@@ -425,7 +467,6 @@ export const AppProvider = ({ children }) => {
             response = await assessmentAPI.update(rawPayload);
         }
 
-        // Apply fields locally
         setUserProfile((prev) => ({
             ...prev,
             goals: onboardingData.goals || prev.goals,
@@ -437,6 +478,7 @@ export const AppProvider = ({ children }) => {
             waterIntake: onboardingData.waterIntake || prev.waterIntake,
         }));
         setIsOnboarded(true);
+
         const storedUser = localStorage.getItem('currentUser');
         if (storedUser) {
             try {
@@ -451,6 +493,9 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    /**
+     * Triggers assessment retake workflow to update baseline profile parameters.
+     */
     const retakeAssessment = async () => {
         const response = await assessmentAPI.retake();
         setIsOnboarded(false);
@@ -458,17 +503,21 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    /**
+     * Deletes user account and purges local storage.
+     */
     const deleteAccount = async () => {
         await profileAPI.deleteAccount();
-        // Clear all local storage and session storage
         localStorage.clear();
         sessionStorage.clear();
         setToken(null);
         setRefreshToken(null);
     };
 
+    /**
+     * Updates user profile details and settings via backend PUT request.
+     */
     const updateProfile = async (updatedProfile) => {
-        // Prepare PUT payload matching back-end serializers
         const payload = {
             username: updatedProfile.name !== undefined ? updatedProfile.name : userProfile.name,
             email: updatedProfile.email !== undefined ? updatedProfile.email : userProfile.email,
@@ -479,7 +528,6 @@ export const AppProvider = ({ children }) => {
             water_intake: updatedProfile.waterIntake !== undefined ? updatedProfile.waterIntake : userProfile.waterIntake,
             goals: updatedProfile.goals !== undefined ? updatedProfile.goals : userProfile.goals,
             coping_methods: updatedProfile.copingMethods !== undefined ? updatedProfile.copingMethods : userProfile.copingMethods,
-            // Bundle triggers inside notifications object to persist in backend database
             notifications: {
                 ...(updatedProfile.notifications !== undefined ? updatedProfile.notifications : userProfile.notifications),
                 triggers: updatedProfile.triggers !== undefined ? updatedProfile.triggers : userProfile.triggers,
@@ -489,7 +537,6 @@ export const AppProvider = ({ children }) => {
         const response = await profileAPI.update(payload);
         const profileData = response.data;
 
-        // Sync new data keys
         setUserProfile((prev) => ({
             ...prev,
             name: profileData.username || prev.name,
@@ -510,7 +557,6 @@ export const AppProvider = ({ children }) => {
             },
         }));
 
-        // Update stored currentUser in storage so sidebar initials/details sync
         const storedUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
         if (storedUser) {
             try {
@@ -525,7 +571,9 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
-    // Dashboard checkin and journals API calls
+    /**
+     * Submits a daily mood check-in entry to the backend.
+     */
     const addCheckin = async (checkinData) => {
         const payload = {
             date: checkinData.date,
@@ -548,6 +596,9 @@ export const AppProvider = ({ children }) => {
         return response.data;
     };
 
+    /**
+     * Creates a new text or voice journal entry and receives AI sentiment analysis.
+     */
     const addJournal = async (text, isVoice = false) => {
         const response = await journalAPI.create({
             text,
@@ -557,18 +608,27 @@ export const AppProvider = ({ children }) => {
         return response.data.analysis;
     };
 
+    /**
+     * Updates text of an existing journal entry.
+     */
     const updateJournal = async (id, text) => {
         const response = await journalAPI.update(id, { text });
         await refreshDashboardData();
         return response.data;
     };
 
+    /**
+     * Deletes a journal entry by ID.
+     */
     const deleteJournal = async (id) => {
         const response = await journalAPI.delete(id);
         await refreshDashboardData();
         return response.data;
     };
 
+    /**
+     * Submits completion feedback for a wellness activity.
+     */
     const completeActivity = async (activityId, durationMinutes, feedback) => {
         try {
             await activitiesAPI.submitFeedback({
@@ -584,6 +644,9 @@ export const AppProvider = ({ children }) => {
         }
     };
 
+    /**
+     * Toggles an activity ID in the favorites list.
+     */
     const toggleFavorite = (activityId) => {
         setFavorites((prev) =>
             prev.includes(activityId)
@@ -638,6 +701,10 @@ export const AppProvider = ({ children }) => {
     );
 };
 
+/**
+ * Custom hook to safely consume AppContext.
+ * Throws an explicit error if invoked outside of an AppProvider context tree.
+ */
 export const useApp = () => {
     const context = useContext(AppContext);
     if (!context) {
@@ -645,3 +712,4 @@ export const useApp = () => {
     }
     return context;
 };
+

@@ -1,3 +1,19 @@
+/**
+ * RegisterPage Component
+ * 
+ * What is it?
+ * The user registration and account creation page component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Auto-redirects authenticated users (`token`) directly to `/app`.
+ * 2. Provides a full account registration form: Username, Email, Password, Password Confirmation, and Terms agreement.
+ * 3. Evaluates real-time client-side field validation (length bounds, email regex match, password confirmation matching).
+ * 4. Calculates real-time password strength score (1-4: Weak, Fair, Good, Strong) with visual progress meter.
+ * 5. Integrates Google OAuth 2.0 social sign-up (`useGoogleLogin`).
+ * 6. Displays post-registration instructions asking users to verify their email inbox (`regSuccess === true`).
+ * 7. Offers a "Resend Verification Email" action button triggering `authAPI.resendVerification`.
+ */
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,13 +37,14 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
   const { register, googleLogin, token } = useApp();
 
-  // If user is already authenticated, auto-redirect to app
+  // Redirect Effect: Auto-redirect authenticated users directly to /app
   useEffect(() => {
     if (token) {
       navigate("/app", { replace: true });
     }
   }, [token, navigate]);
 
+  // Form Field States
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +52,7 @@ export const RegisterPage = () => {
   const [termsChecked, setTermsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Validation/API Errors
+  // Field Validation & Form Error States
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -43,15 +60,17 @@ export const RegisterPage = () => {
   const [termsError, setTermsError] = useState("");
   const [formError, setFormError] = useState("");
 
+  // Loading & View Control States
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [regSuccess, setRegSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Verification Resend
+  // Verification Resend States
   const [resendEmail, setResendEmail] = useState("");
   const [resendSuccess, setResendSuccess] = useState("");
 
+  // Username validation helper (4 to 20 characters)
   const validateUsername = (val) => {
     if (!val) {
       setUsernameError("Username is required");
@@ -65,6 +84,7 @@ export const RegisterPage = () => {
     return true;
   };
 
+  // Email format validation helper
   const validateEmail = (val) => {
     if (!val) {
       setEmailError("Email is required");
@@ -79,6 +99,7 @@ export const RegisterPage = () => {
     return true;
   };
 
+  // Password minimum length validation helper (8+ characters)
   const validatePassword = (val) => {
     if (!val) {
       setPasswordError("Password is required");
@@ -92,6 +113,7 @@ export const RegisterPage = () => {
     return true;
   };
 
+  // Password matching confirmation validation helper
   const validateConfirmPassword = (val, passVal) => {
     if (!val) {
       setConfirmError("Please confirm your password");
@@ -105,6 +127,7 @@ export const RegisterPage = () => {
     return true;
   };
 
+  // Calculates password strength rating (0-4: Weak, Fair, Good, Strong)
   const getPasswordStrength = (pass) => {
     if (!pass) return { score: 0, text: "Empty", color: "bg-secondary/25" };
     let score = 0;
@@ -130,6 +153,7 @@ export const RegisterPage = () => {
 
   const strengthInfo = getPasswordStrength(password);
 
+  // Handles standard account creation form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
@@ -202,6 +226,7 @@ export const RegisterPage = () => {
     }
   };
 
+  // Handles triggering a new verification email link dispatch
   const handleResend = async () => {
     setFormError("");
     setResendSuccess("");
@@ -231,30 +256,13 @@ export const RegisterPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    setIsGoogleLoading(true);
-    setFormError("");
-    try {
-      // Send Google credential token to Django backend
-      const googleToken = credentialResponse.credential || credentialResponse.access_token;
-      await googleLogin(googleToken);
-      setIsGoogleLoading(false);
-      navigate("/app");
-    } catch (err) {
-      setIsGoogleLoading(false);
-      if (err.response && err.response.data && err.response.data.message) {
-        setFormError(err.response.data.message);
-      } else {
-        setFormError("Google registration failed. Please try again.");
-      }
-    }
-  };
-
+  // Handles Google OAuth sign-in failure callback
   const handleGoogleError = () => {
     setIsGoogleLoading(false);
     setFormError("Google sign in was cancelled or failed.");
   };
 
+  // Google OAuth sign-in hook handler
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setIsGoogleLoading(true);
@@ -279,7 +287,7 @@ export const RegisterPage = () => {
     <PageTransition>
       <div className="min-h-[85vh] flex flex-col justify-center items-center px-6 py-12 bg-bg-light/65 dark:bg-bg-dark/10 transition-colors duration-300">
 
-        {/* Register Card */}
+        {/* Outer Card Container */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -288,6 +296,7 @@ export const RegisterPage = () => {
         >
           <AnimatePresence mode="wait">
             {!regSuccess ? (
+              /* --- VIEW 1: REGISTRATION FORM --- */
               <motion.div
                 key="register-forms"
                 initial={{ opacity: 0, y: 10 }}
@@ -304,7 +313,7 @@ export const RegisterPage = () => {
                   </p>
                 </div>
 
-                {/* Social Sign Up */}
+                {/* Google OAuth Social Registration Button */}
                 <button
                   type="button"
                   onClick={() => loginWithGoogle()}
@@ -343,7 +352,7 @@ export const RegisterPage = () => {
                   )}
                 </button>
 
-                {/* Divider */}
+                {/* Section Divider */}
                 <div className="relative my-8 text-center">
                   <hr className="border-secondary/15 dark:border-secondary/5" />
                   <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-card-light dark:bg-card-dark px-3 text-xs uppercase tracking-wider text-text-dark/45 dark:text-text-light/50">
@@ -351,7 +360,7 @@ export const RegisterPage = () => {
                   </span>
                 </div>
                 
-
+                {/* Form Error Alert Banner */}
                 {formError && (
                   <div className="mb-4 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-600 dark:text-red-400 text-sm">
                     <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -359,6 +368,7 @@ export const RegisterPage = () => {
                   </div>
                 )}
 
+                {/* Standard Account Registration Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Username Field */}
                   <div className="relative text-left">
@@ -422,7 +432,7 @@ export const RegisterPage = () => {
                     />
                   </div>
 
-                  {/* Password Strength Indicator */}
+                  {/* Visual Password Strength Progress Bar */}
                   {password && (
                     <div className="space-y-1.5 px-1 pt-1 text-left">
                       <div className="flex justify-between text-xs">
@@ -462,7 +472,7 @@ export const RegisterPage = () => {
                     />
                   </div>
 
-                  {/* Terms checkbox */}
+                  {/* Terms of Service Consent Checkbox */}
                   <div className="pt-2 text-left">
                     <label className="flex items-start gap-2.5 text-xs sm:text-sm text-text-dark/70 dark:text-text-light/75 cursor-pointer leading-tight">
                       <input
@@ -497,7 +507,7 @@ export const RegisterPage = () => {
                     )}
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit Account Creation Button */}
                   <Button
                     type="submit"
                     variant="primary"
@@ -508,7 +518,7 @@ export const RegisterPage = () => {
                   </Button>
                 </form>
 
-                {/* Redirect to Login */}
+                {/* Redirect Link to Login Page */}
                 <p className="text-center text-sm text-text-dark/70 dark:text-text-light/75 mt-8">
                   Already have a space?{" "}
                   <Link
@@ -520,6 +530,7 @@ export const RegisterPage = () => {
                 </p>
               </motion.div>
             ) : (
+              /* --- VIEW 2: POST-REGISTRATION VERIFICATION INSTRUCTIONS --- */
               <motion.div
                 key="verify-instruct-card"
                 initial={{ opacity: 0, y: 10 }}
@@ -528,11 +539,13 @@ export const RegisterPage = () => {
                 transition={{ duration: 0.2 }}
                 className="text-center space-y-6"
               >
+                {/* Success Icon Badge */}
                 <div className="flex justify-center">
                   <div className="w-16 h-16 rounded-full bg-emerald-50 dark:bg-emerald-950/20 flex items-center justify-center text-emerald-500 border border-emerald-200 dark:border-emerald-800">
                     <FiCheckCircle className="w-8 h-8" />
                   </div>
                 </div>
+
                 <div>
                   <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
                     Confirm Verification
@@ -542,6 +555,7 @@ export const RegisterPage = () => {
                   </p>
                 </div>
 
+                {/* Error Banner */}
                 {formError && (
                   <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl flex items-start gap-3 text-red-600 dark:text-red-400 text-sm text-left">
                     <FiAlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -549,6 +563,7 @@ export const RegisterPage = () => {
                   </div>
                 )}
 
+                {/* Resend Success Banner */}
                 {resendSuccess && (
                   <div className="p-4 bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 rounded-2xl flex items-start gap-3 text-emerald-600 dark:text-emerald-400 text-sm text-left">
                     <FiCheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -556,6 +571,7 @@ export const RegisterPage = () => {
                   </div>
                 )}
 
+                {/* Resend Verification Action & Sign In Link */}
                 <div className="space-y-4 pt-4">
                   <Button
                     type="button"

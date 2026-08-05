@@ -1,3 +1,18 @@
+/**
+ * VerifyEmail Component
+ * 
+ * What is it?
+ * The email verification confirmation page component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Extracts the verification token from the URL query parameters (`?token=...`).
+ * 2. Automatically dispatches the token to `authAPI.verifyEmail` on component mount.
+ * 3. Renders three status views dynamically:
+ *    - `'verifying'`: Shows an animated loading spinner while validating the token.
+ *    - `'success'`: Renders a success badge and a button to proceed to Sign In (`/login`).
+ *    - `'error'`: Renders an error badge, error message details, and an inline resend form to dispatch a new link via `authAPI.resendVerification`.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,19 +24,22 @@ import { Logo } from '../components/Logo';
 import { authAPI } from '../services/api';
 
 export const VerifyEmail = () => {
+    // Extract verification token from URL query parameters (?token=...)
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
 
-    const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
+    // Status state: 'verifying' | 'success' | 'error'
+    const [status, setStatus] = useState('verifying');
     const [errorMessage, setErrorMessage] = useState('');
 
-    // Resend verification state
+    // Inline Resend Verification Form States
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [resendSuccess, setResendSuccess] = useState('');
     const [resendError, setResendError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Automatic Verification Effect: Dispatches token validation on mount
     useEffect(() => {
         const executeVerification = async () => {
             if (!token) {
@@ -58,6 +76,7 @@ export const VerifyEmail = () => {
         executeVerification();
     }, [token]);
 
+    // Handles inline verification link resend form submission
     const handleResend = async (e) => {
         e.preventDefault();
         setResendError('');
@@ -105,16 +124,19 @@ export const VerifyEmail = () => {
     return (
         <PageTransition>
             <div className="min-h-[85vh] flex flex-col justify-center items-center px-6 py-12 bg-bg-light/65 dark:bg-bg-dark/10 transition-colors duration-300">
+                {/* Brand Logo Header */}
                 <div className="mb-8">
                     <Logo showText={true} size={42} />
                 </div>
 
+                {/* Verification Outcome Card Container */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4 }}
                     className="w-full max-w-md bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-8 md:p-10 shadow-sm text-center"
                 >
+                    {/* --- STATUS 1: VERIFYING LOADING STATE --- */}
                     {status === 'verifying' && (
                         <div className="space-y-6 py-4">
                             <div className="flex justify-center">
@@ -131,6 +153,7 @@ export const VerifyEmail = () => {
                         </div>
                     )}
 
+                    {/* --- STATUS 2: SUCCESS VERIFIED STATE --- */}
                     {status === 'success' && (
                         <div className="space-y-6 py-4">
                             <div className="flex justify-center">
@@ -156,6 +179,7 @@ export const VerifyEmail = () => {
                         </div>
                     )}
 
+                    {/* --- STATUS 3: ERROR VERIFICATION FAILED & RESEND UTILITY --- */}
                     {status === 'error' && (
                         <div className="space-y-6">
                             <div className="flex justify-center">
@@ -175,7 +199,7 @@ export const VerifyEmail = () => {
 
                             <hr className="border-secondary/15 dark:border-secondary/5" />
 
-                            {/* Resend utility */}
+                            {/* Inline Resend Email Link Form */}
                             <form onSubmit={handleResend} className="space-y-4 text-left">
                                 <h4 className="text-sm font-bold text-text-dark dark:text-text-light text-center">
                                     Request another verification link?
@@ -236,4 +260,6 @@ export const VerifyEmail = () => {
         </PageTransition>
     );
 };
+
 export default VerifyEmail;
+

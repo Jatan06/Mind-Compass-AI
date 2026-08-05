@@ -1,9 +1,28 @@
+/**
+ * AICompanion Component ("Compass")
+ * 
+ * What is it?
+ * An interactive, AI-driven mental health conversational companion drawer component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Displays a glowing, animated circular trigger button with a 4-pointed sparkle icon and SVG gradient rings.
+ * 2. Opens a floating slide-up chat drawer (`AnimatePresence` + `motion.div`) with spring physics.
+ * 3. Automatically greets users on initial open with personalized wellness metrics and name.
+ * 4. Displays quick-starter suggestion chips for common reflection prompts.
+ * 5. Dispatches real-time chat messages to the backend Gemini AI service (`aiAPI.chat`).
+ * 6. Persists chat conversation history to `localStorage`/`sessionStorage` (`ai_chat_messages`).
+ * 7. Formats Markdown bolding (`**text**`), renders animated typing indicators, and manages auto-resizing text inputs.
+ * 
+ * @param {Object} userProfile - Active user profile object containing user name and preferences
+ * @param {number|null} wellnessScore - Calculated overall user wellness score percentage
+ */
+
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { aiAPI } from '../services/api';
 
 /* ─────────────────────────────────────────────
-   4-pointed sparkle star — matches the reference button design
+   SparkleIcon: 4-pointed star vector icon matching the brand aesthetic
    ───────────────────────────────────────────── */
 const SparkleIcon = ({ className = '' }) => (
     <svg
@@ -12,7 +31,7 @@ const SparkleIcon = ({ className = '' }) => (
         className={className}
         aria-hidden="true"
     >
-        {/* Large 4-pointed star: two overlapping diamond shapes */}
+        {/* Large 4-pointed star */}
         <path d="M12 2C12 2 13.2 8.8 16 12C13.2 15.2 12 22 12 22C12 22 10.8 15.2 8 12C10.8 8.8 12 2 12 2Z" />
         <path d="M2 12C2 12 8.8 10.8 12 8C15.2 10.8 22 12 22 12C22 12 15.2 13.2 12 16C8.8 13.2 2 12 2 12Z" />
         {/* Small accent star top-right */}
@@ -20,10 +39,7 @@ const SparkleIcon = ({ className = '' }) => (
     </svg>
 );
 
-
-/* ─────────────────────────────────────────────
-   Send icon
-   ───────────────────────────────────────────── */
+/* Send Action Icon */
 const SendIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} className="w-4 h-4" aria-hidden="true">
         <line x1="22" y1="2" x2="11" y2="13" />
@@ -31,9 +47,7 @@ const SendIcon = () => (
     </svg>
 );
 
-/* ─────────────────────────────────────────────
-   Close icon
-   ───────────────────────────────────────────── */
+/* Close Action Icon */
 const CloseIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18" />
@@ -41,9 +55,7 @@ const CloseIcon = () => (
     </svg>
 );
 
-/* ─────────────────────────────────────────────
-   Typing dots indicator
-   ───────────────────────────────────────────── */
+/* Animated Typing Dots Indicator Component */
 const TypingIndicator = () => (
     <div className="flex items-center gap-1 px-4 py-3">
         {[0, 1, 2].map(i => (
@@ -57,15 +69,11 @@ const TypingIndicator = () => (
     </div>
 );
 
-/* ─────────────────────────────────────────────
-   Format timestamp
-   ───────────────────────────────────────────── */
+/* Helper: Formats Date object into HH:MM AM/PM string */
 const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-/* ─────────────────────────────────────────────
-   Quick-starter suggestion chips shown on open
-   ───────────────────────────────────────────── */
+/* Quick-starter reflection prompt chips */
 const SUGGESTION_CHIPS = [
     "How am I doing lately?",
     "Why do I feel stressed?",
@@ -77,7 +85,10 @@ const SUGGESTION_CHIPS = [
    Main AICompanion Component
    ═══════════════════════════════════════════════ */
 export const AICompanion = ({ userProfile, wellnessScore }) => {
+    // Controls drawer open/closed state
     const [open, setOpen] = useState(false);
+
+    // Chat message state (hydrates previous messages from storage if present)
     const [messages, setMessages] = useState(() => {
         try {
             const storage = localStorage.getItem('access_token') ? localStorage : sessionStorage;
@@ -91,6 +102,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         } catch (e) { }
         return [];
     });
+
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [greeted, setGreeted] = useState(() => {
@@ -109,7 +121,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
     const messagesEndRef = useRef(null);
     const panelRef = useRef(null);
 
-    /* ── Persist messages to active session storage ── */
+    // Effect: Persist message trajectory to active storage whenever messages update
     useEffect(() => {
         if (messages.length > 0) {
             try {
@@ -119,7 +131,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         }
     }, [messages]);
 
-    /* ── Auto-scroll to bottom ── */
+    // Effect: Auto-scroll to the bottom of the chat history
     const scrollToBottom = useCallback(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, []);
@@ -128,7 +140,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         if (open) scrollToBottom();
     }, [messages, loading, open, scrollToBottom]);
 
-    /* ── Auto-resize textarea ── */
+    // Effect: Auto-expand textarea height dynamically based on input length
     useEffect(() => {
         const ta = textareaRef.current;
         if (!ta) return;
@@ -136,7 +148,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         ta.style.height = `${Math.min(ta.scrollHeight, 120)}px`;
     }, [inputValue]);
 
-    /* ── Greeting on first open ── */
+    // Effect: Generate personalized initial greeting message on first drawer open
     useEffect(() => {
         if (open && !greeted && messages.length === 0) {
             const name = userProfile?.name?.split(' ')[0] || 'there';
@@ -155,12 +167,11 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         }
     }, [open, greeted, messages.length, userProfile, wellnessScore]);
 
-    /* ── Close on outside click ── */
+    // Effect: Handle click outside of chat drawer to auto-close
     useEffect(() => {
         if (!open) return;
         const handler = (e) => {
             if (panelRef.current && !panelRef.current.contains(e.target)) {
-                // Only close if the click is not on the trigger button (handled by toggle)
                 const trigger = document.getElementById('ai-companion-trigger');
                 if (trigger && !trigger.contains(e.target)) {
                     setOpen(false);
@@ -171,13 +182,13 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         return () => document.removeEventListener('mousedown', handler);
     }, [open]);
 
-    /* ── Build history for API ── */
+    // Prepares conversation history array for AI API payload
     const buildHistory = () =>
         messages
             .filter(m => m.id !== 'greeting')
             .map(m => ({ role: m.role, content: m.content }));
 
-    /* ── Send message ── */
+    // Sends user prompt to backend AI service and updates message history
     const sendMessage = useCallback(async (text) => {
         const content = (text || inputValue).trim();
         if (!content || loading) return;
@@ -217,7 +228,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         }
     }, [inputValue, loading, messages]);
 
-    /* ── Handle textarea key press ── */
+    // Handles Enter key press to submit message (Shift+Enter inserts new line)
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -225,7 +236,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
         }
     };
 
-    /* ── Render bold in model messages (simple **text** parser) ── */
+    // Renders Markdown **bold** text parsing for model message responses
     const renderContent = (text) => {
         const parts = text.split(/(\*\*[^*]+\*\*)/g);
         return parts.map((part, i) => {
@@ -238,7 +249,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
 
     return (
         <>
-            {/* ── Circular Glowing-Ring Trigger Button ── */}
+            {/* 1. TRIGGER BUTTON: Circular glowing ring with sparkle star icon */}
             <button
                 id="ai-companion-trigger"
                 onClick={() => setOpen(prev => !prev)}
@@ -247,7 +258,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                 className="relative inline-flex items-center justify-center cursor-pointer outline-none group flex-shrink-0"
                 style={{ width: 36, height: 36 }}
             >
-                {/* Gradient ring — SVG so we can use conic/linear gradient properly */}
+                {/* SVG Gradient Ring Animation */}
                 <svg
                     viewBox="0 0 36 36"
                     fill="none"
@@ -267,10 +278,8 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                             <stop offset="100%" stopColor="#1E352F" stopOpacity="1" />
                         </linearGradient>
                     </defs>
-                    {/* Outer glow ring */}
                     <circle cx="18" cy="18" r="16" strokeWidth="2.5"
                         className="stroke-primary/20 dark:stroke-accent/20" fill="none" />
-                    {/* Main gradient ring */}
                     <circle cx="18" cy="18" r="16" strokeWidth="2"
                         stroke="url(#ring-grad-light)" fill="none"
                         className="dark:hidden"
@@ -287,7 +296,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                     />
                 </svg>
 
-                {/* Dark circular center */}
+                {/* Inner Sparkle Icon */}
                 <span
                     className={`
                         absolute inset-[4px] rounded-full flex items-center justify-center
@@ -307,7 +316,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                     />
                 </span>
 
-                {/* Ambient glow behind the button */}
+                {/* Ambient Radial Glow */}
                 <motion.span
                     className="absolute inset-0 rounded-full pointer-events-none"
                     style={{
@@ -317,7 +326,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                     transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                 />
 
-                {/* Pulse ring when closed */}
+                {/* Closed Pulse Ring Animation */}
                 {!open && (
                     <motion.span
                         className="absolute inset-0 rounded-full border border-primary/30 dark:border-accent/25 pointer-events-none"
@@ -328,7 +337,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
             </button>
 
 
-            {/* ── Chat Panel ── */}
+            {/* 2. CHAT DRAWER PANEL: Slide-up floating AI conversation modal */}
             <AnimatePresence>
                 {open && (
                     <motion.div
@@ -352,24 +361,20 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                             boxShadow: '0 25px 60px -10px rgba(30,53,47,0.18), 0 10px 30px -5px rgba(30,53,47,0.10)'
                         }}
                     >
-                        {/* ── Header ── */}
+                        {/* Chat Header: Avatar, Name, Status, and Close Button */}
                         <div className="flex items-center gap-3 px-5 py-4 border-b border-secondary/10 dark:border-secondary/5 bg-primary dark:bg-card-dark flex-shrink-0">
-                            {/* Avatar */}
                             <div className="relative flex-shrink-0">
                                 <div className="w-9 h-9 rounded-full bg-accent/20 dark:bg-accent/10 flex items-center justify-center">
                                     <SparkleIcon className="w-4 h-4 text-accent dark:text-accent" />
                                 </div>
-                                {/* Online dot */}
                                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-primary dark:border-card-dark rounded-full" />
                             </div>
 
-                            {/* Name + subtitle */}
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-bold text-text-light leading-tight">Compass</p>
                                 <p className="text-[11px] text-text-light/60 leading-tight">Your AI Mental Health Companion</p>
                             </div>
 
-                            {/* Close btn */}
                             <button
                                 onClick={() => setOpen(false)}
                                 aria-label="Close companion chat"
@@ -379,10 +384,10 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                             </button>
                         </div>
 
-                        {/* ── Messages Area ── */}
+                        {/* Scrollable Message History Area */}
                         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 scroll-smooth">
 
-                            {/* Suggestion chips — only when chat is just greeting */}
+                            {/* Suggestion Prompt Chips */}
                             {messages.length <= 1 && !loading && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 6 }}
@@ -410,7 +415,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                                 </motion.div>
                             )}
 
-                            {/* Message Bubbles */}
+                            {/* Message Speech Bubbles */}
                             <AnimatePresence initial={false}>
                                 {messages.map((msg) => (
                                     <motion.div
@@ -421,15 +426,13 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                                         transition={{ duration: 0.25 }}
                                         className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-2`}
                                     >
-                                        {/* Companion avatar (left) */}
                                         {msg.role === 'model' && (
                                             <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 dark:bg-accent/10 flex items-center justify-center mt-1">
                                                 <SparkleIcon className="w-3 h-3 text-primary dark:text-accent" />
                                             </div>
                                         )}
 
-                                        <div className={`max-w-[82%] ${msg.role === 'user' ? '' : ''}`}>
-                                            {/* Bubble */}
+                                        <div className="max-w-[82%]">
                                             <div
                                                 className={`
                                                     px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap
@@ -441,7 +444,6 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                                             >
                                                 {msg.role === 'model' ? renderContent(msg.content) : msg.content}
                                             </div>
-                                            {/* Timestamp */}
                                             <p className={`text-[10px] mt-1 text-text-dark/35 dark:text-text-light/30 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                                                 {formatTime(msg.ts)}
                                             </p>
@@ -450,7 +452,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                                 ))}
                             </AnimatePresence>
 
-                            {/* Typing indicator */}
+                            {/* Animated Loading Typing Dots */}
                             {loading && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 6 }}
@@ -469,7 +471,7 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
                             <div ref={messagesEndRef} />
                         </div>
 
-                        {/* ── Input Area ── */}
+                        {/* Input Footer: Textarea & Send Button */}
                         <div className="flex-shrink-0 border-t border-secondary/10 dark:border-secondary/5 px-4 py-3 bg-white dark:bg-card-dark">
                             <div className="flex items-end gap-2">
                                 <textarea
@@ -525,3 +527,4 @@ export const AICompanion = ({ userProfile, wellnessScore }) => {
 };
 
 export default AICompanion;
+

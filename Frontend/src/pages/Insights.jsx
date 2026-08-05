@@ -1,3 +1,18 @@
+/**
+ * Insights Component
+ * 
+ * What is it?
+ * The Mind Insights analytical dashboard page component for MindCompass AI.
+ * 
+ * What does it do?
+ * 1. Synchronizes AI insights (`aiInsightsData`) and progress analytics (`analyticsData`) from AppContext on mount.
+ * 2. Handles loading states and provides an informative fallback view if insufficient data (<3 check-ins) exists.
+ * 3. Features a two-tab view switcher:
+ *    - "AI Emotional Twin": Displays real-time cognitive state, a circular SVG wellness score graphic, recovery spectrum, recurring cognitive themes, and recommended coping actions.
+ *    - "Progress Analytics": Renders interactive Recharts visualizations (AreaChart for Mood vs. Stress trends, BarChart for Sleep vs. Productivity correlation).
+ * 4. Integrates the interactive `AICompanion` drawer for real-time conversational analysis.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -29,17 +44,23 @@ import { insightsAPI, aiAPI } from '../services/api';
 import { AICompanion } from '../components/AICompanion';
 
 export const Insights = () => {
+    // Access AI insights, analytics data, loading flags, and refresh handler from global AppContext
     const { wellnessScore, aiInsightsData, insightsLoading, analyticsData, analyticsLoading, refreshDashboardData, userProfile } = useApp();
-    const [insightsTab, setInsightsTab] = useState('twin'); // 'twin' | 'analytics'
+    
+    // Active view tab state: 'twin' (AI Emotional Twin) or 'analytics' (Progress Analytics)
+    const [insightsTab, setInsightsTab] = useState('twin');
 
     const [error, setError] = useState('');
 
+    // Effect: Refresh all dashboard & insights metrics on component mount
     useEffect(() => {
         refreshDashboardData();
     }, []);
 
+    // Global loading state flag
     const loading = (insightsLoading || analyticsLoading) && !aiInsightsData && !analyticsData;
 
+    // Render loading indicator
     if (loading) {
         return (
             <div className="flex-grow flex items-center justify-center py-20 text-xs sm:text-sm text-text-dark/50 dark:text-text-light/50">
@@ -48,6 +69,7 @@ export const Insights = () => {
         );
     }
 
+    // Render error message fallback
     if (error) {
         return (
             <div className="flex-grow flex items-center justify-center py-20 text-xs sm:text-sm text-red-500">
@@ -56,6 +78,7 @@ export const Insights = () => {
         );
     }
 
+    // Fallback View: Displayed when insufficient user data exists (<3 check-ins)
     if (analyticsData?.insufficient_data) {
         return (
             <PageTransition>
@@ -87,7 +110,7 @@ export const Insights = () => {
         );
     }
 
-    // Format week-to-week data for charts
+    // Formats historical mood trend data for Recharts chart components
     const chartData = (analyticsData?.moodTrends || []).map(t => {
         return {
             name: t.date,
@@ -98,12 +121,12 @@ export const Insights = () => {
         };
     });
 
-    // Extract cognitive themes
+    // Extracts recurring cognitive themes & distortions
     const themesList = aiInsightsData?.cognitive_distortions?.length > 0 && !aiInsightsData.pending
         ? aiInsightsData.cognitive_distortions.map(d => ({ theme: d, value: 1 }))
         : (analyticsData?.cognitiveThemes || []);
 
-    // Synthesize summaries dynamically based on analyticsData and aiInsightsData
+    // Synthesizes dynamic AI summaries and habit recommendations
     const summaries = {
         weeklySummary: aiInsightsData?.pending
             ? aiInsightsData.detail
@@ -121,7 +144,7 @@ export const Insights = () => {
     return (
         <PageTransition>
             <div className="flex-grow flex flex-col gap-6 text-left max-w-5xl mx-auto w-full">
-                {/* Header & Tabs Switcher */}
+                {/* Header Title & View Tab Switcher */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light flex items-center gap-2.5">
@@ -133,6 +156,7 @@ export const Insights = () => {
                         </p>
                     </div>
 
+                    {/* Tab Navigation Buttons: AI Emotional Twin vs Progress Analytics */}
                     <div className="flex border border-secondary/15 dark:border-secondary/5 rounded-full p-1 bg-card-light dark:bg-card-dark select-none shadow-sm">
                         <button
                             onClick={() => setInsightsTab('twin')}
@@ -160,7 +184,7 @@ export const Insights = () => {
                 </div>
 
                 <AnimatePresence mode="wait">
-                    {/* Panel 1: Signature AI Emotional Twin */}
+                    {/* --- TAB 1: AI EMOTIONAL TWIN --- */}
                     {insightsTab === 'twin' && (
                         <motion.div
                             key="twin-panel"
@@ -169,9 +193,9 @@ export const Insights = () => {
                             exit={{ opacity: 0, y: -10 }}
                             className="space-y-6"
                         >
-                            {/* Twin Top Row */}
+                            {/* Twin Profile & Summaries Row */}
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
-                                {/* Left: Dynamic Infographic Profile */}
+                                {/* Left: Dynamic Wellness Score Circle & Profile State */}
                                 <div className="md:col-span-5 bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-8 flex flex-col justify-between shadow-sm relative overflow-hidden">
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 dark:bg-accent/5 rounded-full filter blur-2xl pointer-events-none" />
                                     <div>
@@ -184,10 +208,9 @@ export const Insights = () => {
                                         </span>
                                     </div>
 
-                                    {/* Abstract Graphic representing the twin shape */}
+                                    {/* Circular SVG Progress Ring for Wellness Score */}
                                     <div className="py-6 flex justify-center items-center">
                                         <div className="relative w-36 h-36 flex items-center justify-center">
-                                            {/* Outer Ring */}
                                             <svg className="w-full h-full transform -rotate-90">
                                                 <circle cx="72" cy="72" r="60" stroke="currentColor" strokeWidth="6" className="text-secondary/15 dark:text-secondary/5" fill="transparent" />
                                                 <circle
@@ -203,7 +226,6 @@ export const Insights = () => {
                                                     strokeLinecap="round"
                                                 />
                                             </svg>
-                                            {/* Score Overlay */}
                                             <div className="absolute inset-0 flex flex-col items-center justify-center">
                                                 <span className="text-2xl font-bold font-mono leading-none">{wellnessScore !== null && wellnessScore !== undefined ? `${wellnessScore}%` : '--'}</span>
                                                 <span className="text-[9px] tracking-wider uppercase font-bold text-text-dark/50 dark:text-text-light/50 mt-1">WELLNESS STATUS</span>
@@ -211,16 +233,16 @@ export const Insights = () => {
                                         </div>
                                     </div>
 
-                                    {/* Brief descriptor of recovery patterns */}
+                                    {/* Recovery Spectrum Descriptor */}
                                     <div className="p-4 bg-secondary/5 dark:bg-secondary/5 border border-secondary/10 rounded-2xl text-xs sm:text-sm leading-relaxed text-text-dark/75 dark:text-text-light/80">
                                         <span className="font-bold block mb-1">RECOVERY SPECTRUM</span>
                                         {aiInsightsData?.recovery_spectrum || analyticsData?.recoverySpectrum || "Continue logging your progress to unlock personalized recovery insights."}
                                     </div>
                                 </div>
 
-                                {/* Right: Twin Bullet Cards Info */}
+                                {/* Right: Emotional Spectrum Summary, Cognitive Themes & Recommended Coping */}
                                 <div className="md:col-span-7 flex flex-col gap-6">
-                                    {/* Emotional Summary Card */}
+                                    {/* Today's Emotional Spectrum Text Card */}
                                     <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-8 text-left shadow-sm space-y-4">
                                         <span className="text-xs uppercase font-extrabold text-secondary tracking-widest block">
                                             TODAY’S EMOTIONAL SPECTRUM
@@ -236,9 +258,9 @@ export const Insights = () => {
                                         </p>
                                     </div>
 
-                                    {/* Best Coping and Triggers Grid */}
+                                    {/* Logged Themes & Recommended Coping Grid */}
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        {/* Dynamic themes count list */}
+                                        {/* Cognitive Themes List */}
                                         <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] p-6 shadow-sm flex flex-col justify-between">
                                             <div className="space-y-3 text-left">
                                                 <h4 className="text-xs font-extrabold uppercase tracking-wider text-text-dark/50 dark:text-text-light/50 flex items-center gap-1.5">
@@ -264,7 +286,7 @@ export const Insights = () => {
                                             </div>
                                         </div>
 
-                                        {/* Coping activities */}
+                                        {/* Coping Activities List */}
                                         <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] p-6 shadow-sm flex flex-col justify-between">
                                             <div className="space-y-3 text-left">
                                                 <h4 className="text-xs font-extrabold uppercase tracking-wider text-text-dark/50 dark:text-text-light/50 flex items-center gap-1.5">
@@ -298,7 +320,7 @@ export const Insights = () => {
                                 </div>
                             </div>
 
-                            {/* Habits Info Analysis Cards */}
+                            {/* Habit Rhythm & Focus Area Analysis Cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                                 <div className="p-6 bg-emerald-500/10 border-2 border-emerald-500/15 dark:border-emerald-500/10 rounded-[2rem] text-left flex gap-4 items-start shadow-sm">
                                     <FiCheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -326,7 +348,7 @@ export const Insights = () => {
                         </motion.div>
                     )}
 
-                    {/* Panel 2: Progress Analytics Charts */}
+                    {/* --- TAB 2: PROGRESS ANALYTICS CHARTS --- */}
                     {insightsTab === 'analytics' && (
                         <motion.div
                             key="analytics-panel"
@@ -335,7 +357,7 @@ export const Insights = () => {
                             exit={{ opacity: 0, y: -10 }}
                             className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2"
                         >
-                            {/* Mood and Stress Trend Chart container */}
+                            {/* AreaChart: Weekly Mood vs Stress Trends */}
                             <div className="lg:col-span-8 bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <h4 className="text-sm font-extrabold uppercase tracking-wider text-text-dark/50 dark:text-text-light/50 flex items-center gap-1.5 mb-4">
@@ -374,7 +396,7 @@ export const Insights = () => {
                                 </div>
                             </div>
 
-                            {/* Sleep vs Mood Correlation Chart */}
+                            {/* BarChart: Sleep vs Productivity Correlation */}
                             <div className="lg:col-span-4 bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] p-6 shadow-sm flex flex-col justify-between">
                                 <div>
                                     <h4 className="text-sm font-extrabold uppercase tracking-wider text-text-dark/50 dark:text-text-light/50 flex items-center gap-1.5 mb-4">
@@ -408,3 +430,4 @@ export const Insights = () => {
         </PageTransition>
     );
 };
+
