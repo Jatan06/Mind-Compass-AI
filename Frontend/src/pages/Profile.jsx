@@ -374,7 +374,7 @@ export const Profile = () => {
 
   return (
     <PageTransition>
-      <div className="flex-grow flex flex-col gap-7 text-left max-w-4xl mx-auto w-full">
+      <div className="space-y-7 text-left max-w-4xl mx-auto w-full">
         {/* ── Page Header ── */}
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
@@ -692,7 +692,7 @@ export const Profile = () => {
                 onClick={handleRetakeAssessment}
                 title="⚠️ Warning: This will reset your onboarding profile configuration. Your check-in history, journal entries, and account data will be preserved — but occupation, goals, lifestyle baselines, and coping methods will be cleared."
                 className="inline-flex items-center gap-2 text-sm font-semibold text-red-600 dark:text-red-400
-                                    border border-red-300/60 dark:border-red-700/40 bg-white dark:bg-transparent
+                                    border border-red-300/60 dark:border-red-700/40 bg-card-light dark:bg-transparent
                                     hover:bg-red-50 dark:hover:bg-red-950/20 px-4 py-2 rounded-xl transition-all cursor-pointer"
               >
                 <FiRefreshCw className="w-4 h-4" />
