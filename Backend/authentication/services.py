@@ -1,9 +1,11 @@
 import logging
 from datetime import timedelta
 import secrets
+import os
 import random
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError as DjangoValidationError
+from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
@@ -111,8 +113,11 @@ class AuthService:
             log_security_event("LOGIN_FAILURE_INACTIVE", user.id, f"Attempted login on inactive account: {user.username}")
             raise ValidationError({"non_field_errors": ["This account is inactive."]})
 
-        # Ensure UserProfile exists
-        UserProfile.objects.get_or_create(user=user)
+        # Ensure UserProfile exists & check email verification
+        profile, _ = UserProfile.objects.get_or_create(user=user)
+        if not profile.is_email_verified:
+            log_security_event("LOGIN_FAILURE_UNVERIFIED", user.id, f"Attempted login with unverified email: {user.email}")
+            raise ValidationError({"non_field_errors": ["Please verify your email address before logging in. Check your inbox for the verification link."]})
 
         log_security_event("LOGIN_SUCCESS", user.id, f"User {user.username} logged in successfully.")
         tokens = cls.generate_tokens_for_user(user)
@@ -202,28 +207,133 @@ class AuthService:
         return user, tokens
 
     @classmethod
+    def _dispatch_email(cls, subject, plain_message, html_message, recipient_email):
+        # 1. Try Google Apps Script Webhook (100% FREE via your Gmail, HTTPS Port 443)
+        google_webhook_url = os.getenv('GOOGLE_MAIL_WEBHOOK_URL')
+        if google_webhook_url:
+            try:
+                import requests
+                res = requests.post(
+                    google_webhook_url,
+                    json={
+                        "to": recipient_email,
+                        "subject": subject,
+                        "text": plain_message,
+                        "html": html_message,
+                    },
+                    timeout=10
+                )
+                if res.status_code in [200, 201, 302] or len(res.history) > 0:
+                    print(f"[MAIL SUCCESS] Google Webhook email dispatched to {recipient_email}")
+                    return True
+                else:
+                    print(f"[MAIL GOOGLE WEBHOOK ERROR] Returned {res.status_code}: {res.text[:200]}")
+            except Exception as gerr:
+                print(f"[MAIL GOOGLE WEBHOOK EXCEPTION] {gerr}")
+
+        # 2. Fallback to standard Django SMTP send_mail
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            html_message=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[recipient_email],
+            fail_silently=False,
+        )
+        print(f"[MAIL SUCCESS] SMTP email dispatched to {recipient_email}")
+        return True
+
+    @classmethod
     def send_verification_email(cls, user):
         """
-        Generates and logs/sends email verification token
+        Generates a secure 32-byte URL verification token and dispatches an actual HTML verification email
+        to the user's registered email address using configured Django SMTP settings.
+        
+        How it works:
+        1. Generates a unique secure URL token expiring in 24 hours.
+        2. Invalidates any prior unused tokens for this user to ensure single active token security.
+        3. Constructs the frontend verification URL (http://localhost:5173/verify-email?token=<TOKEN>).
+        4. Sends a branded HTML email with a responsive 'Verify Email Address' CTA button + fallback plain text link.
         """
+        # Step 1: Generate cryptographically secure token string and 24-hour expiration timestamp
         token_str = secrets.token_urlsafe(32)
         expiry = timezone.now() + timedelta(hours=24)
         
-        # Deactivate old verification tokens
+        # Step 2: Deactivate any old/previous unused verification tokens for this user
         EmailVerificationToken.objects.filter(user=user, is_used=False).update(is_used=True)
         
+        # Step 3: Store new verification token entry in the database
         verification_token = EmailVerificationToken.objects.create(
             user=user,
             token=token_str,
             expires_at=expiry
         )
         
-        # Mock Email Logging
-        link = f"http://localhost:5173/verify-email?token={token_str}"
-        print(f"[MAIL MOCK] Verification link generated for {user.email}: {link}")
-        log_security_event("EMAIL_VERIFICATION_SENT", user.id, f"Verification code generated.")
+        # Step 4: Construct the verification web link pointing to the React Frontend route
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:5173').rstrip('/')
+        verification_link = f"{frontend_url}/verify-email?token={token_str}"
+        print(f"\n=======================================================")
+        print(f"[VERIFICATION MAIL DISPATCH] Generated link for {user.email}:")
+        print(f"{verification_link}")
+        print(f"=======================================================\n")
         
-        # If SMTP is configured, we could execute send_mail here.
+        # Step 5: Dispatch real email using Django's core send_mail function
+        try:
+            subject = "MindCompass AI - Confirm Your Email Address"
+            
+            # Plain-text alternative message body for clients without HTML support
+            plain_message = (
+                f"Hello {user.username},\n\n"
+                f"Thank you for joining MindCompass AI! Please verify your email address to activate your space:\n"
+                f"{verification_link}\n\n"
+                f"This verification link will remain valid for 24 hours.\n"
+                f"If you did not create an account on MindCompass AI, please ignore this email.\n\n"
+                f"Warm regards,\n"
+                f"The MindCompass AI Team"
+            )
+            
+            # Rich HTML message body formatted with MindCompass styling
+            html_message = f"""
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 560px; margin: 0 auto; padding: 28px; border: 1px solid #e2e8f0; border-radius: 16px; background-color: #ffffff;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <h2 style="color: #4f46e5; margin: 0; font-size: 24px; font-weight: 700;">MindCompass AI</h2>
+                    <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Empowering Your Emotional Wellbeing</p>
+                </div>
+                
+                <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 20px 0;" />
+                
+                <h3 style="color: #0f172a; margin-top: 0; font-size: 18px;">Welcome, {user.username}!</h3>
+                <p style="color: #475569; font-size: 15px; line-height: 1.6;">
+                    Thank you for signing up for MindCompass AI. To complete your account registration and access your secure space, please verify your email address.
+                </p>
+                
+                <div style="text-align: center; margin: 32px 0;">
+                    <a href="{verification_link}" target="_blank" style="background-color: #4f46e5; color: #ffffff; padding: 14px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">
+                        Verify Email Address
+                    </a>
+                </div>
+                
+                <p style="color: #64748b; font-size: 13px; line-height: 1.5;">
+                    Or copy and paste this verification link into your browser:<br />
+                    <a href="{verification_link}" style="color: #4f46e5; word-break: break-all;">{verification_link}</a>
+                </p>
+                
+                <p style="color: #94a3b8; font-size: 12px; margin-top: 24px;">
+                    Note: This link will expire in <strong>24 hours</strong>. If you did not sign up for an account, no further action is required.
+                </p>
+                
+                <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 24px 0 16px 0;" />
+                <p style="color: #cbd5e1; font-size: 12px; text-align: center; margin: 0;">&copy; MindCompass AI. All rights reserved.</p>
+            </div>
+            """
+            
+            # Dispatch via HTTPS Resend API if RESEND_API_KEY is present, or fallback to SMTP
+            cls._dispatch_email(subject, plain_message, html_message, user.email)
+        except Exception as mail_err:
+            # Handle potential connection errors gracefully without breaking user registration record
+            print(f"[MAIL ERROR] Failed to send email to {user.email}: {mail_err}")
+        
+        log_security_event("EMAIL_VERIFICATION_SENT", user.id, f"Verification code generated and email dispatched.")
         return verification_token
 
     @classmethod
@@ -233,7 +343,7 @@ class AuthService:
             
         try:
             val_token = EmailVerificationToken.objects.get(token=token_str, is_used=False)
-        except EmailVerificationToken.DoesNotExist:
+        except (EmailVerificationToken.DoesNotExist, ObjectDoesNotExist):
             raise ValidationError({"token": ["Invalid or already verified email verification token."]})
             
         if val_token.is_expired():
@@ -281,7 +391,6 @@ class AuthService:
         
         # Dispatch real email via Django send_mail (uses configured EMAIL_BACKEND / SMTP)
         try:
-            from django.core.mail import send_mail
             subject = "MindCompass - Password Reset Verification Code"
             
             plain_message = (
@@ -308,16 +417,9 @@ class AuthService:
             </div>
             """
             
-            send_mail(
-                subject=subject,
-                message=plain_message,
-                html_message=html_message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
+            cls._dispatch_email(subject, plain_message, html_message, user.email)
         except Exception as mail_err:
-            print(f"[MAIL ERROR] Failed to deliver SMTP email to {user.email}: {mail_err}")
+            print(f"[MAIL ERROR] Failed to deliver email to {user.email}: {mail_err}")
 
         log_security_event("PASSWORD_RESET_OTP_SENT", user.id, f"Issued 6-digit password reset OTP: {otp_code}")
         
@@ -342,7 +444,7 @@ class AuthService:
                 otp_code=str(otp_code).strip(),
                 is_used=False
             ).latest('created_at')
-        except PasswordResetToken.DoesNotExist:
+        except (PasswordResetToken.DoesNotExist, ObjectDoesNotExist):
             raise ValidationError({"otp": ["Invalid 6-digit code. Please check and try again."]})
 
         if reset_token.is_expired():
@@ -379,7 +481,7 @@ class AuthService:
                 is_verified=True,
                 is_used=False
             ).latest('created_at')
-        except PasswordResetToken.DoesNotExist:
+        except (PasswordResetToken.DoesNotExist, ObjectDoesNotExist):
             raise ValidationError({"otp": ["OTP verification expired or invalid. Please request a new OTP."]})
 
         if reset_token.is_expired():

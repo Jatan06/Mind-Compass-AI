@@ -18,10 +18,14 @@ class JournalEntry(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = models.Manager()
+    DoesNotExist: type[Exception]
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        snippet = self.text[:30] + "..." if len(self.text) > 30 else self.text
-        return f"{self.user.username} - {self.created_at.strftime('%Y-%m-%d')} - '{snippet}'"
+        text_str = str(self.text) if self.text else ""
+        snippet = text_str[:30] + "..." if len(text_str) > 30 else text_str
+        strftime = getattr(self.created_at, 'strftime', None)
+        date_str = strftime('%Y-%m-%d') if callable(strftime) else str(self.created_at)
+        return f"{self.user} - {date_str} - '{snippet}'"

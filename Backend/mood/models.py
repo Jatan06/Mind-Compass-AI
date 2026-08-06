@@ -29,4 +29,4 @@ class MoodLog(models.Model):
         unique_together = ('user', 'date') # Throttle to max one log per day
 
     def __str__(self):
-        return f"{self.user.username} - Mood {self.mood} on {self.date}"
+        return f"{self.user} - Mood {self.mood} on {self.date}"
