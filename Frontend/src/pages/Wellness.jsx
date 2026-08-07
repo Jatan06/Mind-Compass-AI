@@ -78,16 +78,13 @@ export const Wellness = () => {
 
     const [activeView, setActiveView] = useState('mission'); // 'mission' | 'session' | 'feedback'
     const [selectedActivity, setSelectedActivity] = useState(null);
-<<<<<<< HEAD
     const [currentStep, setCurrentStep] = useState(0);
     const [canProceed, setCanProceed] = useState(false);
-=======
     const [sessionViewMode, setSessionViewMode] = useState('interactive'); // 'interactive' | 'timer'
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [difficultyFilter, setDifficultyFilter] = useState('All');
     const [durationFilter, setDurationFilter] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
->>>>>>> 2cfc02ac940a842f0e65ae48028e7cef0e1a7041
 
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -477,8 +474,6 @@ export const Wellness = () => {
                                 </div>
                             </div>
 
-<<<<<<< HEAD
-=======
                             {/* Session player details */}
                             <div className="text-center space-y-4">
                                 <span className="text-[10px] uppercase font-bold tracking-wider text-secondary">
@@ -513,8 +508,6 @@ export const Wellness = () => {
                                     ⏱️ Guided Timer Session
                                 </button>
                             </div>
-
->>>>>>> 2cfc02ac940a842f0e65ae48028e7cef0e1a7041
                             {/* Background Ambient Music */}
                             <AmbientMusicPlayer
                                 key={resetKey}
@@ -523,56 +516,6 @@ export const Wellness = () => {
                                 durationSeconds={(getDurationNum(selectedActivity.duration) || 5) * 60}
                             />
 
-<<<<<<< HEAD
-                            {/* Interactive Main Step Content */}
-                            <div className="flex-grow flex flex-col items-center justify-center py-12 text-center relative px-4 text-balance">
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={`step-${currentStep}`}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        className="space-y-8 w-full"
-                                    >
-                                        <div className="mx-auto w-24 h-24 sm:w-32 sm:h-32 bg-primary/10 dark:bg-accent/10 rounded-full flex items-center justify-center text-primary dark:text-accent shadow-inner relative">
-                                            <motion.div
-                                                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
-                                                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                                className="absolute inset-0 bg-primary/20 dark:bg-accent/20 rounded-full blur-xl pointer-events-none"
-                                            />
-                                            {currentStep === 0 ? <FiCompass className="w-10 h-10" /> : <FiActivity className="w-10 h-10" />}
-                                        </div>
-
-                                        {(() => {
-                                            const inst = selectedActivity.instructions[currentStep];
-                                            if (typeof inst === 'string' || inst?.type === 'static_text') {
-                                                return (
-                                                    <p className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light leading-snug">
-                                                        {typeof inst === 'string' ? inst : inst.text}
-                                                    </p>
-                                                );
-                                            }
-
-                                            const type = inst.type;
-                                            const handleComplete = (isDone) => setCanProceed(isDone);
-
-                                            if (type === 'breathing_circle') return <BreathingCircleWidget instruction={inst} onComplete={handleComplete} />;
-                                            if (type === 'text_input') return <TextInputWidget instruction={inst} onComplete={handleComplete} />;
-                                            if (type === 'checklist') return <ChecklistWidget instruction={inst} onComplete={handleComplete} />;
-                                            if (type === 'slider') return <SliderWidget instruction={inst} onComplete={handleComplete} />;
-                                            if (type === 'progress_tap') return <ProgressTapWidget instruction={inst} onComplete={handleComplete} />;
-                                            if (type === 'hold_release') return <HoldReleaseWidget instruction={inst} onComplete={handleComplete} />;
-
-                                            return (
-                                                <p className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light leading-snug">
-                                                    {inst.text || "Continue..."}
-                                                </p>
-                                            );
-                                        })()}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </div>
-=======
                             {/* Interactive Widget View vs Guided HUD Timer View */}
                             {sessionViewMode === 'interactive' ? (
                                 <div className="py-2">
@@ -671,8 +614,6 @@ export const Wellness = () => {
                                 </div>
                             )}
 
->>>>>>> 2cfc02ac940a842f0e65ae48028e7cef0e1a7041
-
                             {/* Persistent Controls */}
                             <div className="flex items-center justify-between pt-6 border-t border-secondary/10 relative">
                                 <div className="absolute top-0 left-0 h-1 bg-secondary/10 w-full -mt-[1px]">
@@ -691,7 +632,6 @@ export const Wellness = () => {
                                     <FiArrowLeft className="w-4 h-4" /> Previous
                                 </button>
 
-<<<<<<< HEAD
                                 <button
                                     onClick={handleNextStep}
                                     disabled={!canProceed}
@@ -700,20 +640,6 @@ export const Wellness = () => {
                                     {currentStep === selectedActivity.instructions.length - 1 ? 'Complete Session' : 'Continue'}
                                     {currentStep < selectedActivity.instructions.length - 1 && <FiPlay className="w-4 h-4 fill-current" />}
                                 </button>
-=======
-                            {/* Guidelines instructions box */}
-                            <div className="bg-secondary/5 dark:bg-secondary/5 border border-secondary/15 dark:border-secondary/5 rounded-3xl p-6 text-left space-y-4">
-                                <h4 className="text-xs uppercase font-bold tracking-wider text-secondary">
-                                    Step-by-Step Instructions
-                                </h4>
-                                <ol className="space-y-2.5 text-xs sm:text-sm text-text-dark/80 dark:text-text-light/85 list-decimal pl-4 leading-relaxed font-normal">
-                                    {(selectedActivity.instructions || []).map((inst, i) => (
-                                        <li key={i}>
-                                            {typeof inst === 'object' && inst !== null ? (inst.text || JSON.stringify(inst)) : String(inst)}
-                                        </li>
-                                    ))}
-                                </ol>
->>>>>>> 2cfc02ac940a842f0e65ae48028e7cef0e1a7041
                             </div>
                         </motion.div>
                     )}
