@@ -18972,3 +18972,5 @@ Traceback (most recent call last):
     if past_completed.exists():
        ^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'list' object has no attribute 'exists'
+INFO 2026-08-07 21:49:36,867 autoreload 24948 25236 C:\Users\HP\Documents\mindCompass\Backend\ai\apps.py changed, reloading.
+INFO 2026-08-07 21:49:40,716 autoreload 11908 22256 Watching for file changes with StatReloader
