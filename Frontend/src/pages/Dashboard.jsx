@@ -354,10 +354,10 @@ export const Dashboard = () => {
                                             <ul className="list-disc pl-5 mt-1.5 space-y-1 text-xs text-text-dark/70 dark:text-text-light/75 leading-relaxed">
                                                 {Array.isArray(recReason) ? (
                                                     recReason.map((r, i) => (
-                                                        <li key={i}>{r}</li>
+                                                        <li key={i}>{typeof r === 'object' && r !== null ? (r.text || JSON.stringify(r)) : String(r)}</li>
                                                     ))
                                                 ) : (
-                                                    <li>{recReason || recommendedActivity?.description}</li>
+                                                    <li>{typeof recReason === 'object' && recReason !== null ? (recReason.text || JSON.stringify(recReason)) : (recReason || recommendedActivity?.description)}</li>
                                                 )}
                                             </ul>
                                         </div>
@@ -406,10 +406,10 @@ export const Dashboard = () => {
                                             <ul className="list-disc pl-5 mt-1.5 space-y-1 text-xs text-text-dark/70 dark:text-text-light/75 leading-relaxed">
                                                 {Array.isArray(recReason) ? (
                                                     recReason.map((r, i) => (
-                                                        <li key={i}>{r}</li>
+                                                        <li key={i}>{typeof r === 'object' && r !== null ? (r.text || JSON.stringify(r)) : String(r)}</li>
                                                     ))
                                                 ) : (
-                                                    <li>{recReason || recommendedActivity?.description}</li>
+                                                    <li>{typeof recReason === 'object' && recReason !== null ? (recReason.text || JSON.stringify(recReason)) : (recReason || recommendedActivity?.description)}</li>
                                                 )}
                                             </ul>
                                         </div>

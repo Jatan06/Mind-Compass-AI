@@ -23,8 +23,32 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+html {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+html.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+
 /* Smooth theme transition */
 body {
+  background-color: inherit;
+  color: inherit;
   transition: background-color 0.4s ease, color 0.4s ease;
   font-family: var(--font-sans);
 }

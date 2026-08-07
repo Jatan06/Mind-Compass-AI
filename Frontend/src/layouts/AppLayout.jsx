@@ -110,10 +110,10 @@ export const AppLayout = () => {
         : 'U';
 
     return (
-        <div className="min-h-screen bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light flex transition-colors duration-300">
+        <div className="h-screen w-full overflow-hidden bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light flex transition-colors duration-300">
             {/* --- DESKTOP SIDEBAR --- */}
             {!isOnboardingPage && (
-                <aside className="hidden md:flex flex-col w-64 bg-card-light dark:bg-card-dark border-r border-secondary/15 dark:border-secondary/5 sticky top-0 h-screen transition-all select-none">
+                <aside className="hidden md:flex flex-col w-64 bg-bg-light dark:bg-bg-dark border-r border-secondary/15 dark:border-secondary/5 h-full transition-all select-none shrink-0">
                     {/* Brand Logo & Title Header */}
                     <div className="p-6 flex items-center gap-3 border-b border-secondary/15 dark:border-secondary/5 h-20">
                         <LogoIcon size={34} className="text-primary dark:text-accent" />
@@ -194,16 +194,50 @@ export const AppLayout = () => {
                 </aside>
             )}
 
+            {/* --- MOBILE TOP HEADER --- */}
+            {!isOnboardingPage && (
+                <header className="md:hidden fixed top-0 left-0 right-0 z-40 h-16 bg-bg-light/95 dark:bg-bg-dark/95 backdrop-blur-md border-b border-secondary/15 dark:border-secondary/5 px-4 flex items-center justify-between shadow-xs select-none">
+                    <Link to="/app" className="flex items-center gap-2.5">
+                        <LogoIcon size={28} className="text-primary dark:text-accent" />
+                        <span className="text-sm font-bold tracking-tight text-primary dark:text-bg-light leading-none">
+                            Mind<span className="text-secondary font-medium">Compass</span>
+                        </span>
+                    </Link>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={toggleTheme}
+                            aria-label="Toggle theme"
+                            title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                            className="p-2.5 rounded-xl bg-secondary/10 dark:bg-secondary/15 text-text-dark/80 dark:text-text-light/90 hover:bg-secondary/20 transition-all cursor-pointer outline-none"
+                        >
+                            {theme === 'dark' ? (
+                                <FiSun className="w-4 h-4 text-accent" />
+                            ) : (
+                                <FiMoon className="w-4 h-4 text-text-dark" />
+                            )}
+                        </button>
+                        <button
+                            onClick={handleLogout}
+                            aria-label="Log out"
+                            title="Log Out"
+                            className="p-2.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all cursor-pointer outline-none"
+                        >
+                            <FiLogOut className="w-4 h-4" />
+                        </button>
+                    </div>
+                </header>
+            )}
+
             {/* --- MAIN CONTENT AREA: Renders active nested route --- */}
-            <main className={`flex-grow flex flex-col min-w-0 h-screen overflow-y-auto ${isOnboardingPage ? '' : 'pb-20 md:pb-0'}`}>
-                <div className="p-6 md:p-10 max-w-7xl w-full mx-auto flex-grow flex flex-col">
+            <main className={`flex-1 min-w-0 h-full overflow-y-auto bg-bg-light dark:bg-bg-dark ${isOnboardingPage ? '' : 'pt-16 md:pt-0'}`}>
+                <div className="p-6 md:p-10 pb-16 md:pb-10 max-w-7xl w-full mx-auto">
                     <Outlet />
                 </div>
             </main>
 
             {/* --- MOBILE BOTTOM NAVIGATION BAR --- */}
             {!isOnboardingPage && (
-                <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-card-light/95 dark:bg-card-dark/95 backdrop-blur-md border-t border-secondary/15 dark:border-secondary/5 py-2 px-4 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] select-none">
+                <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bg-light/95 dark:bg-bg-dark/95 backdrop-blur-md border-t border-secondary/15 dark:border-secondary/5 py-2 px-4 shadow-[0_-2px_10px_rgba(0,0,0,0.04)] select-none">
                     <div className="flex justify-around items-center">
                         {menuItems.map((item) => {
                             const isActive = location.pathname === item.path || (item.path === '/app' && location.pathname === '/app/');
