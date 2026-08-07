@@ -109,7 +109,7 @@ export const AppLayout = () => {
         : 'U';
 
     return (
-        <div className="h-full w-full overflow-hidden bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light flex transition-colors duration-300">
+        <div className="h-screen w-full overflow-hidden bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light flex transition-colors duration-300">
             {/* --- DESKTOP SIDEBAR --- */}
             {!isOnboardingPage && (
                 <aside className="hidden md:flex flex-col w-64 bg-bg-light dark:bg-bg-dark border-r border-secondary/15 dark:border-secondary/5 h-full transition-all select-none shrink-0">
