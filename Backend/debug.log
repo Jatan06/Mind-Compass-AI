@@ -18490,3 +18490,23 @@ INFO 2026-08-07 17:24:56,896 log 5832 23864 "GET /api/profile/?today=2026-08-07 
 INFO 2026-08-07 17:24:58,988 log 5832 2904 "GET /api/ai/insights/ HTTP/1.1" 200 860
 INFO 2026-08-07 17:30:46,954 autoreload 5832 21624 C:\Users\HP\Documents\mindCompass\Backend\core\apps.py changed, reloading.
 INFO 2026-08-07 17:30:51,428 autoreload 23384 22068 Watching for file changes with StatReloader
+INFO 2026-08-07 17:31:44,626 autoreload 23384 22068 C:\Users\HP\Documents\mindCompass\Backend\core\apps.py changed, reloading.
+INFO 2026-08-07 17:32:04,274 autoreload 23864 15204 Watching for file changes with StatReloader
+INFO 2026-08-07 17:32:15,045 log 23864 12268 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:32:16,076 log 23864 10332 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:32:16,241 log 23864 24608 "GET /api/activity-feedback/ HTTP/1.1" 200 18150
+INFO 2026-08-07 17:32:16,658 log 23864 23904 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:32:18,778 log 23864 22228 "GET /api/recommendation/today/ HTTP/1.1" 200 3038
+INFO 2026-08-07 17:32:19,195 log 23864 23904 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:32:20,138 log 23864 24608 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:32:21,870 log 23864 22228 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:32:22,318 log 23864 23904 "GET /api/activity-feedback/ HTTP/1.1" 200 18150
+INFO 2026-08-07 17:32:22,661 log 23864 12268 "GET /api/ai/prediction/ HTTP/1.1" 200 790
+INFO 2026-08-07 17:32:22,884 log 23864 24608 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:32:23,683 log 23864 10332 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 17:32:25,377 log 23864 13436 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:32:26,297 log 23864 23904 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:32:27,791 log 23864 22228 "GET /api/recommendation/today/ HTTP/1.1" 200 3038
+INFO 2026-08-07 17:32:28,955 log 23864 12268 "GET /api/ai/prediction/ HTTP/1.1" 200 790
+INFO 2026-08-07 17:32:29,698 log 23864 24608 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 17:32:39,380 log 23864 10332 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
