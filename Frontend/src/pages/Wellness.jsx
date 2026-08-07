@@ -616,49 +616,43 @@ export const Wellness = () => {
                                         )}
                                 </div>
                             ) : (
-                                /* Guided HUD Circle Timer */
-                                <div className="py-6 flex flex-col items-center justify-center">
-                                    <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-secondary/10 dark:border-secondary/5 flex flex-col items-center justify-center relative bg-secondary/5 dark:bg-secondary/5 shadow-inner">
-                                        {isTimerRunning && (
-                                            <motion.div
-                                                animate={{ scale: [1, 1.08, 1] }}
-                                                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                                className="absolute inset-0 bg-primary/5 dark:bg-accent/5 rounded-full pointer-events-none"
-                                            />
-                                        )}
-
-                                        <div className="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-text-dark dark:text-text-light select-none">
-                                            {formatTimer(timeLeft)}
-                                        </div>
-                                        <span className="text-[10px] tracking-widest uppercase text-text-dark/45 dark:text-text-light/50 font-bold mt-2">
-                                            {isTimerRunning ? 'IN PROGRESS' : 'PAUSED'}
-                                        </span>
+                                /* Step-by-Step Guide Instruction Card View */
+                                <div className="py-8 max-w-xl mx-auto w-full flex flex-col items-center justify-center text-center space-y-6">
+                                    {/* Step Number Badge */}
+                                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 dark:bg-accent/15 text-primary dark:text-accent text-xs font-extrabold uppercase tracking-widest">
+                                        📋 Step {currentStep + 1} of {selectedActivity.instructions?.length || 1}
                                     </div>
 
-                                    {/* Controls */}
-                                    <div className="flex items-center gap-4 mt-8">
-                                        <button
-                                            onClick={handleTimerReset}
-                                            className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                            title="Reset"
+                                    {/* Step Content Card */}
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={currentStep}
+                                            initial={{ opacity: 0, y: 15 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -15 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="w-full bg-bg-light dark:bg-bg-dark p-6 sm:p-8 rounded-3xl border border-secondary/15 space-y-4 shadow-sm"
                                         >
-                                            <FiRotateCcw className="w-5 h-5" />
-                                        </button>
-                                        <button
-                                            onClick={handleTimerPause}
-                                            className="p-4 bg-primary dark:bg-accent text-bg-light dark:text-bg-dark rounded-full hover:scale-105 shadow transition-all cursor-pointer"
-                                            title={isTimerRunning ? 'Pause' : 'Resume'}
-                                        >
-                                            {isTimerRunning ? <FiPause className="w-6 h-6 fill-current" /> : <FiPlay className="w-6 h-6 fill-current translate-x-0.5" />}
-                                        </button>
-                                        <button
-                                            onClick={handleSkipTimer}
-                                            className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                            title="Skip to Complete"
-                                        >
-                                            <FiSquare className="w-5 h-5 fill-current text-red-500" />
-                                        </button>
-                                    </div>
+                                            <div className="w-12 h-12 rounded-2xl bg-primary/15 dark:bg-accent/20 text-primary dark:text-accent font-black text-xl flex items-center justify-center mx-auto">
+                                                {currentStep + 1}
+                                            </div>
+
+                                            {typeof selectedActivity.instructions?.[currentStep] === 'string' ? (
+                                                <p className="text-base sm:text-lg font-semibold text-text-dark dark:text-text-light leading-relaxed">
+                                                    {selectedActivity.instructions[currentStep]}
+                                                </p>
+                                            ) : (
+                                                <div className="space-y-2">
+                                                    <h4 className="text-base sm:text-lg font-bold text-text-dark dark:text-text-light">
+                                                        {selectedActivity.instructions?.[currentStep]?.title || selectedActivity.instructions?.[currentStep]?.action || `Step ${currentStep + 1}`}
+                                                    </h4>
+                                                    <p className="text-sm text-text-dark/75 dark:text-text-light/80 leading-relaxed">
+                                                        {selectedActivity.instructions?.[currentStep]?.description || selectedActivity.instructions?.[currentStep]?.text || JSON.stringify(selectedActivity.instructions?.[currentStep])}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    </AnimatePresence>
                                 </div>
                             )}
 
