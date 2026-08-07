@@ -57,22 +57,9 @@ export const ThoughtCourtScale = ({ activity, onComplete }) => {
     const isBalanced = evidenceItems.length >= 2;
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-500 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiShield className="w-4 h-4" /> CBT Thought Court Scale
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Cognitive Reframing Scale'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Place an anxious thought on trial. Add objective evidence weights to rebalance your scale.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Interactive Animated Balance Scale */}
-            <div className="w-full bg-bg-light dark:bg-bg-dark rounded-3xl border border-secondary/15 p-6 space-y-4">
+            <div className="w-full bg-bg-light dark:bg-bg-dark rounded-3xl border border-secondary/15 p-3 sm:p-6 space-y-4 overflow-hidden">
                 <div className="relative h-44 flex flex-col items-center justify-end">
                     {/* Scale Stand Base */}
                     <div className="w-4 h-28 bg-secondary/30 rounded-t-full relative flex flex-col items-center justify-start">

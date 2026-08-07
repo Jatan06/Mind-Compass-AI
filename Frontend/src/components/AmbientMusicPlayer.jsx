@@ -16,7 +16,7 @@
  * @param {number} durationSeconds - Target activity session duration in seconds (default 300)
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMusic, FiVolume2, FiVolumeX } from 'react-icons/fi';
 import { audioEngine, getSoundscapeForCategory } from '../utils/soundscapes';
@@ -32,43 +32,44 @@ export const AmbientMusicPlayer = ({
     const prevRunningRef = useRef(false);
 
     // Retrieve synthesized soundscape object for current category
-    const soundscape = getSoundscapeForCategory(category);
+    const soundscape = useMemo(() => getSoundscapeForCategory(category), [category]);
 
     // Audio Engine Synchronization Effect: Starts, pauses, or resumes Web Audio synthesis when timer changes
     useEffect(() => {
         const wasRunning = prevRunningRef.current;
         prevRunningRef.current = isTimerRunning;
+        console.log(`[AmbientMusicPlayer] Effect triggered -> category: "${category}", soundscape: "${soundscape?.title}", isTimerRunning: ${isTimerRunning}, wasRunning: ${wasRunning}`);
 
         if (isTimerRunning) {
+            audioEngine.initCtx();
             if (!wasRunning) {
                 // Initial session start or resume after pause
                 if (audioEngine.currentSoundscape?.id === soundscape.id && audioEngine.masterVol) {
+                    console.log(`[AmbientMusicPlayer] Resuming existing audio engine session...`);
                     audioEngine.resume();
                 } else {
+                    console.log(`[AmbientMusicPlayer] Playing new soundscape "${soundscape.title}" (${durationSeconds}s)...`);
                     setIsLoaded(false);
-                    audioEngine.play(soundscape, durationSeconds).then(() => setIsLoaded(true));
+                    audioEngine.play(soundscape, durationSeconds).then(() => {
+                        console.log(`[AmbientMusicPlayer] Soundscape "${soundscape.title}" loaded successfully.`);
+                        setIsLoaded(true);
+                    });
                 }
             }
         } else if (!isTimerRunning && wasRunning) {
             // Pause audio playback when session timer is paused
+            console.log(`[AmbientMusicPlayer] Pausing audio engine...`);
             audioEngine.pause();
         }
-    }, [isTimerRunning]);
-
-    // Unmount Cleanup Effect: Stops active Web Audio synthesis nodes
-    useEffect(() => {
-        return () => { audioEngine.stop(); };
-    }, []);
+    }, [isTimerRunning, category, soundscape, durationSeconds]);
 
     // Handles user mute/unmute toggle action
-    const handleMuteToggle = () => {
+    const handleMuteToggle = async () => {
+        await audioEngine.initCtx();
         const next = !isMuted;
         setIsMuted(next);
         audioEngine.setMuted(next);
     };
-
-    // Render nothing if timer was never started
-    if (!isTimerRunning && !prevRunningRef.current) return null;
 
     return (
         <AnimatePresence>

@@ -55,20 +55,7 @@ export const CognitiveShuffle = ({ activity, onComplete }) => {
     const currentItem = PEACEFUL_WORDS[wordIndex];
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiMoon className="w-4 h-4" /> Bedtime Cognitive Shuffle
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Cognitive Shuffle Sleep Prep'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Visualize random peaceful objects to mimic natural pre-sleep dream fragments and quiet analytical thoughts.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Word Card Display */}
             <div className="w-full relative h-48 flex items-center justify-center bg-bg-light dark:bg-bg-dark rounded-3xl border border-secondary/15 p-6 overflow-hidden">
                 <AnimatePresence mode="wait">
