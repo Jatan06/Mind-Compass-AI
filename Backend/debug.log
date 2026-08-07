@@ -18933,3 +18933,42 @@ INFO 2026-08-07 21:41:06,420 log 8096 12016 "GET /api/activities/ HTTP/1.1" 200 
 INFO 2026-08-07 21:41:07,903 log 8096 11496 "GET /api/activities/ HTTP/1.1" 200 93094
 INFO 2026-08-07 21:41:22,196 log 8096 29172 "GET /api/activities/ HTTP/1.1" 200 93094
 INFO 2026-08-07 21:41:25,145 log 8096 20852 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 21:46:57,603 autoreload 15224 11404 C:\Users\HP\Documents\mindCompass\Backend\ai\apps.py changed, reloading.
+INFO 2026-08-07 21:46:57,604 autoreload 8096 20996 C:\Users\HP\Documents\mindCompass\Backend\core\apps.py changed, reloading.
+INFO 2026-08-07 21:47:04,644 autoreload 25196 15144 Watching for file changes with StatReloader
+INFO 2026-08-07 21:47:05,746 autoreload 24948 25236 Watching for file changes with StatReloader
+INFO 2026-08-07 21:47:12,917 log 25196 22176 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-07 21:47:12,995 log 25196 26824 "GET /api/insights/ HTTP/1.1" 200 652
+INFO 2026-08-07 21:47:13,283 log 25196 6332 "GET /api/recommendation/today/ HTTP/1.1" 200 198
+INFO 2026-08-07 21:47:15,385 log 25196 28600 "GET /api/ai/prediction/ HTTP/1.1" 200 601
+INFO 2026-08-07 21:48:13,442 log 25196 27428 "OPTIONS /api/mood/ HTTP/1.1" 200 0
+ERROR 2026-08-07 21:48:36,192 log 25196 27428 Internal Server Error: /api/mood/
+Traceback (most recent call last):
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\mood\views.py", line 21, in post
+    QuickRecommendationService.get_quick_recommendation(request.user, force_recalculate=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py", line 944, in get_quick_recommendation
+    return cls._generate_recommendation_logic(user, is_quick=True)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py", line 397, in _generate_recommendation_logic
+    if past_completed.exists():
+       ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'exists'
