@@ -1,6 +1,6 @@
 # Wellness & Therapy Activity Feature: End-to-End Architecture & Technical Guide
 
-This document provides a comprehensive, step-by-step technical explanation of the **Wellness & Therapy Activity Feature** in Mind-Compass-AI. It details the complete data lifecycle—from the **Frontend UI components**, **Ambient Soundscape Engine**, and **Screen Wake-Lock Session Mode** to **React Context**, **Axios API Layer**, **Django Routing**, **REST View Controllers**, **Service Logic**, **Recommendation Feedback Loop**, and **Database Models**.
+This document details the technical architecture and end-to-end data lifecycle of the **Wellness & Therapy Activity Feature** in Mind-Compass-AI. It covers all components—from the **Frontend UI pages**, **Tone.js Ambient Sound Engine**, **Screen Wake-Lock & Fullscreen Mode**, **Interactive Widgets**, **React Context State**, **Axios API Layer**, **Django URL Routing**, **REST View Controllers**, **Service Logic**, **AI Recommendation Feedback Loop**, to **Database Models and Serializers**.
 
 ---
 
@@ -11,7 +11,7 @@ sequenceDiagram
     autonumber
     actor User
     participant UI as React Page (Wellness.jsx)
-    participant Sound as Ambient Soundscape Engine (soundscapes.js)
+    participant Sound as Tone.js Sound Engine (soundscapes.js)
     participant Context as App Context (AppContext.jsx)
     participant API as Axios Service (api.js)
     participant Config as Django Config (config/urls.py)
@@ -20,23 +20,24 @@ sequenceDiagram
     participant Service as Activity Service (activities/services.py)
     participant DB as SQLite / Postgres DB (TherapyActivity, ActivityFeedback, Recommendation)
 
-    User->>UI: Selects activity card & starts timer session
-    UI->>Sound: Plays category ambient audio (e.g. Rain, Forest)
+    User->>UI: Selects activity card & starts session
+    UI->>Sound: Synthesizes category ambient audio in-browser via Tone.js
     UI->>UI: Enables browser Screen Wake-Lock & Fullscreen mode
-    User->>UI: Session timer finishes & submits Feedback (Satisfaction, Mood Improved)
+    User->>UI: Completes dual-mode session (Interactive Widget or Guided HUD Timer) & submits Feedback
     UI->>Context: Calls completeActivity(activityId, durationMinutes, feedback)
     Context->>API: Calls activitiesAPI.submitFeedback(payload)
-    API->>Config: HTTP POST /api/activity-feedback/ (Bearer Token)
+    API->>Config: HTTP POST /api/activity-feedback/ (Bearer JWT Access Token)
     Config->>View: Directs to ActivityFeedbackView.post()
     View->>View: Validates payload via ActivityCompletionSerializer
     View->>Service: Calls ActivityService.record_feedback(user, activity_id, duration, satisfaction, mood_improved)
+    Service->>DB: Checks daily throttling (prevents duplicate same-day completion)
     Service->>DB: Creates ActivityFeedback record
-    Service->>DB: Updates matching Recommendation record (sets completed=True, calculates improvement score & stress delta)
-    Service-->>View: Returns generated feedback object
+    Service->>DB: Updates matching Recommendation record (sets completed=True, user_rating, improvement_score, mood_after, mood_improvement)
+    Service-->>View: Returns created ActivityFeedback object
     View-->>Context: Responds with HTTP 201 Created (JSON data)
-    Context->>API: Triggers refreshDashboardData()
-    Context-->>UI: Updates user activity history & daily progress
-    UI-->>User: Displays session completion screen & updated wellness score
+    Context->>API: Triggers refreshDashboardData() via Promise.allSettled
+    Context-->>UI: Updates completedActivities & dashboard analytics
+    UI-->>User: Displays session completion modal & updated activity status
 ```
 
 ---
@@ -44,44 +45,75 @@ sequenceDiagram
 ## 2. Frontend Layer (React.js)
 
 ### A. UI Page Component (`Frontend/src/pages/Wellness.jsx`)
-The user-facing component manages activity browsing, category/difficulty filtering, interactive countdown timers, ambient soundscapes, fullscreen focus mode, and post-activity feedback collection.
+The primary user-facing component manages activity browsing, category/difficulty/duration filtering, title search, interactive widgets, guided HUD circle timers, Tone.js ambient audio playback, fullscreen focus mode, and post-activity feedback collection.
 
 #### Active View States
-- `'list'`: Displays all available therapy activities grid, categories filter tabs, and AI Daily Recommendation banner.
-- `'details'`: Displays full activity instructions, clinical purpose, scientific benefits, precautions, and interactive session timer.
-- `'feedback'`: Post-session survey form collecting completion duration, satisfaction score (1–5 stars), and mood improvement assessment.
+- `'list'`: Displays activity library grid, category filter tabs (15 categories), difficulty filter (`Beginner`, `Intermediate`, `Advanced`), duration filter (`< 5 min`, `5-10 min`, `> 10 min`), title search input, and Today's AI Recommendation banner.
+- `'details'`: Displays active session player with Mode Switcher (`interactive` vs `timer`), ambient soundscape player (`AmbientMusicPlayer`), 12 category-specific interactive widgets OR guided HUD circle timer, clinical metadata (purpose, scientific benefits, precautions, evidence level), and step-by-step instructions.
+- `'feedback'`: Post-session survey form collecting star rating (1–5 stars), mood improvement assessment (`'Yes'`, `'A Little'`, `'No Change'`), optional text comment, back-to-session button, and close modal control.
+
+#### Session Experience Modes
+- `'interactive'`: Renders a category-matched interactive component:
+  - `BreathingPacer` (Breathing)
+  - `GroundingWizard` (Grounding)
+  - `BodyStretchGuide` (Physical Activity)
+  - `CognitiveShuffle` (Sleep Hygiene)
+  - `WorryShredder` (Journaling / Shred activities)
+  - `GratitudeConstellation` (Gratitude)
+  - `ThoughtCourtScale` (Anxiety Relief)
+  - `ZenRiverThoughts` (Mindfulness)
+  - `STOPBrakePedal` (Emotional Regulation)
+  - `FarFocusTargetChaser` (Digital Wellbeing)
+  - `ZenCountingStreak` (Cognitive Exercises)
+  - `BubblePopDeStresser` (Fallback for unmapped categories)
+- `'timer'`: Renders a guided HUD circle timer with real-time digital readout, pause/resume, reset, and skip controls.
 
 #### Key Functions & Methods
-
-1. **`useEffect(fetchActivities)`**
-   - **Execution**: On component mount, calls `activitiesAPI.getAll()`. Populates `activities` state array and dynamically extracts unique category filters.
-
-2. **`enterFullscreen()` & `exitFullscreen()`**
-   - **Purpose**: Implements browser Fullscreen API (`document.documentElement.requestFullscreen`) and Screen Wake Lock API (`navigator.wakeLock.request('screen')`).
-   - **Benefit**: Ensures the device screen remains awake and distraction-free during meditation or breathing sessions.
-
-3. **`handleStartSession()`**
-   - **Execution**: Sets `isTimerRunning = true`, triggers `enterFullscreen()`, and initializes ambient audio background soundscape matching activity category via `audioEngine.play()`.
-
-4. **`handleFinishSession()`**
-   - **Execution**: Halts timer, stops ambient audio soundscape via `audioEngine.stop()`, releases screen wake lock, and transitions `activeView` to `'feedback'`.
-
-5. **`handleSubmitFeedback(e)`**
-   - **Purpose**: Form handler for session completion feedback.
-   - **Execution**:
-     1. Prevents default form submit.
-     2. Calls `completeActivity(selectedActivity.id, durationMinutes, { satisfaction, moodImproved })` from `AppContext`.
-     3. Resets view state to `'list'`.
+1. **`useEffect(fetchActivities)`**: On component mount, invokes `activitiesAPI.getAll()` to load the activity catalog into `activities` state array.
+2. **`enterFullscreen()` & `exitFullscreen()`**: Requests browser Fullscreen API (`document.documentElement.requestFullscreen`) and Screen Wake Lock API (`navigator.wakeLock.request('screen')`) to keep screen awake during sessions.
+3. **`startTimer(activity)`**: Initializes timer duration, sets `isTimerRunning = true`, switches `activeView` to `'details'`, and invokes `enterFullscreen()`.
+4. **`handleTimerPause()`**, **`handleTimerReset()`**, **`handleSkipTimer()`**: Controls session timer state, pauses/resumes/restarts `audioEngine`, releases screen wake lock, exits fullscreen, and transitions `activeView` to `'feedback'`.
+5. **`handleFeedbackSubmit(e)`**: Form handler for session completion feedback. Invokes `completeActivity(selectedActivity.id, durationMinutes, { satisfaction, moodImproved, comment })` from `AppContext` and resets view state to `'list'`.
 
 ---
 
-### B. Context & State Management (`Frontend/src/context/AppContext.jsx`)
-Centralized React Context state layer managing user completion history and dashboard synchronization.
+### B. In-Browser Ambient Sound Engine (`Frontend/src/utils/soundscapes.js`)
+Synthesizes professional ambient soundscapes entirely in-browser using **Tone.js** (Web Audio API) without requiring external audio files.
 
-#### Functions & Methods
+#### Class: `CategorySoundEngine` (`audioEngine`)
+- **Tone.js Nodes**: Utilizes synths, noise generators (pink, brown, white noise), lowpass/highpass/bandpass filters, LFOs, metal synths, poly synths, AM synths, and reverbs.
+- **Soundscape Registry (`CATEGORY_SOUNDSCAPES`)**: Provides 15 category-tailored ambient soundscapes:
+  - `Breathing`: Peaceful Pink Noise Breath Swell (4 s in / 4 s out LFO)
+  - `Meditation`: Deep Tibetan Singing Bowls (stuck every 8 s)
+  - `Mindfulness`: Forest Stream & Chimes (brown noise stream + random chime drops)
+  - `Sleep Hygiene`: Soft Rain & Ocean Waves (pink noise rain + brown noise wave LFO)
+  - `Gratitude`: Warm Piano Arpeggios (C pentatonic scale)
+  - `Journaling`: Cozy Rain & Soft Warmth (bandpass rain + warm AM chord hum)
+  - `Physical Activity`: Kalimba Pulse (acoustic kalimba plucks + low pad)
+  - `Relaxation`: Deep Ocean Swells (10 s lowpass wave cycle)
+  - `Grounding`: Forest Wind & Low Earth Drone (G1 sine drone + wind LFO)
+  - `Stress Management`: 528 Hz Healing Bell (solfeggio bell struck every 6 s)
+  - `Anxiety Relief`: Crystal Glass Chimes (random crystal chime drops + white noise breeze)
+  - `Emotional Regulation`: Water Drops & String Pad (E3 string pad + water drops)
+  - `Digital Wellbeing`: Zen Bamboo Fountain (brown noise knock + water drop)
+  - `Social Wellness`: Campfire Crackle & Evening Warmth (C3-E3-G3 pad + random crackle pops)
+  - `Cognitive Exercises`: 40 Hz Gamma Focus Pulse (40 Hz AM-modulated tone for neural focus)
 
+#### Audio Engine Methods
+- `play(soundscape, durationSeconds)`: Initializes Tone.js AudioContext, creates master volume node, and starts synthesis routing.
+- `pause()` & `resume()`: Suspends/resumes `Tone.Transport` and ramps master volume.
+- `stop()`: Halts timers, cancels scheduled events, disposes audio nodes, and resets engine state.
+- `restart(soundscape, durationSeconds)`: Stops active synthesis, resets `Tone.Transport` position to zero, and begins new playback session.
+- `setVolume(val)` & `setMuted(muted)`: Dynamically adjusts master gain in decibels.
+
+---
+
+### C. Context & State Management (`Frontend/src/context/AppContext.jsx`)
+Centralized React Context state layer managing user completion history, authentication session, and dashboard synchronization.
+
+#### Key Functions & Methods
 1. **`completeActivity(activityId, durationMinutes, feedback)`**
-   - **Payload**:
+   - Dispatches payload to backend:
      ```json
      {
        "activity_id": "act-1",
@@ -90,16 +122,16 @@ Centralized React Context state layer managing user completion history and dashb
        "mood_improved": "Yes"
      }
      ```
-   - **Execution**: Calls `activitiesAPI.submitFeedback(payload)`. Upon HTTP 201 response, awaits `refreshDashboardData()` to recalculate progress analytics and updates local `completedActivities` state.
-
+   - Upon HTTP 201 response, awaits `refreshDashboardData()` to recalculate progress analytics and update local `completedActivities` state.
 2. **`refreshDashboardData()`**
-   - **Activity Action**: Invokes `activitiesAPI.getFeedback()`. Maps backend response structure (`duration_minutes` -> `durationMinutes`, `mood_improved` -> `moodImproved`) into `completedActivities` state array.
+   - Concurrently fetches all user data using `Promise.allSettled` across endpoints: User Profile, Mood Check-ins, Journals, Activity Feedback (`activitiesAPI.getFeedback()`), AI Recommendation (`recommendationAPI.getToday()`), AI Prediction, AI Insights, and Analytics.
+   - Maps backend feedback fields (`duration_minutes` $\rightarrow$ `durationMinutes`, `mood_improved` $\rightarrow$ `moodImproved`) into `completedActivities` state array.
 
 ---
 
-### C. Axios API Service Layer (`Frontend/src/services/api.js`)
+### D. Axios API Service Layer (`Frontend/src/services/api.js`)
 
-HTTP interface configured for wellness endpoints.
+HTTP client configured with request/response interceptors for JWT Bearer token injection and automatic 401 token refreshing via `/api/auth/refresh/`.
 
 ```javascript
 export const activitiesAPI = {
@@ -115,7 +147,7 @@ export const activitiesAPI = {
 ## 3. Backend Configuration & Routing Layer (Django)
 
 ### A. Root URL Router (`Backend/config/urls.py`)
-Routes wellness requests to respective application routers or view endpoints:
+Routes wellness activity requests to app-level URL configurations or view controllers:
 
 ```python
 urlpatterns = [
@@ -127,7 +159,7 @@ urlpatterns = [
 ```
 
 ### B. App URL Router (`Backend/activities/urls.py`)
-Maps core activity catalog endpoints:
+Maps catalog listing and detail view endpoints:
 
 ```python
 urlpatterns = [
@@ -140,32 +172,32 @@ urlpatterns = [
 
 ## 4. Backend View Controller Layer (`Backend/activities/views.py`)
 
-Provides endpoints for fetching activity library details and recording activity execution feedback.
+Provides REST endpoints for retrieving activity library items and recording user completion feedback.
 
 ### Classes & Methods
 
 #### 1. `ActivityListView(APIView)`
 - `permission_classes = [AllowAny]` (Publicly accessible catalog).
-- **`get(self, request)`**: Fetches all activities via `ActivityService.list_activities()` and returns serialized list (`HTTP 200 OK`).
+- **`get(self, request)`**: Invokes `ActivityService.list_activities()` and returns serialized list (`HTTP 200 OK`).
 
 #### 2. `ActivityDetailView(APIView)`
 - `permission_classes = [AllowAny]`.
-- **`get(self, request, pk)`**: Queries activity by slug ID (`pk`). Returns serialized data or `HTTP 404 NOT FOUND`.
+- **`get(self, request, pk)`**: Queries activity by slug primary key (`pk`). Returns serialized object or `HTTP 404 NOT FOUND`.
 
 #### 3. `ActivityFeedbackView(APIView)`
 - `permission_classes = [IsAuthenticated]`.
-- **`get(self, request)`**: Returns all historical feedback entries logged by requesting user via `ActivityService.list_user_feedbacks(request.user)`.
+- **`get(self, request)`**: Returns historical feedback entries logged by the requesting user via `ActivityService.list_user_feedbacks(request.user)`.
 - **`post(self, request)`**:
   - Extracts `activity_id`, `duration_minutes`, `satisfaction`, and `mood_improved`.
-  - Validates request structure using `ActivityCompletionSerializer`.
+  - Validates input structure using `ActivityCompletionSerializer`.
   - Invokes `ActivityService.record_feedback()`.
   - Returns created feedback object (`HTTP 201 CREATED`).
 
 ---
 
-## 5. Backend Service & Recommendation Feedback Loop (`Backend/activities/services.py`)
+## 5. Backend Service & Closed-Loop AI Recommendation Update (`Backend/activities/services.py`)
 
-Handles validation, feedback storage, and closed-loop AI Recommendation updates.
+Handles completion validation, feedback storage, daily throttling, and closed-loop AI Recommendation updates.
 
 ### Class: `ActivityService`
 
@@ -173,21 +205,25 @@ Handles validation, feedback storage, and closed-loop AI Recommendation updates.
 
 1. **`list_activities()`**: Returns `TherapyActivity.objects.all()`.
 2. **`get_activity(activity_id)`**: Returns single `TherapyActivity` instance or `None`.
-3. **`list_user_feedbacks(user)`**: Returns `ActivityFeedback` queryset filtered by user, ordered by date descending.
+3. **`list_user_feedbacks(user)`**: Returns `ActivityFeedback` queryset filtered by requesting user, ordered by date and creation time descending (`-date`, `-created_at`).
 
-4. **`record_feedback(user, activity_id, duration_minutes, satisfaction, mood_improved)` (Core Feedback Loop)**:
-   - **Daily Throttling Check**: Validates `ActivityFeedback.objects.filter(user=user, activity=activity, date=today)` to prevent multiple duplicate feedback submissions on the same day.
-   - **Feedback Persistence**: Creates new `ActivityFeedback` instance.
+4. **`record_feedback(user, activity_id, duration_minutes, satisfaction, mood_improved)` (Core Closed-Loop Execution)**:
+   - **Daily Throttling Check**: Checks `ActivityFeedback.objects.filter(user=user, activity=activity, date=today).exists()`. If true, raises `ValidationError("You have already completed this activity today.")`.
+   - **Feedback Persistence**: Creates new `ActivityFeedback` DB record.
    - **Closed-Loop AI Recommendation Update**:
-     - Searches for recent uncompleted `Recommendation` records matching `(user, activity)` created within the last 2 days.
-     - If found:
+     - Queries recent uncompleted `Recommendation` records matching `(user, activity)` created within the last 2 days (`created_at__date__gte=today - timedelta(days=2)`).
+     - If matching recommendation exists:
        1. Marks `rec.completed = True`.
        2. Sets `rec.user_rating = satisfaction`.
-       3. Calculates `improvement_score`:
-          - `"Yes"` $\rightarrow$ `improvement_score = 2.0`, `mood_after = mood + 1`.
-          - `"A Little"` $\rightarrow$ `improvement_score = 1.0`, `mood_after = mood`.
-          - `"No"` $\rightarrow$ `improvement_score = 0.0`, `mood_after = mood - 1`.
-       4. Computes stress delta string (e.g., `"Stress Improved: 7 → 4"`) and saves `rec.save()`.
+       3. Calculates `improvement_score` and `mood_after`:
+          - `"Yes"` $\rightarrow$ `improvement_score = 2.0`, `mood_after = min(5, mood_val + 1)`.
+          - `"A Little"` $\rightarrow$ `improvement_score = 1.0`, `mood_after = min(5, mood_val)`.
+          - Else (`"No Change"` / `"No"`) $\rightarrow$ `improvement_score = 0.0`, `mood_after = max(1, mood_val - 1)`.
+       4. Computes `rec.mood_improvement` string:
+          - If `rec.stress` is present: calculates `stress_after` (for score $\ge 2.0$, stress $-3$; for score $\ge 1.0$, stress $-1$; else stress unchanged), resulting in string e.g. `"Stress Improved: 7 → 4"`.
+          - Else if `rec.mood_before` and `rec.mood_after` are present: resulting in string e.g. `"Mood Improved: 3 → 4"`.
+          - Else: `"No change"`.
+       5. Saves `rec.save()`.
 
 ---
 
@@ -196,40 +232,50 @@ Handles validation, feedback storage, and closed-loop AI Recommendation updates.
 ### A. Database Models (`Backend/activities/models.py`)
 
 #### 1. `TherapyActivity`
-- `id`: Slug primary key (e.g., `'act-1'`).
-- `title`: Activity name (e.g., *"Box Breathing for Acute Anxiety"*).
-- `category`: Category string (e.g., *Mindfulness*, *Breathing*, *Somatic*).
-- `duration`: Expected duration string (e.g., *"5 min"*).
-- `difficulty`: Level string (*Simple*, *Moderate*).
-- `description`: Comprehensive markdown text containing clinical details.
-- `instructions`: `JSONField` array of step-by-step instructions.
+- `id`: `CharField` primary key (e.g., `'act-1'`) matching static slug constants.
+- `title`: Activity title string (e.g., *"Box Breathing for Acute Anxiety"*).
+- `category`: Category string (e.g., *Breathing*, *Mindfulness*, *Grounding*).
+- `duration`: Duration label string (e.g., *"5 min"*, *"10 min"*).
+- `difficulty`: Difficulty level string (*Beginner*, *Intermediate*, *Advanced*).
+- `description`: Comprehensive text containing markdown structured sections.
+- `instructions`: `JSONField` step-by-step array of instructions.
+- `created_at`, `updated_at`: `DateTimeField` audit timestamps.
 
 #### 2. `ActivityFeedback`
-- `id`: UUID primary key.
-- `user`: `ForeignKey` referencing user account.
-- `activity`: `ForeignKey` referencing `TherapyActivity`.
+- `id`: `UUIDField` primary key (`uuid.uuid4`).
+- `user`: `ForeignKey` referencing `AUTH_USER_MODEL` (`related_name='activity_feedbacks'`).
+- `activity`: `ForeignKey` referencing `TherapyActivity` (`related_name='feedbacks'`).
 - `date`: `DateField` auto-populated on creation.
-- `duration_minutes`: Actual minutes user engaged in exercise.
-- `satisfaction`: Rating score (1 to 5 stars).
-- `mood_improved`: Text rating (*"Yes"*, *"A Little"*, *"No"*).
+- `duration_minutes`: `IntegerField` representing actual completion time in minutes.
+- `satisfaction`: `IntegerField` rating score from 1 to 5.
+- `mood_improved`: `CharField` text rating (*"Yes"*, *"A Little"*, *"No Change"*).
+- `created_at`, `updated_at`: `DateTimeField` audit timestamps.
 
 ---
 
 ### B. Serializers (`Backend/activities/serializers.py`)
 
 #### 1. `TherapyActivitySerializer`
-Converts raw Markdown descriptions into structured fields using regex helper `_parse_field()`:
-- `short_description`: Extracts overview text before markdown line divider `---`.
+Parses raw Markdown descriptions into structured API fields using regex helper `_parse_field(obj, field_name)`:
+- `short_description`: Extracts overview text prior to Markdown divider `---`.
 - `clinical_purpose`: Parses `**Clinical Purpose:**`.
 - `scientific_benefits`: Parses `**Scientific Benefits:**`.
 - `precautions`: Parses `**Contraindications/Precautions:**`.
-- `equipment`, `setting`, `format`, `evidence_level`, `suitable_moods`, `suitable_conditions`.
+- `equipment`: Parses `**Equipment Required:**`.
+- `setting`: Parses `**Setting:**`.
+- `format`: Parses `**Format:**`.
+- `evidence_level`: Parses `**Evidence Level:**`.
+- `suitable_moods`: Parses `**Suitable Moods:**`.
+- `suitable_conditions`: Parses `**Suitable Mental Health Conditions:**`.
 
-#### 2. `ActivityCompletionSerializer`
-Input validation serializer enforcing data rules:
-- `duration_minutes`: Integer $\ge 1$.
-- `satisfaction`: Integer between $1$ and $5$.
-- `mood_improved`: Character string.
+#### 2. `ActivityFeedbackSerializer`
+Standard `ModelSerializer` for returning `ActivityFeedback` instances (`id`, `user`, `activity`, `date`, `duration_minutes`, `satisfaction`, `mood_improved`, `created_at`, `updated_at`).
+
+#### 3. `ActivityCompletionSerializer`
+Input validation serializer enforcing data types and bounds:
+- `duration_minutes`: `IntegerField(min_value=1)`.
+- `satisfaction`: `IntegerField(min_value=1, max_value=5)`.
+- `mood_improved`: `CharField(max_length=50)`.
 
 ---
 
@@ -237,12 +283,14 @@ Input validation serializer enforcing data rules:
 
 | Layer | File Path | Key Class / Method | Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **Frontend UI** | `Frontend/src/pages/Wellness.jsx` | `Wellness` component | Activity catalog display, ambient soundscapes, timer focus mode, and feedback UI. |
-| **Sound Engine** | `Frontend/src/utils/soundscapes.js` | `audioEngine` | Synthesizes and plays ambient Web Audio soundscapes for meditation and focus. |
-| **Frontend Context** | `Frontend/src/context/AppContext.jsx` | `completeActivity()` | Dispatches completion payload to server and triggers dashboard data sync. |
-| **Frontend API** | `Frontend/src/services/api.js` | `activitiesAPI` | Handles HTTP GET activity list and POST feedback submissions. |
-| **Django Routing** | `Backend/config/urls.py` & `activities/urls.py` | `urlpatterns` | Routes `/api/activities/` and `/api/activity-feedback/` requests. |
-| **REST Controller** | `Backend/activities/views.py` | `ActivityListView`, `ActivityFeedbackView` | Serves activity catalog and validates incoming completion feedback payloads. |
-| **Service Logic** | `Backend/activities/services.py` | `ActivityService.record_feedback()` | Saves feedback record and updates linked AI Recommendation metrics closed-loop. |
-| **Data Schema** | `Backend/activities/models.py` | `TherapyActivity`, `ActivityFeedback` | Defines catalog entries, user completion logs, and relational foreign keys. |
-| **Parsing Serializer**| `Backend/activities/serializers.py` | `TherapyActivitySerializer` | Extracts structured clinical metadata from raw markdown activity descriptions. |
+| **Frontend UI** | `Frontend/src/pages/Wellness.jsx` | `Wellness` component | Activity catalog display, filtering/search, dual-mode session player, fullscreen wake lock, and feedback collection. |
+| **Sound Engine** | `Frontend/src/utils/soundscapes.js` | `CategorySoundEngine` (`audioEngine`) | Synthesizes in-browser Tone.js ambient soundscapes across 15 wellness categories. |
+| **Sound Player UI** | `Frontend/src/components/AmbientMusicPlayer.jsx` | `AmbientMusicPlayer` component | Renders ambient soundscape control bar during active activity sessions. |
+| **Interactive Widgets**| `Frontend/src/components/wellness/*` | Category Widget components | Interactive guided activities (`BreathingPacer`, `GroundingWizard`, `WorryShredder`, etc.). |
+| **Frontend Context** | `Frontend/src/context/AppContext.jsx` | `completeActivity()`, `refreshDashboardData()` | Submits feedback payload to server and synchronizes dashboard state via `Promise.allSettled`. |
+| **Frontend API** | `Frontend/src/services/api.js` | `activitiesAPI` | Handles HTTP requests for listing activities and submitting completion feedback. |
+| **Django Routing** | `Backend/config/urls.py` & `activities/urls.py` | `urlpatterns` | Routes `/api/activities/` and `/api/activity-feedback/` endpoints. |
+| **REST Controller** | `Backend/activities/views.py` | `ActivityListView`, `ActivityDetailView`, `ActivityFeedbackView` | Serves activity catalog and handles feedback GET/POST requests. |
+| **Service Logic** | `Backend/activities/services.py` | `ActivityService.record_feedback()` | Enforces daily completion throttling, saves feedback, and updates linked AI Recommendations closed-loop. |
+| **Data Models** | `Backend/activities/models.py` | `TherapyActivity`, `ActivityFeedback` | Defines DB schemas for static catalog entries and user completion logs. |
+| **Serializers** | `Backend/activities/serializers.py` | `TherapyActivitySerializer`, `ActivityCompletionSerializer` | Extracts structured clinical fields from markdown descriptions and validates feedback payloads. |
