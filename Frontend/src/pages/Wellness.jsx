@@ -30,6 +30,19 @@ import { activitiesAPI } from '../services/api';
 import { AmbientMusicPlayer } from '../components/AmbientMusicPlayer';
 import { audioEngine, getSoundscapeForCategory } from '../utils/soundscapes';
 
+import { BreathingPacer } from '../components/wellness/BreathingPacer';
+import { BubblePopDeStresser } from '../components/wellness/BubblePopDeStresser';
+import { WorryShredder } from '../components/wellness/WorryShredder';
+import { GroundingWizard } from '../components/wellness/GroundingWizard';
+import { BodyStretchGuide } from '../components/wellness/BodyStretchGuide';
+import { CognitiveShuffle } from '../components/wellness/CognitiveShuffle';
+import { GratitudeConstellation } from '../components/wellness/GratitudeConstellation';
+import { ThoughtCourtScale } from '../components/wellness/ThoughtCourtScale';
+import { ZenRiverThoughts } from '../components/wellness/ZenRiverThoughts';
+import { STOPBrakePedal } from '../components/wellness/STOPBrakePedal';
+import { FarFocusTargetChaser } from '../components/wellness/FarFocusTargetChaser';
+import { ZenCountingStreak } from '../components/wellness/ZenCountingStreak';
+
 const categoryIcons = {
     'Breathing': <FiWind className="w-5 h-5" />,
     'Meditation': <FiCompass className="w-5 h-5" />,
@@ -57,6 +70,7 @@ export const Wellness = () => {
 
     const [activeView, setActiveView] = useState('list'); // 'list' | 'details' | 'feedback'
     const [selectedActivity, setSelectedActivity] = useState(null);
+    const [sessionViewMode, setSessionViewMode] = useState('interactive'); // 'interactive' | 'timer'
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [difficultyFilter, setDifficultyFilter] = useState('All');
     const [durationFilter, setDurationFilter] = useState('All');
@@ -503,7 +517,29 @@ export const Wellness = () => {
                                 </p>
                             </div>
 
-                            {/* Background Ambient Music — plays for the exact timer duration */}
+                            {/* Mode Switcher Pill */}
+                            <div className="flex justify-center items-center gap-2 border-b border-secondary/10 dark:border-secondary/5 pb-4">
+                                <button
+                                    onClick={() => setSessionViewMode('interactive')}
+                                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${sessionViewMode === 'interactive'
+                                            ? 'bg-primary dark:bg-accent text-white dark:text-bg-dark shadow-sm'
+                                            : 'bg-secondary/10 text-text-dark/70 dark:text-text-light/70 hover:bg-secondary/20'
+                                        }`}
+                                >
+                                    🎮 Interactive Experience
+                                </button>
+                                <button
+                                    onClick={() => setSessionViewMode('timer')}
+                                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${sessionViewMode === 'timer'
+                                            ? 'bg-primary dark:bg-accent text-white dark:text-bg-dark shadow-sm'
+                                            : 'bg-secondary/10 text-text-dark/70 dark:text-text-light/70 hover:bg-secondary/20'
+                                        }`}
+                                >
+                                    ⏱️ Guided Timer Session
+                                </button>
+                            </div>
+
+                            {/* Background Ambient Music */}
                             <AmbientMusicPlayer
                                 key={resetKey}
                                 category={selectedActivity.category}
@@ -511,51 +547,104 @@ export const Wellness = () => {
                                 durationSeconds={(getDurationNum(selectedActivity.duration) || 5) * 60}
                             />
 
-
-                            {/* Interactive HUD Circle Timer */}
-                            <div className="py-6 flex flex-col items-center justify-center">
-                                <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-secondary/10 dark:border-secondary/5 flex flex-col items-center justify-center relative bg-secondary/5 dark:bg-secondary/5 shadow-inner">
-                                    {isTimerRunning && (
-                                        <motion.div
-                                            animate={{ scale: [1, 1.08, 1] }}
-                                            transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                            className="absolute inset-0 bg-primary/5 dark:bg-accent/5 rounded-full pointer-events-none"
-                                        />
+                            {/* Interactive Widget View vs Guided HUD Timer View */}
+                            {sessionViewMode === 'interactive' ? (
+                                <div className="py-2">
+                                    {selectedActivity.category === 'Breathing' && (
+                                        <BreathingPacer activity={selectedActivity} onComplete={handleSkipTimer} />
                                     )}
+                                    {selectedActivity.category === 'Grounding' && (
+                                        <GroundingWizard activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Physical Activity' && (
+                                        <BodyStretchGuide activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Sleep Hygiene' && (
+                                        <CognitiveShuffle activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {(selectedActivity.category === 'Journaling' || selectedActivity.title.toLowerCase().includes('shred')) && (
+                                        <WorryShredder activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Gratitude' && (
+                                        <GratitudeConstellation activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Anxiety Relief' && (
+                                        <ThoughtCourtScale activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Mindfulness' && (
+                                        <ZenRiverThoughts activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Emotional Regulation' && (
+                                        <STOPBrakePedal activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Digital Wellbeing' && (
+                                        <FarFocusTargetChaser activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category === 'Cognitive Exercises' && (
+                                        <ZenCountingStreak activity={selectedActivity} onComplete={handleSkipTimer} />
+                                    )}
+                                    {selectedActivity.category !== 'Breathing' &&
+                                        selectedActivity.category !== 'Grounding' &&
+                                        selectedActivity.category !== 'Physical Activity' &&
+                                        selectedActivity.category !== 'Sleep Hygiene' &&
+                                        selectedActivity.category !== 'Journaling' &&
+                                        selectedActivity.category !== 'Gratitude' &&
+                                        selectedActivity.category !== 'Anxiety Relief' &&
+                                        selectedActivity.category !== 'Mindfulness' &&
+                                        selectedActivity.category !== 'Emotional Regulation' &&
+                                        selectedActivity.category !== 'Digital Wellbeing' &&
+                                        selectedActivity.category !== 'Cognitive Exercises' &&
+                                        !selectedActivity.title.toLowerCase().includes('shred') && (
+                                            <BubblePopDeStresser activity={selectedActivity} onComplete={handleSkipTimer} />
+                                        )}
+                                </div>
+                            ) : (
+                                /* Guided HUD Circle Timer */
+                                <div className="py-6 flex flex-col items-center justify-center">
+                                    <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-secondary/10 dark:border-secondary/5 flex flex-col items-center justify-center relative bg-secondary/5 dark:bg-secondary/5 shadow-inner">
+                                        {isTimerRunning && (
+                                            <motion.div
+                                                animate={{ scale: [1, 1.08, 1] }}
+                                                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                                                className="absolute inset-0 bg-primary/5 dark:bg-accent/5 rounded-full pointer-events-none"
+                                            />
+                                        )}
 
-                                    <div className="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-text-dark dark:text-text-light select-none">
-                                        {formatTimer(timeLeft)}
+                                        <div className="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-text-dark dark:text-text-light select-none">
+                                            {formatTimer(timeLeft)}
+                                        </div>
+                                        <span className="text-[10px] tracking-widest uppercase text-text-dark/45 dark:text-text-light/50 font-bold mt-2">
+                                            {isTimerRunning ? 'IN PROGRESS' : 'PAUSED'}
+                                        </span>
                                     </div>
-                                    <span className="text-[10px] tracking-widest uppercase text-text-dark/45 dark:text-text-light/50 font-bold mt-2">
-                                        {isTimerRunning ? 'IN PROGRESS' : 'PAUSED'}
-                                    </span>
-                                </div>
 
-                                {/* Controls */}
-                                <div className="flex items-center gap-4 mt-8">
-                                    <button
-                                        onClick={handleTimerReset}
-                                        className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                        title="Reset"
-                                    >
-                                        <FiRotateCcw className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        onClick={handleTimerPause}
-                                        className="p-4 bg-primary dark:bg-accent text-bg-light dark:text-bg-dark rounded-full hover:scale-105 shadow transition-all cursor-pointer"
-                                        title={isTimerRunning ? 'Pause' : 'Resume'}
-                                    >
-                                        {isTimerRunning ? <FiPause className="w-6 h-6 fill-current" /> : <FiPlay className="w-6 h-6 fill-current translate-x-0.5" />}
-                                    </button>
-                                    <button
-                                        onClick={handleSkipTimer}
-                                        className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                        title="Skip to Complete"
-                                    >
-                                        <FiSquare className="w-5 h-5 fill-current text-red-500" />
-                                    </button>
+                                    {/* Controls */}
+                                    <div className="flex items-center gap-4 mt-8">
+                                        <button
+                                            onClick={handleTimerReset}
+                                            className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
+                                            title="Reset"
+                                        >
+                                            <FiRotateCcw className="w-5 h-5" />
+                                        </button>
+                                        <button
+                                            onClick={handleTimerPause}
+                                            className="p-4 bg-primary dark:bg-accent text-bg-light dark:text-bg-dark rounded-full hover:scale-105 shadow transition-all cursor-pointer"
+                                            title={isTimerRunning ? 'Pause' : 'Resume'}
+                                        >
+                                            {isTimerRunning ? <FiPause className="w-6 h-6 fill-current" /> : <FiPlay className="w-6 h-6 fill-current translate-x-0.5" />}
+                                        </button>
+                                        <button
+                                            onClick={handleSkipTimer}
+                                            className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
+                                            title="Skip to Complete"
+                                        >
+                                            <FiSquare className="w-5 h-5 fill-current text-red-500" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
 
                             {/* Detailed Metadata Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left border-t border-b border-secondary/10 dark:border-secondary/5 py-6">
@@ -614,7 +703,9 @@ export const Wellness = () => {
                                 </h4>
                                 <ol className="space-y-2.5 text-xs sm:text-sm text-text-dark/80 dark:text-text-light/85 list-decimal pl-4 leading-relaxed font-normal">
                                     {(selectedActivity.instructions || []).map((inst, i) => (
-                                        <li key={i}>{inst}</li>
+                                        <li key={i}>
+                                            {typeof inst === 'object' && inst !== null ? (inst.text || JSON.stringify(inst)) : String(inst)}
+                                        </li>
                                     ))}
                                 </ol>
                             </div>
