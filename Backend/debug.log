@@ -18488,3 +18488,5 @@ INFO 2026-08-07 17:24:51,590 log 5832 22840 "GET /api/ai/prediction/ HTTP/1.1" 2
 INFO 2026-08-07 17:24:52,142 log 5832 22460 "GET /api/insights/ HTTP/1.1" 200 753
 INFO 2026-08-07 17:24:56,896 log 5832 23864 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
 INFO 2026-08-07 17:24:58,988 log 5832 2904 "GET /api/ai/insights/ HTTP/1.1" 200 860
+INFO 2026-08-07 17:30:46,954 autoreload 5832 21624 C:\Users\HP\Documents\mindCompass\Backend\core\apps.py changed, reloading.
+INFO 2026-08-07 17:30:51,428 autoreload 23384 22068 Watching for file changes with StatReloader
