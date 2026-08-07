@@ -35,17 +35,16 @@ class ActivityFeedbackView(APIView):
         activity_id = request.data.get('activity_id')
         duration_minutes = request.data.get('duration_minutes')
         satisfaction = request.data.get('satisfaction')
-        mood_improved = request.data.get('mood_improved')
+        mood_improved = request.data.get('mood_improved', 'Yes')
+        mood_after = request.data.get('mood_after')
+        stress_after = request.data.get('stress_after')
+        comment = request.data.get('comment', '')
 
         if not activity_id:
             return Response({'error': 'Activity ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Validate structure via completion serializer
-        completion_serializer = ActivityCompletionSerializer(data={
-            'duration_minutes': duration_minutes,
-            'satisfaction': satisfaction,
-            'mood_improved': mood_improved
-        })
+        completion_serializer = ActivityCompletionSerializer(data=request.data)
         if not completion_serializer.is_valid():
             return Response(completion_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -55,7 +54,10 @@ class ActivityFeedbackView(APIView):
                 activity_id=activity_id,
                 duration_minutes=duration_minutes,
                 satisfaction=satisfaction,
-                mood_improved=mood_improved
+                mood_improved=mood_improved,
+                mood_after=mood_after,
+                stress_after=stress_after,
+                comment=comment
             )
             serializer = ActivityFeedbackSerializer(feedback)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

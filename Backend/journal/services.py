@@ -70,8 +70,23 @@ class JournalService:
             is_voice=is_voice,
             analysis={}
         )
-        # Execute NLP pipeline and save analysis & EmotionAnalysis database target
-        cls._run_nlp_pipeline(entry)
+        import threading
+        from django.db import close_old_connections
+
+        def _background_nlp(run_entry_id, run_user):
+            try:
+                close_old_connections()
+                run_entry = JournalEntry.objects.get(id=run_entry_id)
+                cls._run_nlp_pipeline(run_entry)
+                # Run AI pipeline AFTER NLP has finished writing analysis to DB
+                from ai.pipeline import AIServicePipeline
+                AIServicePipeline.run_pipeline_if_ready(run_user)
+            finally:
+                close_old_connections()
+
+        thread = threading.Thread(target=_background_nlp, args=(entry.id, user))
+        thread.daemon = True
+        thread.start()
         return entry
 
     @classmethod
@@ -93,7 +108,23 @@ class JournalService:
         entry.save()
 
         # Re-run live NLP pipeline since text content was modified
-        cls._run_nlp_pipeline(entry)
+        import threading
+        from django.db import close_old_connections
+
+        def _background_nlp(run_entry_id, run_user):
+            try:
+                close_old_connections()
+                run_entry = JournalEntry.objects.get(id=run_entry_id)
+                cls._run_nlp_pipeline(run_entry)
+                # Run AI pipeline AFTER NLP has finished writing analysis to DB
+                from ai.pipeline import AIServicePipeline
+                AIServicePipeline.run_pipeline_if_ready(run_user)
+            finally:
+                close_old_connections()
+
+        thread = threading.Thread(target=_background_nlp, args=(entry.id, user))
+        thread.daemon = True
+        thread.start()
         return entry
 
     @classmethod

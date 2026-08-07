@@ -1,0 +1,359 @@
+[
+    {
+        "id": "act-10",
+        "title": "Mindful Walking",
+        "category": "Mindfulness",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-12",
+        "title": "The 3-Minute Breathing Space",
+        "category": "Mindfulness",
+        "difficulty": "Beginner",
+        "duration": "3 min"
+    },
+    {
+        "id": "act-13",
+        "title": "Cognitive Shuffle",
+        "category": "Sleep Hygiene",
+        "difficulty": "Beginner",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-17",
+        "title": "Three Good Things",
+        "category": "Gratitude",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-1",
+        "title": "Box Breathing",
+        "category": "Breathing",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-4",
+        "title": "Physiological Sigh",
+        "category": "Breathing",
+        "difficulty": "Beginner",
+        "duration": "2 min"
+    },
+    {
+        "id": "act-19",
+        "title": "Gratitude Jar Reflection",
+        "category": "Gratitude",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-20",
+        "title": "Mental Subtraction of Positive Events",
+        "category": "Gratitude",
+        "difficulty": "Intermediate",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-22",
+        "title": "Expressive Writing",
+        "category": "Journaling",
+        "difficulty": "Advanced",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-23",
+        "title": "Values-Clarification Journaling",
+        "category": "Journaling",
+        "difficulty": "Intermediate",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-3",
+        "title": "Alternate Nostril Breathing",
+        "category": "Breathing",
+        "difficulty": "Intermediate",
+        "duration": "8 min"
+    },
+    {
+        "id": "act-18",
+        "title": "Gratitude Letter Writing",
+        "category": "Gratitude",
+        "difficulty": "Intermediate",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-34",
+        "title": "Feet on Floor Grounding",
+        "category": "Grounding",
+        "difficulty": "Beginner",
+        "duration": "3 min"
+    },
+    {
+        "id": "act-35",
+        "title": "Eisenhower Matrix",
+        "category": "Stress Management",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-5",
+        "title": "Body Scan Meditation",
+        "category": "Meditation",
+        "difficulty": "Beginner",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-37",
+        "title": "Somatic Shakeout",
+        "category": "Stress Management",
+        "difficulty": "Beginner",
+        "duration": "3 min"
+    },
+    {
+        "id": "act-38",
+        "title": "Paced Respiration (6 BPM)",
+        "category": "Stress Management",
+        "difficulty": "Intermediate",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-33",
+        "title": "5-4-3-2-1 Grounding",
+        "category": "Grounding",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-41",
+        "title": "Decatastrophizing",
+        "category": "Anxiety Relief",
+        "difficulty": "Intermediate",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-42",
+        "title": "Opposite Action",
+        "category": "Emotional Regulation",
+        "difficulty": "Advanced",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-44",
+        "title": "Emotion Wheel Mapping",
+        "category": "Emotional Regulation",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-45",
+        "title": "Temperature TIPP Reset",
+        "category": "Emotional Regulation",
+        "difficulty": "Beginner",
+        "duration": "2 min"
+    },
+    {
+        "id": "act-46",
+        "title": "Digital Detox Hour",
+        "category": "Digital Wellbeing",
+        "difficulty": "Intermediate",
+        "duration": "60 min"
+    },
+    {
+        "id": "act-40",
+        "title": "Worry Box Writing",
+        "category": "Anxiety Relief",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-48",
+        "title": "Notification Audit",
+        "category": "Digital Wellbeing",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-47",
+        "title": "Grayscale Screen Transition",
+        "category": "Digital Wellbeing",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-7",
+        "title": "MBSR Sitting Meditation",
+        "category": "Meditation",
+        "difficulty": "Intermediate",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-49",
+        "title": "Active Listening",
+        "category": "Social Wellness",
+        "difficulty": "Intermediate",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-51",
+        "title": "Socratic Questioning",
+        "category": "Cognitive Exercises",
+        "difficulty": "Advanced",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-14",
+        "title": "Sleep Worry Dump",
+        "category": "Sleep Hygiene",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-24",
+        "title": "Future Self-Authoring",
+        "category": "Journaling",
+        "difficulty": "Advanced",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-26",
+        "title": "Brisk Mindful Walk",
+        "category": "Physical Activity",
+        "difficulty": "Beginner",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-32",
+        "title": "Ice Cube Sensory Reset",
+        "category": "Grounding",
+        "difficulty": "Beginner",
+        "duration": "3 min"
+    },
+    {
+        "id": "act-15",
+        "title": "10-3-2-1-0 Sleep Protocol",
+        "category": "Sleep Hygiene",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-16",
+        "title": "PMR for Sleep",
+        "category": "Sleep Hygiene",
+        "difficulty": "Beginner",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-21",
+        "title": "CBT Thought Record",
+        "category": "Journaling",
+        "difficulty": "Intermediate",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-36",
+        "title": "Circle of Control Mapping",
+        "category": "Stress Management",
+        "difficulty": "Beginner",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-43",
+        "title": "RAIN Technique",
+        "category": "Emotional Regulation",
+        "difficulty": "Intermediate",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-50",
+        "title": "Circle of Support Mapping",
+        "category": "Social Wellness",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-29",
+        "title": "Autogenic Training",
+        "category": "Relaxation",
+        "difficulty": "Intermediate",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-31",
+        "title": "Progressive Muscle Relaxation",
+        "category": "Relaxation",
+        "difficulty": "Intermediate",
+        "duration": "20 min"
+    },
+    {
+        "id": "act-9",
+        "title": "Mindful Eating",
+        "category": "Mindfulness",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-11",
+        "title": "Leaves on a Stream",
+        "category": "Mindfulness",
+        "difficulty": "Beginner",
+        "duration": "8 min"
+    },
+    {
+        "id": "act-2",
+        "title": "4-7-8 Breathing",
+        "category": "Breathing",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-6",
+        "title": "Loving-Kindness Meditation",
+        "category": "Meditation",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-8",
+        "title": "Zen Counting Meditation",
+        "category": "Meditation",
+        "difficulty": "Intermediate",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-27",
+        "title": "Isometric Muscle Release",
+        "category": "Physical Activity",
+        "difficulty": "Beginner",
+        "duration": "5 min"
+    },
+    {
+        "id": "act-30",
+        "title": "Guided Forest Imagery",
+        "category": "Relaxation",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    },
+    {
+        "id": "act-39",
+        "title": "Worry Time",
+        "category": "Anxiety Relief",
+        "difficulty": "Intermediate",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-25",
+        "title": "Vagus Nerve Hatha Yoga",
+        "category": "Physical Activity",
+        "difficulty": "Beginner",
+        "duration": "15 min"
+    },
+    {
+        "id": "act-28",
+        "title": "Qi Gong Flow",
+        "category": "Physical Activity",
+        "difficulty": "Beginner",
+        "duration": "10 min"
+    }
+]

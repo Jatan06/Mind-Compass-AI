@@ -59,22 +59,25 @@ export const AppLayout = () => {
     }, [isAuthenticated, authLoading, isOnboarded, isOnboardingPage, navigate]);
 
     // Daily Check-in Reminder Effect: Redirects users to check-in if not yet completed today
+    // Daily Check-in Reminder Effect: Redirects users to check-in if not yet completed today
     React.useEffect(() => {
         if (!authLoading && isAuthenticated && isOnboarded) {
             const hasRedirected = sessionStorage.getItem('has_checked_daily_checkin_redirect');
             if (!hasRedirected && userProfile?.notifications?.dailyCheckin !== false) {
-                const getUTCDateString = () => new Date().toISOString().split('T')[0];
-                const todayStr = getUTCDateString();
+                const getLocalDateString = () => {
+                    const d = new Date();
+                    const tzOffset = d.getTimezoneOffset() * 60000;
+                    return (new Date(d - tzOffset)).toISOString().split('T')[0];
+                };
+                const todayStr = getLocalDateString();
                 const hasCheckedInToday = checkins && checkins.some(c => c.date === todayStr);
 
-                if (!hasCheckedInToday && location.pathname !== '/app/checkin' && location.pathname !== '/app/onboarding') {
+                // If user is directly loading the dashboard and hasn't checked in, prompt them once
+                if (!hasCheckedInToday && location.pathname === '/app') {
                     sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-                    navigate('/app/checkin');
-                } else if (hasCheckedInToday || location.pathname === '/app/checkin') {
+                    navigate('/app/checkin', { replace: true });
+                } else if (hasCheckedInToday) {
                     sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-                    if (hasCheckedInToday && location.pathname === '/app/checkin') {
-                        navigate('/app', { replace: true });
-                    }
                 }
             }
         }

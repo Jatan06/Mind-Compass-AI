@@ -21,8 +21,8 @@ class JournalListCreateView(APIView):
             return Response({'error': 'Journal text is required.'}, status=status.HTTP_400_BAD_REQUEST)
             
         entry = JournalService.create_entry(request.user, text, is_voice)
-        from ai.pipeline import AIServicePipeline
-        AIServicePipeline.run_pipeline_if_ready(request.user)
+        # Note: AIServicePipeline.run_pipeline_if_ready is called inside JournalService
+        # after NLP completes on the background thread, ensuring analysis is ready.
         serializer = JournalEntrySerializer(entry)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -47,8 +47,8 @@ class JournalDetailView(APIView):
         if not entry:
             return Response({'detail': 'Journal entry not found.'}, status=status.HTTP_404_NOT_FOUND)
             
-        from ai.pipeline import AIServicePipeline
-        AIServicePipeline.run_pipeline_if_ready(request.user)
+        # Note: AIServicePipeline.run_pipeline_if_ready is called inside JournalService
+        # after NLP completes on the background thread, ensuring analysis is ready.
         serializer = JournalEntrySerializer(entry)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

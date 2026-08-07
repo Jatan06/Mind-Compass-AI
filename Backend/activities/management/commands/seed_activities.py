@@ -18,6 +18,67 @@ def make_desc(short_desc, purpose, moods, conditions, benefits, precautions, set
         f"**Evidence Level:** {evidence}"
     )
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Activity metadata: topics, emotions, mood_range, stress_range
+# mood_range: [min_mood, max_mood]  (1=Down … 5=Excellent)
+# stress_range: [min_stress, max_stress]  (0=Calm … 10=Highly Stressed)
+# topics: list of journal themes this activity addresses
+# emotions: list of emotion labels this activity targets
+# ─────────────────────────────────────────────────────────────────────────────
+ACTIVITY_METADATA = {
+    "act-1":  {"mood_range": [1, 3], "stress_range": [6, 10], "topics": ["stress", "anxiety", "study", "exam", "work"],     "emotions": ["Anxiety", "Stress", "Overwhelmed", "Fear"]},
+    "act-2":  {"mood_range": [1, 3], "stress_range": [5, 10], "topics": ["sleep", "anxiety"],                               "emotions": ["Anxiety", "Stress", "Fear"]},
+    "act-3":  {"mood_range": [1, 4], "stress_range": [4, 9],  "topics": ["stress", "work", "study"],                       "emotions": ["Stress", "Anxiety", "Frustrated"]},
+    "act-4":  {"mood_range": [1, 2], "stress_range": [7, 10], "topics": ["stress", "panic", "anxiety"],                    "emotions": ["Fear", "Overwhelmed", "Stress", "Anxiety"]},
+    "act-5":  {"mood_range": [1, 3], "stress_range": [4, 10], "topics": ["sleep", "health", "stress"],                     "emotions": ["Emotionally exhausted", "Stress", "Overwhelmed"]},
+    "act-6":  {"mood_range": [1, 3], "stress_range": [0, 7],  "topics": ["family", "relationship", "friends", "loneliness"],"emotions": ["Lonely", "Sad", "Angry"]},
+    "act-7":  {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["stress", "work", "study"],                       "emotions": ["Stress", "Overwhelmed", "Frustrated"]},
+    "act-8":  {"mood_range": [1, 4], "stress_range": [3, 8],  "topics": ["study", "exam", "work"],                         "emotions": ["Stress", "Anxiety", "Frustrated"]},
+    "act-9":  {"mood_range": [1, 4], "stress_range": [0, 6],  "topics": ["food", "health"],                                "emotions": ["Emotionally exhausted", "Overwhelmed"]},
+    "act-10": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["stress", "exercise", "work"],                    "emotions": ["Anxiety", "Sad", "Emotionally exhausted"]},
+    "act-11": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["anxiety", "stress", "study"],                   "emotions": ["Anxiety", "Overwhelmed", "Stress"]},
+    "act-12": {"mood_range": [2, 4], "stress_range": [4, 8],  "topics": ["stress", "work", "study"],                       "emotions": ["Stress", "Overwhelmed", "Frustrated"]},
+    "act-13": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["sleep"],                                         "emotions": ["Stress", "Anxiety", "Emotionally exhausted"]},
+    "act-14": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["sleep", "anxiety", "study"],                    "emotions": ["Anxiety", "Stress", "Overwhelmed"]},
+    "act-15": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["sleep"],                                         "emotions": ["Emotionally exhausted", "Stress", "Anxiety"]},
+    "act-16": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["sleep", "health"],                               "emotions": ["Stress", "Emotionally exhausted", "Anxiety"]},
+    "act-17": {"mood_range": [3, 5], "stress_range": [0, 5],  "topics": ["family", "friends", "exercise"],                 "emotions": ["Happy", "Calm", "Grateful", "Hopeful"]},
+    "act-18": {"mood_range": [2, 4], "stress_range": [0, 6],  "topics": ["family", "friends", "relationship", "loneliness"],"emotions": ["Lonely", "Sad", "Grateful"]},
+    "act-19": {"mood_range": [1, 3], "stress_range": [0, 5],  "topics": ["family", "friends"],                             "emotions": ["Sad", "Lonely", "Hopeful"]},
+    "act-20": {"mood_range": [3, 5], "stress_range": [0, 5],  "topics": ["family", "friends", "exercise"],                 "emotions": ["Happy", "Calm", "Grateful"]},
+    "act-21": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["study", "work", "anxiety"],                     "emotions": ["Frustrated", "Angry", "Anxiety", "Stress"]},
+    "act-22": {"mood_range": [1, 2], "stress_range": [4, 10], "topics": ["family", "relationship", "health"],              "emotions": ["Sad", "Overwhelmed", "Fear", "Angry"]},
+    "act-23": {"mood_range": [1, 3], "stress_range": [2, 7],  "topics": ["career", "work", "study"],                      "emotions": ["Frustrated", "Sad", "Overwhelmed"]},
+    "act-24": {"mood_range": [2, 4], "stress_range": [2, 7],  "topics": ["career", "study", "work"],                      "emotions": ["Frustrated", "Motivated", "Hopeful"]},
+    "act-25": {"mood_range": [2, 4], "stress_range": [3, 8],  "topics": ["stress", "work", "exercise"],                   "emotions": ["Anxiety", "Stress", "Overwhelmed"]},
+    "act-26": {"mood_range": [1, 3], "stress_range": [2, 7],  "topics": ["exercise", "sleep", "work"],                    "emotions": ["Sad", "Emotionally exhausted", "Overwhelmed"]},
+    "act-27": {"mood_range": [1, 2], "stress_range": [6, 10], "topics": ["stress", "anxiety"],                             "emotions": ["Angry", "Fear", "Overwhelmed", "Stress"]},
+    "act-28": {"mood_range": [2, 4], "stress_range": [3, 8],  "topics": ["stress", "work", "exercise"],                   "emotions": ["Stress", "Emotionally exhausted", "Frustrated"]},
+    "act-29": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["stress", "health", "work"],                     "emotions": ["Stress", "Anxiety", "Emotionally exhausted"]},
+    "act-30": {"mood_range": [1, 3], "stress_range": [5, 10], "topics": ["stress", "work", "study"],                      "emotions": ["Stress", "Overwhelmed", "Emotionally exhausted"]},
+    "act-31": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["stress", "health", "anxiety"],                  "emotions": ["Stress", "Anxiety", "Emotionally exhausted"]},
+    "act-32": {"mood_range": [1, 1], "stress_range": [8, 10], "topics": ["anxiety", "stress"],                             "emotions": ["Fear", "Overwhelmed", "Anxiety"]},
+    "act-33": {"mood_range": [1, 2], "stress_range": [5, 10], "topics": ["anxiety", "stress", "study"],                   "emotions": ["Anxiety", "Fear", "Sad", "Overwhelmed"]},
+    "act-34": {"mood_range": [1, 2], "stress_range": [5, 10], "topics": ["anxiety", "stress"],                             "emotions": ["Anxiety", "Fear", "Overwhelmed"]},
+    "act-35": {"mood_range": [1, 3], "stress_range": [5, 10], "topics": ["work", "study", "career"],                      "emotions": ["Overwhelmed", "Stressed", "Frustrated"]},
+    "act-36": {"mood_range": [1, 3], "stress_range": [5, 9],  "topics": ["work", "study", "anxiety"],                     "emotions": ["Overwhelmed", "Anxiety", "Stress"]},
+    "act-37": {"mood_range": [1, 3], "stress_range": [5, 10], "topics": ["stress", "exercise"],                            "emotions": ["Stress", "Angry", "Overwhelmed", "Emotionally exhausted"]},
+    "act-38": {"mood_range": [1, 3], "stress_range": [5, 9],  "topics": ["stress", "health", "work"],                     "emotions": ["Stress", "Anxiety", "Frustrated"]},
+    "act-39": {"mood_range": [1, 3], "stress_range": [4, 9],  "topics": ["anxiety", "study", "work"],                     "emotions": ["Anxiety", "Overwhelmed", "Stress"]},
+    "act-40": {"mood_range": [1, 3], "stress_range": [4, 8],  "topics": ["anxiety", "stress"],                             "emotions": ["Anxiety", "Overwhelmed", "Stress"]},
+    "act-41": {"mood_range": [1, 3], "stress_range": [5, 10], "topics": ["anxiety", "study", "exam", "work"],             "emotions": ["Anxiety", "Fear", "Overwhelmed"]},
+    "act-42": {"mood_range": [1, 2], "stress_range": [4, 9],  "topics": ["family", "relationship"],                       "emotions": ["Angry", "Sad", "Fear"]},
+    "act-43": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["family", "relationship", "loneliness"],         "emotions": ["Sad", "Lonely", "Overwhelmed"]},
+    "act-44": {"mood_range": [1, 3], "stress_range": [3, 7],  "topics": ["stress", "anxiety"],                             "emotions": ["Frustrated", "Overwhelmed", "Angry", "Sad"]},
+    "act-45": {"mood_range": [1, 2], "stress_range": [7, 10], "topics": ["anxiety", "stress"],                             "emotions": ["Fear", "Angry", "Overwhelmed", "Stress"]},
+    "act-46": {"mood_range": [1, 3], "stress_range": [3, 8],  "topics": ["sleep", "work", "study"],                       "emotions": ["Emotionally exhausted", "Stress", "Overwhelmed"]},
+    "act-47": {"mood_range": [1, 3], "stress_range": [3, 7],  "topics": ["sleep", "work"],                                 "emotions": ["Stress", "Emotionally exhausted", "Frustrated"]},
+    "act-48": {"mood_range": [1, 3], "stress_range": [4, 8],  "topics": ["work", "study", "sleep"],                       "emotions": ["Stress", "Overwhelmed", "Frustrated"]},
+    "act-49": {"mood_range": [1, 3], "stress_range": [2, 7],  "topics": ["family", "relationship", "loneliness"],         "emotions": ["Lonely", "Sad", "Angry"]},
+    "act-50": {"mood_range": [1, 3], "stress_range": [2, 6],  "topics": ["loneliness", "family", "friends"],              "emotions": ["Lonely", "Sad", "Overwhelmed"]},
+    "act-51": {"mood_range": [3, 5], "stress_range": [0, 5],  "topics": ["exercise", "friends", "family"],                "emotions": ["Happy", "Excited", "Motivated", "Grateful"]},
+}
+
 ACTIVITIES = [
     {
         "id": "act-1", "title": "Box Breathing", "category": "Breathing", "duration": "5 min", "difficulty": "Beginner",
@@ -882,6 +943,7 @@ class Command(BaseCommand):
                 evidence=act["evidence"]
             )
             
+            meta = ACTIVITY_METADATA.get(act["id"], {})
             obj, created = TherapyActivity.objects.update_or_create(
                 id=act["id"],
                 defaults={
@@ -890,7 +952,11 @@ class Command(BaseCommand):
                     "duration": act["duration"],
                     "difficulty": act["difficulty"],
                     "description": desc,
-                    "instructions": act["instructions"]
+                    "instructions": act["instructions"],
+                    "mood_range": meta.get("mood_range", []),
+                    "stress_range": meta.get("stress_range", []),
+                    "topics": meta.get("topics", []),
+                    "emotions": meta.get("emotions", []),
                 }
             )
             

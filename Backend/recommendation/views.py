@@ -23,7 +23,7 @@ class TodayRecommendationView(APIView):
         
         # Build yesterday's recommendation details
         yesterday_data = None
-        yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).order_by('-created_at').first()
+        yesterday_rec = Recommendation.objects.filter(user=request.user, created_at__date__lt=today).select_related('activity').order_by('-created_at').first()
         if yesterday_rec:
             imp_str = yesterday_rec.mood_improvement or "No change"
             if not yesterday_rec.mood_improvement and yesterday_rec.completed:

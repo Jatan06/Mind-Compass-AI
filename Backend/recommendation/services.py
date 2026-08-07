@@ -170,78 +170,13 @@ class RecommendationService:
                     is_wellness_only = True
 
         if is_wellness_only:
-            wellness_ids = ['act-17', 'act-10', 'act-25', 'act-8', 'act-6', 'act-18', 'act-19', 'act-26', 'act-37', 'act-11', 'act-5']
+            wellness_ids = ['act-17', 'act-20', 'act-25', 'act-6', 'act-18', 'act-19', 'act-26', 'act-37', 'act-11', 'act-5']
             activities = [act for act in activities if act.id in wellness_ids]
 
         # ── Clinical target routing ───────────────────────────────────
-        target_override_id = None
-        target_reason = "A mindful breathing slot to reset your core focus."
-
-        if mood_log:
-            stress = mood_log.stress
-            sleep = float(mood_log.sleep) if mood_log.sleep else 7.0
-            energy = mood_log.energy
-            mood = mood_log.mood
-            notes = (mood_log.notes or "").lower()
-
-            if is_case_1:
-                target_override_id = 'act-17'
-                target_reason = "Suggested because your mood is excellent. Practicing gratitude amplifies current positive emotions."
-            elif is_case_3:
-                target_override_id = 'act-10'
-                target_reason = "Suggested because you reported a positive journal reflection."
-            else:
-                from ai.utils.preprocessing import analyze_text_nlp
-                notes_analysis = analyze_text_nlp(notes) if notes else None
-                has_negative_notes_emotion = notes_analysis and notes_analysis["primary_emotion"] in [
-                    "Sad", "Angry", "Fear", "Anxiety", "Stress", "Frustrated", "Lonely", "Overwhelmed"
-                ]
-                has_negative_notes_sentiment = notes_analysis and notes_analysis["sentiment"] == "Negative"
-
-                if stress >= 7:
-                    target_override_id = 'act-1'
-                    target_reason = "Suggested because your stress level today is high. Box breathing promotes immediate physiological calm."
-                elif energy <= 3:
-                    target_override_id = 'act-37'
-                    target_reason = "Suggested because your energy levels are low. A somatic release helps discharge physical fatigue."
-                elif sleep < 6.0:
-                    target_override_id = 'act-15'
-                    target_reason = "Suggested because you logged less than 6 hours of sleep. A sleep protocol helps optimize rest quality."
-                elif mood <= 2 or has_negative_notes_emotion or has_negative_notes_sentiment:
-                    target_override_id = 'act-33'
-                    target_reason = "Suggested because you are feeling down or anxious. The 5-4-3-2-1 grounding technique breaks cycles of overthinking."
-                elif mood >= 4 and not has_conflict:
-                    target_override_id = 'act-17'
-                    target_reason = "Suggested because your mood is excellent. Practicing gratitude amplifies current positive emotions."
-                elif mood >= 4 and has_conflict:
-                    j_sent = journal_entry.analysis.get("sentiment", "Neutral") if journal_entry and journal_entry.analysis else "Neutral"
-                    j_emotion = (journal_entry.analysis.get("emotion") or "").lower() if journal_entry and journal_entry.analysis else ""
-                    j_themes_lower = [t.lower() for t in journal_themes]
-                    if j_emotion in ["anxiety", "stress", "fear", "overwhelmed", "frustrated"] or any(t in j_themes_lower for t in ["stress", "anxiety", "pressure", "work", "exam"]):
-                        target_override_id = 'act-1'
-                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
-                    elif j_emotion in ["sad", "sadness", "grief", "lonely", "loneliness", "hopeless"] or any(t in j_themes_lower for t in ["loneliness", "lonely", "sadness"]):
-                        target_override_id = 'act-33'
-                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
-                    else:
-                        target_override_id = 'act-12'
-                        target_reason = "Although your mood check-in indicates a positive mood, today's journal reflects emotional distress. Recommendations are therefore based on your journal."
-
-        # If no acute mood override, fall back to assessment goals
-        if not target_override_id and goals and not is_wellness_only:
-            if any(word in g for g in goals for word in ["sleep", "insomnia", "rest"]):
-                target_override_id = 'act-16'
-                target_reason = "Recommended based on your goal to improve sleep quality."
-            elif any(word in g for g in goals for word in ["stress", "anxiety", "calm"]):
-                target_override_id = 'act-31'
-                target_reason = "Recommended based on your goal to reduce stress and anxiety."
-            elif any(word in g for g in goals for word in ["focus", "productivity", "energ"]):
-                target_override_id = 'act-28'
-                target_reason = "Recommended to support your focus and energy goals."
-
-        if not target_override_id:
-            target_override_id = 'act-12'
-            target_reason = "A mindful breathing slot to reset your core focus."
+        # OVERRIDES REMOVED: In order to ensure evidence-based algorithmic distribution,
+        # we rely strictly on the Suitability Score mechanism instead of overriding 
+        # selections based on hard-coded ID tags.
 
         activity_scores = {}
         reasons_map = {}
@@ -250,44 +185,114 @@ class RecommendationService:
             return int(val) if isinstance(val, (int, float)) and val == int(val) else round(val, 2)
 
         for act in activities:
-            # 1. Current Mood / State (30%)
-            current_mood_score = 10.0
-            mood_reasons = []
-            
-            if act.id == target_override_id:
-                current_mood_score = 30.0
-                mood_reasons.append(target_reason)
-            else:
-                category_lower = act.category.lower()
-                title_lower = act.title.lower()
-                if mood_log:
-                    stress = mood_log.stress
-                    sleep = float(mood_log.sleep) if mood_log.sleep else 7.0
-                    if stress >= 5 and ("breathing" in category_lower or "somatic" in category_lower):
-                        current_mood_score = 22.0
-                        mood_reasons.append("Matches your elevated stress pattern today.")
-                    elif sleep < 7.0 and "sleep" in title_lower:
-                        current_mood_score = 22.0
-                        mood_reasons.append("Aligned with your sleep pattern metrics.")
-                elif goals:
-                    if any("sleep" in g for g in goals) and ("sleep" in title_lower or "sleep" in category_lower):
-                        current_mood_score = 25.0
-                        mood_reasons.append("Supports your target goals to improve sleep.")
-                    elif any("stress" in g or "anxi" in g for g in goals) and ("breathing" in category_lower or "somatic" in category_lower):
-                        current_mood_score = 25.0
-                        mood_reasons.append("Encouraged to support stress reduction goals.")
+            # ── NEW SUITABILITY SCORE NORMALIZATION ──
+            mood_match = 0.0
+            emotion_match = 0.0
+            topic_match = 0.0
+            historical_success = 0.0
+            user_preference = 0.0
+            completion_rate = 0.0
+            skip_penalty = 0.0
+            recent_repetition = 0.0
 
-            # 2. Themes & Category tags similarity (25%)
-            theme_score = 5.0
-            theme_reasons = []
-            category_lower = act.category.lower()
-            title_lower = act.title.lower()
-            desc_lower = act.description.lower()
-            
-            matched_themes_activity = []
+            # Evaluate Mood Match
+            current_mood_match = 0.0
+            current_stress_match = 0.0
+            if mood_log:
+                if act.mood_range and len(act.mood_range) == 2:
+                    if act.mood_range[0] <= mood_log.mood <= act.mood_range[1]:
+                        current_mood_match = 1.0
+                if act.stress_range and len(act.stress_range) == 2:
+                    if act.stress_range[0] <= mood_log.stress <= act.stress_range[1]:
+                        current_stress_match = 1.0
+            mood_match = (current_mood_match + current_stress_match) / 2.0
+
+            # ── Organic Clinical Check Boosts ──
+            if mood_log:
+                # Poor Sleep Boost
+                if mood_log.sleep is not None and float(mood_log.sleep) < 6.0:
+                    if "sleep" in act.topics or "sleep" in act.category.lower() or "sleep" in act.title.lower():
+                        mood_match += 1.0
+                # Low Energy Boost
+                if mood_log.energy <= 3:
+                    if "somatic" in act.category.lower() or "physical activity" in act.category.lower() or "energy" in act.topics or "fatigue" in act.emotions:
+                        mood_match += 1.0
+                # High Stress Boost
+                if mood_log.stress >= 7:
+                    if "breathing" in act.category.lower() or "grounding" in act.category.lower() or "stress" in act.topics or "stress" in act.category.lower():
+                        mood_match += 1.0
+                # Low Mood Distressed Boost
+                if mood_log.mood <= 2:
+                    if "grounding" in act.category.lower() or "emotional regulation" in act.category.lower() or "sadness" in act.topics or "sad" in act.title.lower() or "sadness" in act.emotions:
+                        mood_match += 1.0
+                # Low Productivity Boost
+                if mood_log.productivity is not None and mood_log.productivity <= 3:
+                    if "stress management" in act.category.lower() or "focus" in act.topics or "work" in act.topics or "eisenhower" in act.title.lower() or "motivation" in act.emotions:
+                        mood_match += 1.0
+                # Low Social Connection Boost
+                if mood_log.social is not None and mood_log.social <= 3:
+                    if "gratitude" in act.category.lower() or "lonely" in act.emotions or "relationship" in act.topics or "family" in act.topics or "social" in act.topics:
+                        mood_match += 1.0
+
+            if goals:
+                if any("sleep" in g for g in goals) and ("sleep" in act.topics or "sleep" in act.category.lower() or "sleep" in act.title.lower()):
+                    mood_match += 0.8
+                if any("stress" in g or "anxi" in g for g in goals) and ("Anxiety" in act.emotions or "Stress" in act.emotions or "breathing" in act.category.lower() or "stress" in act.topics or "grounding" in act.category.lower()):
+                    mood_match += 0.8
+
+            # Evaluate Emotion Match
+            for emotion in recent_primary_emotions:
+                if emotion in act.emotions:
+                    emotion_match = 1.0
+            combined_text = ""
+            if mood_log and mood_log.notes:
+                combined_text += " " + mood_log.notes.lower()
+            if today_text:
+                combined_text += " " + today_text.lower()
+            if combined_text:
+                import re
+                has_match = False
+                for e in act.emotions:
+                    el = e.lower()
+                    # Use word-boundary matching to avoid false positives from partial matches
+                    if re.search(r'\b' + re.escape(el) + r'\b', combined_text):
+                        has_match = True
+                for t in act.topics:
+                    tl = t.lower()
+                    if re.search(r'\b' + re.escape(tl) + r'\b', combined_text):
+                        has_match = True
+                if has_match:
+                    emotion_match = 1.0
+
+            # Evaluate Topic Match
             journal_themes_lower = [t.lower() for t in journal_themes]
             for theme in journal_themes_lower:
-                if theme in category_lower or theme in title_lower or theme in desc_lower:
+                if theme in act.topics or theme in act.category.lower() or theme in act.title.lower():
+                    topic_match = 1.0
+
+            # ── LEGACY REASONS TRACKING (Preserved for Regression & Testing) ──
+            mood_reasons = []
+            theme_reasons = []
+            success_reasons = []
+            feedback_reasons = []
+
+            category_lower = act.category.lower()
+            title_lower = act.title.lower()
+
+            if mood_log:
+                if mood_log.stress >= 5 and ("breathing" in category_lower or "somatic" in category_lower):
+                    mood_reasons.append("Matches your elevated stress pattern today.")
+                elif float(mood_log.sleep or 7.0) < 7.0 and "sleep" in title_lower:
+                    mood_reasons.append("Aligned with your sleep pattern metrics.")
+            elif goals:
+                if any("sleep" in g for g in goals) and ("sleep" in title_lower or "sleep" in category_lower):
+                    mood_reasons.append("Supports your target goals to improve sleep.")
+                elif any("stress" in g or "anxi" in g for g in goals) and ("breathing" in category_lower or "somatic" in category_lower):
+                    mood_reasons.append("Encouraged to support stress reduction goals.")
+
+            matched_themes_activity = []
+            for theme in journal_themes_lower:
+                if theme in category_lower or theme in title_lower or theme in act.description.lower():
                     matched_themes_activity.append(theme)
                 if theme in ["exam", "study", "assignments", "placement", "deadlines"] and act.id in ["act-1", "act-2", "act-8", "act-12"]:
                     matched_themes_activity.append(theme)
@@ -298,7 +303,6 @@ class RecommendationService:
                 if theme in ["relationship", "family"] and act.id in ["act-6", "act-18", "act-49", "act-50"]:
                     matched_themes_activity.append(theme)
 
-            # Check EmotionAnalysis
             has_matching_emotion = False
             for emotion in recent_primary_emotions:
                 if emotion in ["sad", "lonely", "grief"] and ("gratitude" in category_lower or "relaxation" in category_lower):
@@ -307,35 +311,38 @@ class RecommendationService:
                     has_matching_emotion = True
             
             if has_matching_emotion:
-                theme_score = 25.0
                 theme_reasons.append(f"Recent emotion analysis detected patterns of negative emotions like {', '.join(sorted(list(set(recent_primary_emotions))))}.")
 
-            # 3. Learning feedback loops & Historical Success (20%)
-            success_score = 10.0
-            success_reasons = []
+            # Historical Processing
             past_completed = Recommendation.objects.filter(user=user, activity=act, completed=True)
+            past_all = Recommendation.objects.filter(user=user, activity=act)
+            if past_all.exists():
+                completion_rate = past_completed.count() / past_all.count()
+            
             avg_impr = None
             if past_completed.exists():
                 avg_impr = past_completed.aggregate(models.Avg('improvement_score'))['improvement_score__avg']
                 if avg_impr is not None:
+                    historical_success = min(1.0, max(0.0, avg_impr / 3.0))
                     if avg_impr >= 1.5:
-                        success_score = 20.0
+                        success_reasons.append(f"{act.title} previously reduced your average stress level.")
                     elif avg_impr >= 0.5:
-                        success_score = 15.0
+                        success_reasons.append(f"{act.title} showed moderate mood benefit previously.")
 
-            # 4. User feedback satisfaction rating (15%)
             fbs = activity_fb_map.get(act.id, [])
-            feedback_score = 10.0
-            feedback_reasons = []
             avg_satisfaction = None
             if fbs:
-                total_satisfaction = sum(f.satisfaction for f in fbs)
-                avg_satisfaction = total_satisfaction / len(fbs)
-                feedback_score = (avg_satisfaction / 5.0) * 15.0
+                avg_satisfaction = sum(f.satisfaction for f in fbs) / len(fbs)
+                user_preference = avg_satisfaction / 5.0
+                
+                latest_fb = sorted(fbs, key=lambda f: f.created_at, reverse=True)[0]
+                days_ago = (today - latest_fb.created_at.date()).days
+                if days_ago < 2:
+                    recent_repetition = 1.0
+                elif days_ago < 5:
+                    recent_repetition = 0.5
 
-            # Compiling unified historical description if possible
             if matched_themes_activity:
-                theme_score = 25.0
                 if similar_journals_count > 0:
                     if avg_satisfaction is not None:
                         theme_reasons.append(
@@ -345,47 +352,84 @@ class RecommendationService:
                     else:
                         theme_reasons.append(f"Similar {matched_themes_activity[0]}-related stress was detected {similar_journals_count} times previously.")
                 else:
-                    # Non-implied theme matching (avoid auto workplace stress statements)
                     theme_reasons.append(f"Your journal indicates {matched_themes_activity[0]}-related concerns.")
             
-            if avg_impr is not None:
-                if avg_impr >= 1.5:
-                    success_reasons.append(f"{act.title} previously reduced your average stress level.")
-                elif avg_impr >= 0.5:
-                    success_reasons.append(f"{act.title} showed moderate mood benefit previously.")
-
             if avg_satisfaction is not None and not (matched_themes_activity and similar_journals_count > 0):
                 feedback_reasons.append(f"You completed this activity successfully and rated it {int(avg_satisfaction)}/5.")
 
-            # 5. Recommendation Diversity (10%)
-            diversity_score = 10.0
-            total_penalty = 0.0
-            
-            if fbs:
-                latest_fb = sorted(fbs, key=lambda f: f.created_at, reverse=True)[0]
-                days_ago = (today - latest_fb.created_at.date()).days
-                if days_ago < 2:
-                    diversity_score = 0.0
-                    total_penalty = 35.0  # Completed very recently
-                elif days_ago < 5:
-                    diversity_score = 5.0
-                    total_penalty = 15.0  # Completed within the last few days
-            
-            # Penalty for repeatedly recommended but ignored in last 3 days
             ignored_recs = Recommendation.objects.filter(
-                user=user,
-                activity=act,
-                completed=False,
-                created_at__date__gte=today - timezone.timedelta(days=3)
+                user=user, activity=act, completed=False, created_at__date__gte=today - timezone.timedelta(days=3)
             )
             if ignored_recs.exists():
-                total_penalty += 20.0
+                skip_penalty = min(1.0, ignored_recs.count() / 3.0)
 
-            # Calculate total weighted score
-            total_score = current_mood_score + theme_score + success_score + feedback_score + diversity_score - total_penalty
-            total_score = max(1.0, total_score)
+            # CALCULATE ACTUAL SCORE EXCLUSIVELY VIA SUITABILITY
+            organic = (mood_match + emotion_match + topic_match + historical_success + user_preference + completion_rate) - (skip_penalty + recent_repetition)
+            total_score = max(1.0, organic * 16.6)
+
             
-            activity_scores[act] = total_score
+            # Compute tie-breaking metrics
+            # 1. Better topic match
+            topic_match_score = 0
+            for theme in journal_themes_lower:
+                if theme in act.topics or theme in act.category.lower() or theme in act.title.lower():
+                    topic_match_score += 1
+
+            # 2. Better emotion match
+            emotion_match_score = 0
+            for emotion in recent_primary_emotions:
+                if emotion in act.emotions:
+                    emotion_match_score += 1
+            if mood_log and mood_log.notes:
+                notes_lower = mood_log.notes.lower()
+                for e in act.emotions:
+                    if e.lower() in notes_lower:
+                        emotion_match_score += 1
+
+            # 3. Higher historical success
+            if past_completed.exists():
+                user_success = avg_impr if avg_impr is not None else 0.0
+            else:
+                user_success = act.agg_avg_improvement
+
+            # 4. Higher completion rate
+            if past_all.exists():
+                comp_rate = past_completed.count() / past_all.count()
+            else:
+                comp_rate = act.agg_completed / act.agg_started if act.agg_started > 0 else 0.0
+
+            # 5. Lower skip rate
+            if past_all.exists():
+                past_skipped = past_all.filter(completed=False)
+                skip_rate = past_skipped.count() / past_all.count()
+            else:
+                skip_rate = (act.agg_total_recommendations - act.agg_completed) / act.agg_total_recommendations if act.agg_total_recommendations > 0 else 0.0
+
+            # 6. Less recent repetition
+            last_rec = Recommendation.objects.filter(user=user, activity=act).order_by('-created_at').first()
+            if last_rec:
+                days_since_last_rec = (today - last_rec.created_at.date()).days
+            else:
+                days_since_last_rec = 9999
+
+            # 7. Deterministic numeric ID fallback
+            try:
+                numeric_id = int(act.id.split('-')[-1])
+            except (ValueError, IndexError):
+                numeric_id = 9999
+
+            # Multi-tiered tie-breaker sorting tuple
+            sort_tuple = (
+                total_score,
+                topic_match_score,
+                emotion_match_score,
+                user_success,
+                comp_rate,
+                -skip_rate,
+                days_since_last_rec,
+                -numeric_id
+            )
+            activity_scores[act] = sort_tuple
             
             # Combine point explanations
             all_reasons = []
@@ -393,6 +437,14 @@ class RecommendationService:
             all_reasons.extend(theme_reasons)
             all_reasons.extend(success_reasons)
             all_reasons.extend(feedback_reasons)
+            
+            if mood_match >= 1.0 and "Matches your elevated stress pattern today." not in all_reasons and "Aligned with your sleep pattern metrics." not in all_reasons:
+                if "Topic" not in str(all_reasons): # Prevent duplication
+                    all_reasons.append("Clinically recommended based on your recent mood check-in states.")
+                    
+            if emotion_match >= 1.0 and "Recent emotion analysis detected" not in str(all_reasons):
+                all_reasons.append("Targets and down-regulates your most recent negative emotional trends.")
+            
             if not all_reasons:
                 all_reasons.append(f"Recommended tool to support your goals.")
             
@@ -400,7 +452,8 @@ class RecommendationService:
 
         # Pick highest scoring activity
         sorted_acts = sorted(activity_scores.items(), key=lambda item: item[1], reverse=True)
-        selected_act, top_score = sorted_acts[0]
+        selected_act, top_score_tuple = sorted_acts[0]
+        top_score = top_score_tuple[0]
         
         confidence_val = min(0.99, max(0.50, top_score / 100.0))
         

@@ -17783,3 +17783,618 @@ INFO 2026-08-06 07:15:21,337 log 33928 25308 "GET /api/ai/prediction/ HTTP/1.1" 
 INFO 2026-08-06 07:15:24,953 log 33928 24076 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 628
 INFO 2026-08-06 07:15:27,033 log 33928 21576 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 628
 INFO 2026-08-06 07:15:28,827 log 33928 5740 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 628
+INFO 2026-08-06 22:41:24,259 autoreload 16064 24360 Watching for file changes with StatReloader
+INFO 2026-08-06 22:42:06,954 log 16064 28344 "OPTIONS /api/auth/google-login/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,234 utils 16064 28344 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 00501919-a288-4a02-bae5-86c11b0dfcda | Details: Logged in user acds via Google OAuth.
+INFO 2026-08-06 22:42:13,635 log 16064 28344 "POST /api/auth/google-login/ HTTP/1.1" 200 1359
+INFO 2026-08-06 22:42:13,649 log 16064 28344 "OPTIONS /api/profile/?today=2026-08-06 HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,653 log 16064 14412 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,659 log 16064 27184 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,660 log 16064 28344 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,660 log 16064 14412 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,664 log 16064 17972 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,667 log 16064 14972 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:13,667 log 16064 20256 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:16,899 log 16064 27184 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:42:16,899 log 16064 14972 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:42:16,900 log 16064 14412 "GET /api/mood/history/ HTTP/1.1" 200 914
+INFO 2026-08-06 22:42:16,900 log 16064 20256 "GET /api/journal/ HTTP/1.1" 200 1494
+INFO 2026-08-06 22:42:17,570 log 16064 28344 "GET /api/recommendation/today/ HTTP/1.1" 200 197
+INFO 2026-08-06 22:42:19,437 log 16064 14412 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:42:19,855 log 16064 27184 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:42:19,946 log 16064 20256 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:42:20,127 log 16064 28344 "GET /api/mood/history/ HTTP/1.1" 200 914
+INFO 2026-08-06 22:42:21,858 log 16064 14972 "GET /api/insights/ HTTP/1.1" 200 496
+INFO 2026-08-06 22:42:21,858 log 16064 14412 "GET /api/journal/ HTTP/1.1" 200 1494
+INFO 2026-08-06 22:42:23,067 log 16064 20256 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:42:23,122 log 16064 17972 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 629
+INFO 2026-08-06 22:42:23,455 log 16064 27184 "GET /api/recommendation/today/ HTTP/1.1" 200 197
+INFO 2026-08-06 22:42:23,600 log 16064 28344 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:42:24,341 log 16064 14412 "GET /api/mood/history/ HTTP/1.1" 200 914
+INFO 2026-08-06 22:42:25,075 log 16064 14972 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:42:25,850 log 16064 17972 "GET /api/journal/ HTTP/1.1" 200 1494
+INFO 2026-08-06 22:42:26,137 log 16064 28344 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:42:27,563 log 16064 20256 "GET /api/insights/ HTTP/1.1" 200 496
+INFO 2026-08-06 22:42:27,762 log 16064 14412 "GET /api/recommendation/today/ HTTP/1.1" 200 197
+INFO 2026-08-06 22:42:28,257 log 16064 14972 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:42:28,314 log 16064 17972 "GET /api/mood/history/ HTTP/1.1" 200 914
+INFO 2026-08-06 22:42:28,564 log 16064 28344 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:42:29,969 log 16064 20256 "GET /api/journal/ HTTP/1.1" 200 1494
+INFO 2026-08-06 22:42:30,131 log 16064 14412 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:42:31,251 log 16064 28344 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:42:31,647 log 16064 17972 "GET /api/recommendation/today/ HTTP/1.1" 200 197
+INFO 2026-08-06 22:42:32,104 log 16064 27184 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 629
+INFO 2026-08-06 22:42:32,490 log 16064 14412 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:42:32,636 log 16064 14972 "GET /api/insights/ HTTP/1.1" 200 496
+INFO 2026-08-06 22:42:32,790 log 16064 20256 "GET /api/mood/history/ HTTP/1.1" 200 914
+INFO 2026-08-06 22:42:34,089 log 16064 28344 "GET /api/journal/ HTTP/1.1" 200 1494
+INFO 2026-08-06 22:42:34,359 log 16064 17972 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:42:35,448 log 16064 27184 "GET /api/recommendation/today/ HTTP/1.1" 200 197
+INFO 2026-08-06 22:42:36,996 log 16064 14972 "GET /api/insights/ HTTP/1.1" 200 496
+INFO 2026-08-06 22:42:40,269 log 16064 14972 "OPTIONS /api/auth/logout/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:42:41,183 log 16064 14412 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 629
+INFO 2026-08-06 22:42:41,577 log 16064 27184 "GET /api/insights/ HTTP/1.1" 200 496
+INFO 2026-08-06 22:42:42,919 log 16064 14972 "POST /api/auth/logout/ HTTP/1.1" 200 53
+INFO 2026-08-06 22:42:49,761 log 16064 17972 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 629
+INFO 2026-08-06 22:42:51,973 log 16064 14972 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 629
+INFO 2026-08-06 22:42:57,903 utils 16064 14972 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 36013bf0-9e31-42d3-bd97-e7a36b8a2cf5 | Details: Logged in user aaaa via Google OAuth.
+INFO 2026-08-06 22:42:58,259 log 16064 14972 "POST /api/auth/google-login/ HTTP/1.1" 200 1428
+INFO 2026-08-06 22:43:01,107 log 16064 17972 "GET /api/mood/history/ HTTP/1.1" 200 912
+INFO 2026-08-06 22:43:01,219 log 16064 13968 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:43:01,219 log 16064 11252 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:43:01,475 log 16064 25404 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:43:02,363 log 16064 34184 "GET /api/recommendation/today/ HTTP/1.1" 200 210
+INFO 2026-08-06 22:43:03,825 log 16064 11252 "GET /api/mood/history/ HTTP/1.1" 200 912
+INFO 2026-08-06 22:43:03,839 log 16064 17972 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:43:04,345 log 16064 25404 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:43:05,268 log 16064 34184 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:43:06,014 log 16064 13968 "GET /api/insights/ HTTP/1.1" 200 469
+INFO 2026-08-06 22:43:06,358 log 16064 11252 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:43:07,203 log 16064 17972 "GET /api/recommendation/today/ HTTP/1.1" 200 210
+INFO 2026-08-06 22:43:07,291 log 16064 25404 "GET /api/mood/history/ HTTP/1.1" 200 912
+INFO 2026-08-06 22:43:07,723 log 16064 14972 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:43:07,984 log 16064 34184 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:43:08,442 log 16064 13968 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:43:08,807 log 16064 11252 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:43:09,854 log 16064 25404 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:43:11,109 log 16064 13968 "GET /api/mood/history/ HTTP/1.1" 200 912
+INFO 2026-08-06 22:43:11,489 log 16064 14972 "GET /api/recommendation/today/ HTTP/1.1" 200 210
+INFO 2026-08-06 22:43:11,724 log 16064 11252 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:43:11,755 log 16064 17972 "GET /api/insights/ HTTP/1.1" 200 469
+INFO 2026-08-06 22:43:12,342 log 16064 25404 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:43:13,537 log 16064 13968 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:43:14,142 log 16064 11252 "GET /api/mood/history/ HTTP/1.1" 200 912
+INFO 2026-08-06 22:43:14,326 log 16064 14972 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:43:15,071 log 16064 25404 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:43:15,134 log 16064 17972 "GET /api/recommendation/today/ HTTP/1.1" 200 210
+INFO 2026-08-06 22:43:16,594 log 16064 11252 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:43:16,594 log 16064 34184 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:43:16,914 log 16064 14972 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:43:17,877 log 16064 13968 "GET /api/insights/ HTTP/1.1" 200 469
+INFO 2026-08-06 22:43:17,890 log 16064 17972 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:43:17,966 log 16064 25404 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:43:20,211 log 16064 11252 "GET /api/recommendation/today/ HTTP/1.1" 200 210
+INFO 2026-08-06 22:43:22,500 log 16064 14972 "GET /api/insights/ HTTP/1.1" 200 469
+INFO 2026-08-06 22:43:25,562 log 16064 34184 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:43:27,210 log 16064 11252 "GET /api/insights/ HTTP/1.1" 200 469
+INFO 2026-08-06 22:43:34,317 log 16064 14972 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:43:36,553 log 16064 11252 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:43:38,575 log 16064 11252 "OPTIONS /api/mood/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:44:00,736 log 16064 11252 "POST /api/mood/ HTTP/1.1" 201 304
+INFO 2026-08-06 22:44:03,299 log 16064 28736 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:44:03,404 log 16064 12516 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:44:03,417 log 16064 11144 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:44:03,747 log 16064 22724 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:44:05,939 log 16064 24260 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:44:06,090 log 16064 28736 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:44:07,764 log 16064 12516 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:44:10,072 log 16064 11252 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:44:27,188 log 16064 23548 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:44:27,451 log 16064 25176 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:44:27,451 log 16064 27764 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:44:27,541 log 16064 3904 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:44:30,030 log 16064 27764 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:44:30,097 log 16064 23772 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:44:30,137 log 16064 23548 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:44:30,426 log 16064 3904 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:44:32,000 log 16064 25176 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:44:32,615 log 16064 27764 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-06 22:44:32,655 log 16064 23772 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:44:33,228 log 16064 3904 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:44:33,600 log 16064 13640 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:44:35,193 log 16064 23548 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:44:36,465 log 16064 25176 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:44:39,633 log 16064 25176 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:44:39,634 log 16064 23548 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-06 22:44:42,292 log 16064 3904 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:44:42,824 log 16064 23548 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-06 22:44:46,304 log 16064 3904 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-06 22:45:48,653 log 16064 22168 "POST /api/activity-feedback/ HTTP/1.1" 201 278
+INFO 2026-08-06 22:45:51,490 log 16064 17960 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:45:51,491 log 16064 17932 "GET /api/activity-feedback/ HTTP/1.1" 200 280
+INFO 2026-08-06 22:45:51,762 log 16064 10692 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:45:51,794 log 16064 8380 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:45:54,017 log 16064 17248 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:45:54,800 log 16064 17960 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:45:56,142 log 16064 17932 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:45:58,009 log 16064 22168 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:49:08,239 log 16064 10352 "GET /api/activity-feedback/ HTTP/1.1" 200 280
+INFO 2026-08-06 22:49:08,241 log 16064 8920 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:49:08,294 log 16064 24212 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:49:08,555 log 16064 14484 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:49:10,911 log 16064 22400 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:49:10,911 log 16064 24212 "GET /api/activity-feedback/ HTTP/1.1" 200 280
+INFO 2026-08-06 22:49:11,227 log 16064 10352 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:49:11,233 log 16064 14484 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 22:49:12,841 log 16064 8920 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:49:13,497 log 16064 24212 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 22:49:13,983 log 16064 22400 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 22:49:14,145 log 16064 14484 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 22:49:14,491 log 16064 21940 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 22:49:16,389 log 16064 10352 "GET /api/recommendation/today/ HTTP/1.1" 200 2499
+INFO 2026-08-06 22:49:17,857 log 16064 8920 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 22:49:23,208 log 16064 14484 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 23:02:53,237 autoreload 16064 24360 C:\Users\HP\Documents\mindCompass\Backend\recommendation\serializers.py changed, reloading.
+INFO 2026-08-06 23:03:07,038 autoreload 31508 20152 Watching for file changes with StatReloader
+INFO 2026-08-06 23:07:21,249 autoreload 31508 20152 C:\Users\HP\Documents\mindCompass\Backend\activities\models.py changed, reloading.
+INFO 2026-08-06 23:07:35,662 autoreload 10448 14664 Watching for file changes with StatReloader
+INFO 2026-08-06 23:07:45,283 autoreload 10448 14664 C:\Users\HP\Documents\mindCompass\Backend\activities\services.py changed, reloading.
+INFO 2026-08-06 23:07:59,936 autoreload 11436 11096 Watching for file changes with StatReloader
+INFO 2026-08-06 23:09:57,478 autoreload 11436 11096 C:\Users\HP\Documents\mindCompass\Backend\activities\models.py changed, reloading.
+INFO 2026-08-06 23:10:11,147 autoreload 11572 27204 Watching for file changes with StatReloader
+INFO 2026-08-06 23:10:28,191 autoreload 11572 27204 C:\Users\HP\Documents\mindCompass\Backend\activities\apps.py changed, reloading.
+INFO 2026-08-06 23:10:41,867 autoreload 5596 16152 Watching for file changes with StatReloader
+ERROR 2026-08-06 23:11:46,946 serializers 27280 24280 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+ERROR 2026-08-06 23:11:50,572 serializers 27280 24280 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+ERROR 2026-08-06 23:11:50,599 serializers 27280 24280 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+ERROR 2026-08-06 23:12:45,912 serializers 25288 20344 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+INFO 2026-08-06 23:14:34,763 log 5596 34000 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 23:14:35,108 log 5596 2968 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 23:14:35,200 log 5596 9500 "GET /api/activity-feedback/ HTTP/1.1" 200 333
+INFO 2026-08-06 23:14:35,205 log 5596 28000 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 23:14:37,598 log 5596 9500 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 23:14:37,614 log 5596 34000 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 23:14:38,026 log 5596 28000 "GET /api/mood/history/ HTTP/1.1" 200 1217
+ERROR 2026-08-06 23:14:38,189 serializers 5596 21476 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+INFO 2026-08-06 23:14:38,192 log 5596 21476 "GET /api/recommendation/today/ HTTP/1.1" 200 2619
+INFO 2026-08-06 23:14:39,865 log 5596 2968 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 23:14:40,009 log 5596 9500 "GET /api/activity-feedback/ HTTP/1.1" 200 333
+INFO 2026-08-06 23:14:40,125 log 5596 34000 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 23:14:40,430 log 5596 28000 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 23:14:41,429 log 5596 21476 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 23:14:41,728 log 5596 25540 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 23:14:42,312 log 5596 2968 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 23:14:42,836 log 5596 28000 "GET /api/activity-feedback/ HTTP/1.1" 200 333
+INFO 2026-08-06 23:14:44,108 log 5596 25540 "GET /api/journal/ HTTP/1.1" 200 1624
+INFO 2026-08-06 23:14:44,254 log 5596 21476 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 23:14:44,915 log 5596 34000 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 23:14:45,025 log 5596 2968 "GET /api/ai/insights/ HTTP/1.1" 200 114
+ERROR 2026-08-06 23:14:45,887 serializers 5596 9500 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+INFO 2026-08-06 23:14:45,887 log 5596 9500 "GET /api/recommendation/today/ HTTP/1.1" 200 2619
+INFO 2026-08-06 23:14:46,653 log 5596 25540 "GET /api/mood/history/ HTTP/1.1" 200 1217
+INFO 2026-08-06 23:14:47,167 log 5596 21476 "GET /api/activity-feedback/ HTTP/1.1" 200 333
+INFO 2026-08-06 23:14:47,350 log 5596 34000 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-06 23:14:48,616 log 5596 9500 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-06 23:14:49,420 log 5596 2968 "GET /api/insights/ HTTP/1.1" 200 517
+INFO 2026-08-06 23:14:51,615 log 5596 28000 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+ERROR 2026-08-06 23:14:52,577 serializers 5596 25540 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+INFO 2026-08-06 23:14:52,578 log 5596 25540 "GET /api/recommendation/today/ HTTP/1.1" 200 2619
+INFO 2026-08-06 23:14:53,904 log 5596 9500 "GET /api/insights/ HTTP/1.1" 200 517
+ERROR 2026-08-06 23:14:58,021 serializers 5596 34000 Personalization templating failed: 'MoodLog' object has no attribute 'stress_level'
+INFO 2026-08-06 23:14:58,022 log 5596 34000 "GET /api/recommendation/today/ HTTP/1.1" 200 2619
+INFO 2026-08-06 23:15:00,592 log 5596 2968 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 23:15:00,860 log 5596 28000 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 698
+INFO 2026-08-06 23:15:27,300 log 5596 18684 "GET /api/activities/ HTTP/1.1" 200 89246
+INFO 2026-08-06 23:15:30,238 log 5596 15072 "GET /api/activities/ HTTP/1.1" 200 89246
+INFO 2026-08-06 23:19:30,926 autoreload 5596 16152 C:\Users\HP\Documents\mindCompass\Backend\recommendation\serializers.py changed, reloading.
+INFO 2026-08-06 23:19:44,811 autoreload 30316 19756 Watching for file changes with StatReloader
+WARNING 2026-08-06 23:46:04,979 log 30060 20312 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-06 23:46:26,151 log 30060 20312 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-06 23:46:26,155 log 30060 20312 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-06 23:46:26,158 log 30060 20312 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-06 23:46:26,161 log 30060 20312 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-06 23:46:26,164 log 30060 20312 Unauthorized: /api/ai/insights/
+WARNING 2026-08-06 23:46:28,354 log 30060 20312 Bad Request: /api/assessment/
+INFO 2026-08-06 23:46:35,017 utils 30060 20312 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 466b9cd6-0c48-4880-8b09-25a86a901045 | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:46:37,378 utils 30060 20312 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 63f3fb3d-66e8-45ef-a178-b7a4c45833e9 | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:46:37,390 utils 30060 20312 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 63f3fb3d-66e8-45ef-a178-b7a4c45833e9 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-06 23:46:41,704 utils 30060 20312 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: f78c8ab2-5392-402e-a9e4-38610548d752 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-06 23:46:41,711 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: f78c8ab2-5392-402e-a9e4-38610548d752 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-06 23:46:46,624 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: bb3650d4-687a-4097-a685-006577973257 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-06 23:46:51,238 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 1852c09a-9ea0-4f0b-9fca-0a9dbd3a3826 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-06 23:46:55,955 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_FAILURE_UNVERIFIED | User ID: 2dcde4f7-453e-4b27-8432-5edb42cb9d49 | Details: Attempted login with unverified email: loginuser@example.com
+INFO 2026-08-06 23:47:00,552 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_FAILURE_UNVERIFIED | User ID: 4208f9ad-a38d-4e22-83d0-e974ad91309b | Details: Attempted login with unverified email: loginuser@example.com
+INFO 2026-08-06 23:47:02,941 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 40b8d751-d01e-4cf8-aebc-86f9ed1a192f | Details: Issued 6-digit password reset OTP: 912622
+INFO 2026-08-06 23:47:05,359 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: 86c9673b-9817-48e4-8417-b9de4bb54a5e | Details: Issued 6-digit password reset OTP: 358263
+INFO 2026-08-06 23:47:05,367 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: 86c9673b-9817-48e4-8417-b9de4bb54a5e | Details: Successfully verified OTP.
+INFO 2026-08-06 23:47:07,691 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_SENT | User ID: a1c97fa0-6234-4b6c-ba4b-d962ece678cd | Details: Issued 6-digit password reset OTP: 401041
+INFO 2026-08-06 23:47:07,698 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: a1c97fa0-6234-4b6c-ba4b-d962ece678cd | Details: Successfully verified OTP.
+INFO 2026-08-06 23:47:07,705 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_OTP_VERIFIED | User ID: a1c97fa0-6234-4b6c-ba4b-d962ece678cd | Details: Successfully verified OTP.
+INFO 2026-08-06 23:47:09,931 utils 30060 20312 [SECURITY EVENT] Type: PASSWORD_RESET_SUCCESS | User ID: a1c97fa0-6234-4b6c-ba4b-d962ece678cd | Details: Password successfully reset via OTP.
+INFO 2026-08-06 23:47:12,161 utils 30060 20312 [SECURITY EVENT] Type: LOGIN_FAILURE_UNVERIFIED | User ID: a1c97fa0-6234-4b6c-ba4b-d962ece678cd | Details: Attempted login with unverified email: resetuser@example.com
+INFO 2026-08-06 23:47:14,594 utils 30060 20312 [SECURITY EVENT] Type: USER_REGISTRATION | User ID: 7ac714d5-c59c-4158-a568-ae5845cf0262 | Details: Registered: valid_user1 | Email: validemail@example.com
+INFO 2026-08-06 23:47:14,607 utils 30060 20312 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 7ac714d5-c59c-4158-a568-ae5845cf0262 | Details: Verification code generated and email dispatched.
+WARNING 2026-08-06 23:47:19,102 log 30060 20312 Bad Request: /api/mood/
+WARNING 2026-08-06 23:49:13,472 log 19888 26724 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-06 23:49:35,126 log 19888 26724 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-06 23:49:35,130 log 19888 26724 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-06 23:49:35,134 log 19888 26724 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-06 23:49:35,138 log 19888 26724 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-06 23:49:35,141 log 19888 26724 Unauthorized: /api/ai/insights/
+WARNING 2026-08-06 23:49:37,354 log 19888 26724 Bad Request: /api/assessment/
+INFO 2026-08-06 23:49:44,032 utils 19888 26724 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: e8a737a8-93ad-402f-81e1-5b38ff2b3b1c | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:49:46,235 utils 19888 26724 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 0b84f74a-48b6-4fcc-bd6b-51567c7576d9 | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:49:46,247 utils 19888 26724 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: 0b84f74a-48b6-4fcc-bd6b-51567c7576d9 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-06 23:49:49,824 utils 19888 26724 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: 3b727d93-2ab7-4d74-85d0-364716a18304 | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-06 23:49:49,830 utils 19888 26724 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 3b727d93-2ab7-4d74-85d0-364716a18304 | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-06 23:49:54,328 utils 19888 26724 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: f29e3da5-61ff-4ff8-a272-1c04bc4589f5 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-06 23:49:58,582 utils 19888 26724 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: a3c91623-32cc-45cb-bb53-b37ea3d6a664 | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-06 23:50:00,602 utils 19888 26724 [SECURITY EVENT] Type: LOGIN_FAILURE_UNVERIFIED | User ID: c42ade9f-7830-462b-96d4-88a4ab227114 | Details: Attempted login with unverified email: loginuser@example.com
+WARNING 2026-08-06 23:51:07,832 log 23288 26372 Bad Request: /api/ai/sentiment/
+WARNING 2026-08-06 23:51:22,565 log 23288 26372 Unauthorized: /api/ai/sentiment/
+WARNING 2026-08-06 23:51:22,568 log 23288 26372 Unauthorized: /api/ai/emotion/
+WARNING 2026-08-06 23:51:22,572 log 23288 26372 Unauthorized: /api/ai/keywords/
+WARNING 2026-08-06 23:51:22,575 log 23288 26372 Unauthorized: /api/ai/prediction/
+WARNING 2026-08-06 23:51:22,578 log 23288 26372 Unauthorized: /api/ai/insights/
+WARNING 2026-08-06 23:51:24,470 log 23288 26372 Bad Request: /api/assessment/
+INFO 2026-08-06 23:51:30,330 utils 23288 26372 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: 2a358a97-5d4b-4fa4-8cd8-19074eee1eba | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:51:32,564 utils 23288 26372 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SENT | User ID: ab9f3627-0450-4830-80c6-e839b7f4ea84 | Details: Verification code generated and email dispatched.
+INFO 2026-08-06 23:51:32,575 utils 23288 26372 [SECURITY EVENT] Type: EMAIL_VERIFICATION_SUCCESS | User ID: ab9f3627-0450-4830-80c6-e839b7f4ea84 | Details: Verified email: verifyuser@example.com
+INFO 2026-08-06 23:51:35,600 utils 23288 26372 [SECURITY EVENT] Type: USER_REGISTRATION_GOOGLE | User ID: b701914e-b530-43e3-9597-e2d0dbf4aa4c | Details: Registered via Google OAuth: googletest (googletest@example.com)
+INFO 2026-08-06 23:51:35,604 utils 23288 26372 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: b701914e-b530-43e3-9597-e2d0dbf4aa4c | Details: Logged in user googletest via Google OAuth.
+INFO 2026-08-06 23:51:39,199 utils 23288 26372 [SECURITY EVENT] Type: LOGIN_FAILURE_INACTIVE | User ID: 07517485-56ae-423a-a1d2-af6b65490958 | Details: Attempted login on inactive account: loginuser
+INFO 2026-08-06 23:51:43,291 utils 23288 26372 [SECURITY EVENT] Type: LOGIN_FAILURE | User ID: 1077acdc-ea58-40b0-83ee-d3b28a1a6e4e | Details: Incorrect password attempt for user: loginuser
+INFO 2026-08-06 23:51:47,255 utils 23288 26372 [SECURITY EVENT] Type: LOGIN_FAILURE_UNVERIFIED | User ID: 4fcc4760-86ab-4748-a369-171cc72dce94 | Details: Attempted login with unverified email: loginuser@example.com
+INFO 2026-08-07 00:08:47,825 autoreload 21716 7144 Watching for file changes with StatReloader
+INFO 2026-08-07 00:08:59,981 log 21716 26420 "GET / HTTP/1.1" 200 120
+WARNING 2026-08-07 00:09:00,058 log 21716 26420 Not Found: /favicon.ico
+WARNING 2026-08-07 00:09:00,059 log 21716 26420 "GET /favicon.ico HTTP/1.1" 404 4349
+INFO 2026-08-07 00:09:28,737 log 21716 18820 "OPTIONS /api/auth/login/ HTTP/1.1" 200 0
+INFO 2026-08-07 00:09:36,209 utils 21716 18820 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: 48402fd7-e71e-48e0-9ae1-9717b296465b | Details: User alex_student logged in successfully.
+INFO 2026-08-07 00:09:36,783 log 21716 18820 "POST /api/auth/login/ HTTP/1.1" 200 1422
+INFO 2026-08-07 00:09:40,101 log 21716 13692 "GET /api/journal/ HTTP/1.1" 200 48681
+INFO 2026-08-07 00:09:40,233 log 21716 34012 "GET /api/mood/history/ HTTP/1.1" 200 29684
+INFO 2026-08-07 00:09:40,321 log 21716 28856 "GET /api/activity-feedback/ HTTP/1.1" 200 38923
+INFO 2026-08-07 00:09:43,726 log 21716 23232 "GET /api/recommendation/today/ HTTP/1.1" 200 1650
+INFO 2026-08-07 00:09:44,004 log 21716 12944 "GET /api/ai/prediction/ HTTP/1.1" 200 899
+INFO 2026-08-07 00:09:44,440 log 21716 34012 "GET /api/insights/ HTTP/1.1" 200 806
+INFO 2026-08-07 00:09:47,230 log 21716 13692 "GET /api/ai/insights/ HTTP/1.1" 200 848
+INFO 2026-08-07 00:09:52,760 log 21716 18820 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 705
+INFO 2026-08-07 00:10:16,160 log 21716 200 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 00:10:19,543 log 21716 20148 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 00:11:35,967 log 21716 15552 "POST /api/activity-feedback/ HTTP/1.1" 201 327
+INFO 2026-08-07 00:11:39,299 log 21716 25472 "GET /api/mood/history/ HTTP/1.1" 200 29684
+INFO 2026-08-07 00:11:39,580 log 21716 23688 "GET /api/journal/ HTTP/1.1" 200 48681
+INFO 2026-08-07 00:11:39,800 log 21716 20200 "GET /api/activity-feedback/ HTTP/1.1" 200 39251
+INFO 2026-08-07 00:11:42,918 log 21716 12332 "GET /api/recommendation/today/ HTTP/1.1" 200 1650
+INFO 2026-08-07 00:11:42,922 log 21716 4928 "GET /api/ai/prediction/ HTTP/1.1" 200 899
+INFO 2026-08-07 00:11:43,771 log 21716 23688 "GET /api/insights/ HTTP/1.1" 200 806
+INFO 2026-08-07 00:11:45,955 log 21716 25472 "GET /api/ai/insights/ HTTP/1.1" 200 848
+INFO 2026-08-07 00:11:51,672 log 21716 15552 "GET /api/profile/?today=2026-08-06 HTTP/1.1" 200 705
+INFO 2026-08-07 00:25:35,458 autoreload 21716 7144 C:\Users\HP\Documents\mindCompass\Backend\insights\services.py changed, reloading.
+INFO 2026-08-07 00:25:41,311 autoreload 31232 25244 Watching for file changes with StatReloader
+INFO 2026-08-07 00:27:00,541 autoreload 31232 25244 C:\Users\HP\Documents\mindCompass\Backend\ai\insights\services.py changed, reloading.
+INFO 2026-08-07 00:27:06,558 autoreload 18660 25652 Watching for file changes with StatReloader
+INFO 2026-08-07 00:29:02,385 autoreload 18660 25652 C:\Users\HP\Documents\mindCompass\Backend\ai\insights\services.py changed, reloading.
+INFO 2026-08-07 00:29:07,758 autoreload 26168 11596 Watching for file changes with StatReloader
+INFO 2026-08-07 00:30:11,512 autoreload 26168 11596 C:\Users\HP\Documents\mindCompass\Backend\insights\services.py changed, reloading.
+INFO 2026-08-07 00:30:17,081 autoreload 30040 16020 Watching for file changes with StatReloader
+INFO 2026-08-07 00:30:44,297 autoreload 30040 16020 C:\Users\HP\Documents\mindCompass\Backend\insights\services.py changed, reloading.
+INFO 2026-08-07 00:30:49,796 autoreload 22388 16544 Watching for file changes with StatReloader
+INFO 2026-08-07 01:08:27,899 autoreload 22388 16544 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 01:08:42,497 autoreload 18180 33856 Watching for file changes with StatReloader
+INFO 2026-08-07 01:17:12,605 autoreload 18180 33856 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 01:17:16,324 autoreload 22228 13708 Watching for file changes with StatReloader
+INFO 2026-08-07 01:18:11,736 autoreload 22228 13708 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 01:18:15,129 autoreload 27428 26956 Watching for file changes with StatReloader
+INFO 2026-08-07 01:18:59,936 autoreload 27428 26956 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 01:19:03,438 autoreload 30056 30060 Watching for file changes with StatReloader
+INFO 2026-08-07 01:19:39,624 autoreload 30056 30060 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 01:19:42,979 autoreload 5480 4256 Watching for file changes with StatReloader
+INFO 2026-08-07 11:06:29,195 autoreload 33716 10608 Watching for file changes with StatReloader
+INFO 2026-08-07 11:06:47,846 autoreload 33716 10608 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 11:06:55,858 autoreload 8304 27732 Watching for file changes with StatReloader
+INFO 2026-08-07 11:16:34,407 log 8304 24624 "GET / HTTP/1.1" 200 120
+WARNING 2026-08-07 11:16:34,509 log 8304 24624 Not Found: /favicon.ico
+WARNING 2026-08-07 11:16:34,510 log 8304 24624 "GET /favicon.ico HTTP/1.1" 404 4349
+INFO 2026-08-07 11:16:56,339 log 8304 18160 "OPTIONS /api/auth/google-login/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,269 utils 8304 18160 [SECURITY EVENT] Type: LOGIN_SUCCESS_GOOGLE | User ID: 4ef17be8-acd9-418d-8c84-04c86adf1c52 | Details: Logged in user 6eakankshagupta via Google OAuth.
+INFO 2026-08-07 11:17:02,661 log 8304 18160 "POST /api/auth/google-login/ HTTP/1.1" 200 1364
+INFO 2026-08-07 11:17:02,669 log 8304 18160 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,673 log 8304 18160 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,674 log 8304 27128 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,675 log 8304 30352 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,680 log 8304 12968 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,683 log 8304 30352 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,683 log 8304 18160 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:02,686 log 8304 27128 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:05,144 log 8304 27128 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 11:17:05,214 log 8304 16364 "GET /api/journal/ HTTP/1.1" 200 2491
+INFO 2026-08-07 11:17:05,631 log 8304 30352 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-07 11:17:05,785 log 8304 12968 "GET /api/mood/history/ HTTP/1.1" 200 610
+INFO 2026-08-07 11:17:06,288 log 8304 18160 "GET /api/recommendation/today/ HTTP/1.1" 200 201
+INFO 2026-08-07 11:17:07,556 log 8304 27128 "GET /api/insights/ HTTP/1.1" 200 26
+INFO 2026-08-07 11:17:07,948 log 8304 16364 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-07 11:17:09,642 log 8304 13772 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 614
+INFO 2026-08-07 11:17:47,148 log 8304 22868 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:47,150 log 8304 7400 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:17:51,055 log 8304 22868 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 11:17:54,858 log 8304 7400 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 11:28:14,277 log 8304 14100 "OPTIONS /api/mood/ HTTP/1.1" 200 0
+INFO 2026-08-07 11:31:03,217 log 8304 14100 "POST /api/mood/ HTTP/1.1" 201 302
+INFO 2026-08-07 11:31:05,874 log 8304 18412 "GET /api/journal/ HTTP/1.1" 200 2491
+INFO 2026-08-07 11:31:05,963 log 8304 21280 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 11:31:06,288 log 8304 5964 "GET /api/mood/history/ HTTP/1.1" 200 913
+INFO 2026-08-07 11:31:06,575 log 8304 14420 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-07 11:31:10,013 log 8304 18412 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-07 11:31:10,774 log 8304 3100 "GET /api/recommendation/today/ HTTP/1.1" 200 1643
+INFO 2026-08-07 11:31:11,309 log 8304 14100 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 614
+INFO 2026-08-07 11:31:11,885 log 8304 21280 "GET /api/insights/ HTTP/1.1" 200 625
+INFO 2026-08-07 11:32:59,399 log 8304 32512 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 11:33:06,407 log 8304 12024 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 12:55:00,965 log 8304 9532 "POST /api/journal/ HTTP/1.1" 201 409
+INFO 2026-08-07 12:55:04,745 log 8304 20560 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-07 12:55:05,134 log 8304 9604 "GET /api/journal/ HTTP/1.1" 200 2901
+INFO 2026-08-07 12:55:05,499 log 8304 6960 "GET /api/mood/history/ HTTP/1.1" 200 913
+INFO 2026-08-07 12:55:06,222 log 8304 8532 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 12:55:10,773 log 8304 9532 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 614
+INFO 2026-08-07 12:55:17,589 log 8304 9604 "GET /api/insights/ HTTP/1.1" 200 652
+INFO 2026-08-07 12:55:18,839 log 8304 20560 "GET /api/ai/insights/ HTTP/1.1" 200 888
+ERROR 2026-08-07 12:57:37,264 log 8304 22540 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\HP\Documents\mindCompass\Backend\recommendation\views.py", line 97, in get
+    rec = RecommendationService.get_today_recommendation(request.user)
+  File "C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py", line 73, in get_today_recommendation
+    return cls._generate_recommendation_logic(user, is_quick=False)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py", line 362, in _generate_recommendation_logic
+    skip_penalty = min(1.0, ignored_recs.count() / 3.0)
+                            ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\HP\Documents\mindCompass\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 12:57:37,276 log 8304 22540 "GET /api/recommendation/today/ HTTP/1.1" 500 26743
+INFO 2026-08-07 12:59:19,968 log 8304 20656 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-07 12:59:21,068 log 8304 33900 "GET /api/journal/ HTTP/1.1" 200 3760
+INFO 2026-08-07 12:59:24,888 log 8304 18088 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 12:59:25,262 log 8304 33472 "GET /api/mood/history/ HTTP/1.1" 200 913
+INFO 2026-08-07 12:59:29,830 log 8304 33472 "GET /api/journal/ HTTP/1.1" 200 3760
+INFO 2026-08-07 12:59:32,303 log 8304 18088 "GET /api/activity-feedback/ HTTP/1.1" 200 2
+INFO 2026-08-07 12:59:32,304 log 8304 20656 "GET /api/ai/insights/ HTTP/1.1" 200 888
+INFO 2026-08-07 12:59:32,892 log 8304 33900 "GET /api/insights/ HTTP/1.1" 200 652
+INFO 2026-08-07 12:59:35,074 log 8304 33472 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 12:59:40,306 log 8304 5348 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 614
+INFO 2026-08-07 12:59:42,398 log 8304 20656 "GET /api/ai/insights/ HTTP/1.1" 200 888
+INFO 2026-08-07 12:59:44,250 log 8304 33900 "GET /api/insights/ HTTP/1.1" 200 652
+INFO 2026-08-07 12:59:45,883 log 8304 18088 "GET /api/mood/history/ HTTP/1.1" 200 913
+INFO 2026-08-07 12:59:58,738 log 8304 33472 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 614
+INFO 2026-08-07 13:04:34,462 log 8304 31164 "GET /api/recommendation/today/ HTTP/1.1" 200 1881
+INFO 2026-08-07 13:06:44,030 log 8304 29968 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 13:06:47,295 log 8304 16792 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 13:08:12,388 log 8304 24372 "POST /api/activity-feedback/ HTTP/1.1" 201 328
+INFO 2026-08-07 13:08:17,104 log 8304 9328 "GET /api/mood/history/ HTTP/1.1" 200 913
+INFO 2026-08-07 13:08:18,221 log 8304 34300 "GET /api/activity-feedback/ HTTP/1.1" 200 330
+INFO 2026-08-07 13:08:26,765 log 8304 34300 "GET /api/ai/insights/ HTTP/1.1" 200 835
+INFO 2026-08-07 13:08:26,930 log 8304 9328 "GET /api/ai/prediction/ HTTP/1.1" 200 356
+INFO 2026-08-07 13:09:06,600 log 8304 11944 "GET /api/journal/ HTTP/1.1" 200 3760
+INFO 2026-08-07 13:09:06,714 log 8304 4576 "GET /api/recommendation/today/ HTTP/1.1" 200 1881
+INFO 2026-08-07 13:09:25,834 log 8304 34300 "GET /api/insights/ HTTP/1.1" 200 652
+INFO 2026-08-07 14:35:31,841 autoreload 21592 21748 Watching for file changes with StatReloader
+INFO 2026-08-07 14:35:50,822 log 21592 3944 "GET / HTTP/1.1" 200 120
+WARNING 2026-08-07 14:35:50,952 log 21592 3944 Not Found: /favicon.ico
+WARNING 2026-08-07 14:35:50,954 log 21592 3944 "GET /favicon.ico HTTP/1.1" 404 4349
+INFO 2026-08-07 14:36:25,185 log 21592 14980 "OPTIONS /api/auth/login/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:29,786 utils 21592 14980 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: aff543e1-0693-4206-a5e2-2239031d307c | Details: User priya_user logged in successfully.
+INFO 2026-08-07 14:36:31,854 log 21592 14980 "POST /api/auth/login/ HTTP/1.1" 200 1316
+INFO 2026-08-07 14:36:31,886 log 21592 14980 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,890 log 21592 23388 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,906 log 21592 23388 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,907 log 21592 23384 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,907 log 21592 14980 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,908 log 21592 23380 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,928 log 21592 23376 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:31,931 log 21592 23432 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:36:34,425 log 21592 23388 "GET /api/mood/history/ HTTP/1.1" 200 13576
+INFO 2026-08-07 14:36:34,673 log 21592 23380 "GET /api/journal/ HTTP/1.1" 200 20927
+INFO 2026-08-07 14:36:34,949 log 21592 23376 "GET /api/ai/insights/ HTTP/1.1" 200 114
+INFO 2026-08-07 14:36:36,731 log 21592 14980 "GET /api/insights/ HTTP/1.1" 200 819
+INFO 2026-08-07 14:36:36,945 log 21592 23432 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 14:36:37,417 log 21592 23388 "GET /api/recommendation/today/ HTTP/1.1" 200 194
+INFO 2026-08-07 14:36:40,920 log 21592 23380 "GET /api/ai/prediction/ HTTP/1.1" 200 908
+INFO 2026-08-07 14:36:43,700 log 21592 23384 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 14:36:56,485 log 21592 7196 "OPTIONS /api/mood/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:39:31,199 log 21592 7196 "POST /api/mood/ HTTP/1.1" 201 305
+INFO 2026-08-07 14:39:33,647 log 21592 16036 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 14:39:34,331 log 21592 23272 "GET /api/journal/ HTTP/1.1" 200 20927
+INFO 2026-08-07 14:39:35,403 log 21592 10456 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 14:39:37,292 log 21592 19564 "GET /api/ai/prediction/ HTTP/1.1" 200 784
+INFO 2026-08-07 14:39:39,196 log 21592 16036 "GET /api/ai/insights/ HTTP/1.1" 200 859
+INFO 2026-08-07 14:39:39,206 log 21592 23272 "GET /api/insights/ HTTP/1.1" 200 842
+INFO 2026-08-07 14:39:43,544 log 21592 7196 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+WARNING 2026-08-07 14:40:07,945 log 21592 400 Bad Request: /api/mood/
+WARNING 2026-08-07 14:40:07,948 log 21592 400 "POST /api/mood/ HTTP/1.1" 400 56
+INFO 2026-08-07 14:40:19,998 log 21592 1464 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 14:40:20,330 log 21592 7336 "GET /api/journal/ HTTP/1.1" 200 20927
+INFO 2026-08-07 14:40:21,045 log 21592 13356 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 14:40:23,516 log 21592 13356 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 14:40:23,609 log 21592 16296 "GET /api/recommendation/today/ HTTP/1.1" 200 1922
+INFO 2026-08-07 14:40:24,385 log 21592 7336 "GET /api/insights/ HTTP/1.1" 200 842
+INFO 2026-08-07 14:40:24,470 log 21592 22844 "GET /api/ai/prediction/ HTTP/1.1" 200 784
+INFO 2026-08-07 14:40:25,791 log 21592 1464 "GET /api/ai/insights/ HTTP/1.1" 200 859
+INFO 2026-08-07 14:40:26,441 log 21592 13356 "GET /api/journal/ HTTP/1.1" 200 20927
+INFO 2026-08-07 14:40:26,760 log 21592 16296 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 14:40:29,247 log 21592 400 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 14:40:30,422 log 21592 7336 "GET /api/recommendation/today/ HTTP/1.1" 200 1922
+INFO 2026-08-07 14:40:31,384 log 21592 22844 "GET /api/insights/ HTTP/1.1" 200 842
+INFO 2026-08-07 14:40:31,688 log 21592 1464 "GET /api/ai/prediction/ HTTP/1.1" 200 784
+INFO 2026-08-07 14:40:32,504 log 21592 13356 "GET /api/ai/insights/ HTTP/1.1" 200 859
+INFO 2026-08-07 14:40:40,393 log 21592 16296 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 14:41:00,487 log 21592 2704 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:41:00,488 log 21592 16040 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 14:41:03,634 log 21592 2704 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 14:41:06,862 log 21592 16040 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 15:12:54,899 autoreload 11532 18556 Watching for file changes with StatReloader
+INFO 2026-08-07 15:13:15,735 utils 11532 17024 [SECURITY EVENT] Type: LOGIN_SUCCESS | User ID: aff543e1-0693-4206-a5e2-2239031d307c | Details: User priya_user logged in successfully.
+INFO 2026-08-07 15:13:16,146 log 11532 17024 "POST /api/auth/login/ HTTP/1.1" 200 1316
+INFO 2026-08-07 15:13:19,233 log 11532 11212 "GET /api/journal/ HTTP/1.1" 200 25468
+INFO 2026-08-07 15:13:19,296 log 11532 9448 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:13:25,349 log 11532 21956 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:13:27,612 log 11532 14536 "GET /api/insights/ HTTP/1.1" 200 794
+INFO 2026-08-07 15:13:28,067 log 11532 2148 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:13:28,354 log 11532 21956 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:13:28,490 log 11532 21380 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:13:29,762 log 11532 20180 "GET /api/ai/prediction/ HTTP/1.1" 200 800
+INFO 2026-08-07 15:13:31,571 log 11532 14536 "GET /api/journal/ HTTP/1.1" 200 25468
+INFO 2026-08-07 15:13:31,772 log 11532 2148 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:13:33,398 log 11532 20180 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:13:33,738 log 11532 21956 "GET /api/insights/ HTTP/1.1" 200 794
+INFO 2026-08-07 15:13:36,389 log 11532 21380 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:13:36,674 log 11532 20180 "GET /api/journal/ HTTP/1.1" 200 25468
+INFO 2026-08-07 15:13:37,592 log 11532 16220 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:13:37,652 log 11532 14536 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:13:39,366 log 11532 2148 "GET /api/ai/prediction/ HTTP/1.1" 200 800
+INFO 2026-08-07 15:13:54,204 log 11532 20180 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:14:00,500 log 11532 20180 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 15:14:09,187 log 11532 14444 "GET /api/activities/ HTTP/1.1" 200 91103
+INFO 2026-08-07 15:14:16,460 log 11532 14444 "OPTIONS /api/journal/f6f73573-6aa5-45d3-b1fc-1cbe1045b547/ HTTP/1.1" 200 0
+INFO 2026-08-07 15:14:20,430 log 11532 14444 "DELETE /api/journal/f6f73573-6aa5-45d3-b1fc-1cbe1045b547/ HTTP/1.1" 204 36
+INFO 2026-08-07 15:14:23,108 log 11532 20656 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:14:23,271 log 11532 23516 "GET /api/journal/ HTTP/1.1" 200 23788
+INFO 2026-08-07 15:14:24,996 log 11532 21048 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:14:24,999 log 11532 21048 "OPTIONS /api/journal/130577e1-ef0c-41ac-a6af-db60eaa1cd53/ HTTP/1.1" 200 0
+INFO 2026-08-07 15:14:27,042 log 11532 14548 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:14:28,009 log 11532 20924 "GET /api/ai/prediction/ HTTP/1.1" 200 800
+INFO 2026-08-07 15:14:29,094 log 11532 23516 "GET /api/insights/ HTTP/1.1" 200 738
+INFO 2026-08-07 15:14:29,145 log 11532 21048 "DELETE /api/journal/130577e1-ef0c-41ac-a6af-db60eaa1cd53/ HTTP/1.1" 204 36
+INFO 2026-08-07 15:14:31,054 log 11532 20656 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:14:31,807 log 11532 23516 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:14:32,461 log 11532 14548 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:14:33,022 log 11532 20924 "GET /api/journal/ HTTP/1.1" 200 22205
+INFO 2026-08-07 15:14:36,834 log 11532 13104 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:14:37,292 log 11532 23516 "GET /api/insights/ HTTP/1.1" 200 710
+INFO 2026-08-07 15:14:38,067 log 11532 4960 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:14:39,679 log 11532 20656 "GET /api/ai/prediction/ HTTP/1.1" 200 806
+INFO 2026-08-07 15:14:42,398 log 11532 14548 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:14:52,199 log 11532 23516 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+WARNING 2026-08-07 15:14:53,570 log 11532 14548 Not Found: /api/journal/130577e1-ef0c-41ac-a6af-db60eaa1cd53/
+WARNING 2026-08-07 15:14:53,571 log 11532 14548 "DELETE /api/journal/130577e1-ef0c-41ac-a6af-db60eaa1cd53/ HTTP/1.1" 404 37
+INFO 2026-08-07 15:15:12,585 log 11532 17948 "GET /api/journal/ HTTP/1.1" 200 22205
+INFO 2026-08-07 15:15:13,278 log 11532 17624 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:15:13,761 log 11532 15960 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:15:16,378 log 11532 16760 "GET /api/ai/prediction/ HTTP/1.1" 200 806
+INFO 2026-08-07 15:15:16,730 log 11532 10736 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:15:17,818 log 11532 17624 "GET /api/insights/ HTTP/1.1" 200 710
+INFO 2026-08-07 15:15:18,613 log 11532 15960 "GET /api/journal/ HTTP/1.1" 200 22205
+INFO 2026-08-07 15:15:20,528 log 11532 16760 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:15:21,252 log 11532 17948 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:15:23,221 log 11532 10736 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:15:25,194 log 11532 15960 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:15:26,106 log 11532 16760 "GET /api/insights/ HTTP/1.1" 200 710
+INFO 2026-08-07 15:15:27,209 log 11532 17624 "GET /api/ai/prediction/ HTTP/1.1" 200 806
+INFO 2026-08-07 15:15:34,491 log 11532 20692 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:15:38,808 log 11532 17948 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:15:47,539 log 11532 20692 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:15:47,664 log 11532 22336 "GET /api/journal/ HTTP/1.1" 200 22205
+INFO 2026-08-07 15:15:47,764 log 11532 22428 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:15:50,978 log 11532 22428 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 15:15:52,213 log 11532 11752 "GET /api/ai/prediction/ HTTP/1.1" 200 806
+INFO 2026-08-07 15:15:52,413 log 11532 3732 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:15:54,226 log 11532 22336 "GET /api/insights/ HTTP/1.1" 200 710
+INFO 2026-08-07 15:15:54,574 log 11532 20692 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:15:55,435 log 11532 11752 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 15:15:56,655 log 11532 22428 "GET /api/journal/ HTTP/1.1" 200 22205
+INFO 2026-08-07 15:15:58,694 log 11532 20692 "GET /api/insights/ HTTP/1.1" 200 710
+INFO 2026-08-07 15:16:01,589 log 11532 22336 "GET /api/recommendation/today/ HTTP/1.1" 200 2146
+INFO 2026-08-07 15:16:03,384 log 11532 3732 "GET /api/ai/prediction/ HTTP/1.1" 200 806
+INFO 2026-08-07 15:16:04,803 log 11532 11752 "GET /api/ai/insights/ HTTP/1.1" 200 862
+INFO 2026-08-07 15:16:05,394 log 11532 17948 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:16:25,564 log 11532 3732 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 15:19:35,380 autoreload 11532 18556 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 15:19:39,972 autoreload 8156 20924 Watching for file changes with StatReloader
+INFO 2026-08-07 15:27:57,417 autoreload 8156 20924 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 15:28:04,939 autoreload 20768 8912 Watching for file changes with StatReloader
+INFO 2026-08-07 16:45:36,971 log 20768 24124 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:36,972 log 20768 25100 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:36,979 log 20768 24536 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:36,979 log 20768 24124 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:36,980 log 20768 11836 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:37,077 log 20768 24748 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:39,892 log 20768 24124 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 16:45:39,895 log 20768 24124 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:39,899 log 20768 24124 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:39,902 log 20768 24124 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:39,906 log 20768 24124 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 16:45:40,032 log 20768 11836 "GET /api/journal/ HTTP/1.1" 200 24599
+INFO 2026-08-07 16:45:40,689 log 20768 17148 "GET /api/activity-feedback/ HTTP/1.1" 200 17821
+INFO 2026-08-07 16:45:42,487 log 20768 24124 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 16:45:43,488 log 20768 24536 "GET /api/recommendation/today/ HTTP/1.1" 200 1839
+INFO 2026-08-07 16:45:43,870 autoreload 20768 8912 C:\Users\HP\Documents\mindCompass\Backend\recommendation\services.py changed, reloading.
+INFO 2026-08-07 16:45:59,854 autoreload 3200 23152 Watching for file changes with StatReloader
+INFO 2026-08-07 17:14:25,279 autoreload 5832 21624 Watching for file changes with StatReloader

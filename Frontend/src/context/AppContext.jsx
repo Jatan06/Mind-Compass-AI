@@ -170,13 +170,14 @@ export const AppProvider = ({ children }) => {
             ]);
 
             // 1. Mood Check-ins Processing
+            let mappedCheckins = [];
             if (moodRes.status === 'fulfilled' && moodRes.value?.status === 200 && Array.isArray(moodRes.value.data)) {
-                const mappedCheckins = moodRes.value.data.map(c => ({
+                mappedCheckins = moodRes.value.data.map(c => ({
                     ...c,
                     sleep: c.sleep ? parseFloat(c.sleep) : 0,
                     moodLabel: c.mood_label || ''
-                }));
-                setCheckins(mappedCheckins.reverse());
+                })).reverse();
+                setCheckins(mappedCheckins);
             }
 
             // 2. Journals Processing
@@ -228,8 +229,10 @@ export const AppProvider = ({ children }) => {
             } else {
                 setAnalyticsData(null);
             }
+            return { checkins: mappedCheckins };
         } catch (error) {
             console.error('Failed to refresh dashboard data:', error);
+            return { checkins: [] };
         } finally {
             setRecLoading(false);
             setPredictionLoading(false);
@@ -365,7 +368,8 @@ export const AppProvider = ({ children }) => {
             }));
 
             // Sync dashboard records after login
-            await refreshDashboardData();
+            const dashData = await refreshDashboardData();
+            response.data.dashboardData = dashData;
         }
         return response.data;
     };
@@ -434,7 +438,8 @@ export const AppProvider = ({ children }) => {
                 email: userObj.email,
             }));
 
-            await refreshDashboardData();
+            const dashData = await refreshDashboardData();
+            response.data.dashboardData = dashData;
         }
         return response.data;
     };

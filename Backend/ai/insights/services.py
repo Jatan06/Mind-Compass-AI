@@ -25,8 +25,8 @@ class AIInsightsService:
         avg_sleep = sum([float(m.sleep or 7.0) for m in mood_logs]) / mood_count if mood_count > 0 else 7.0
         
         # Split logs into recent (last 7 days) and older periods
-        recent_week_logs = list(mood_logs.filter(date__gte=today - timezone.timedelta(days=6)))
-        older_period_logs = list(mood_logs.filter(date__lt=today - timezone.timedelta(days=6)))
+        recent_week_logs = [m for m in mood_logs if m.date >= (today - timezone.timedelta(days=6))]
+        older_period_logs = [m for m in mood_logs if m.date < (today - timezone.timedelta(days=6))]
 
         # Sub-averages
         avg_recent_mood = sum([m.mood for m in recent_week_logs]) / len(recent_week_logs) if recent_week_logs else 3.0
@@ -42,8 +42,8 @@ class AIInsightsService:
 
         # 2. Repeated emotions (from EmotionAnalysis linked to user journals)
         emotion_freq = {}
-        journals = JournalEntry.objects.filter(user=user, created_at__date__gte=start_date)
-        analyses = EmotionAnalysis.objects.filter(journal_entry__in=journals)
+        journals = list(JournalEntry.objects.filter(user=user, created_at__date__gte=start_date))
+        analyses = list(EmotionAnalysis.objects.filter(journal_entry__in=journals))
         for ana in analyses:
             emotion_freq[ana.primary_emotion] = emotion_freq.get(ana.primary_emotion, 0) + 1
             if ana.secondary_emotion:
@@ -64,7 +64,7 @@ class AIInsightsService:
         top_themes = [t[0] for t in repeated_themes[:3]]
 
         # 4. Successful coping activities (feedback ratings satisfaction >= 4)
-        feedbacks = ActivityFeedback.objects.filter(user=user, satisfaction__gte=4).select_related('activity')
+        feedbacks = list(ActivityFeedback.objects.filter(user=user, satisfaction__gte=4).select_related('activity'))
         successful_coping = list(set([f.activity.title for f in feedbacks if f.activity]))
 
 
@@ -114,7 +114,8 @@ class AIInsightsService:
             habits.append(("consistent sleep", f"consistent sleep: Maintaining regular sleep cycles averaging {avg_recent_sleep:.1f} hours."))
         if len(recent_week_logs) >= 5:
             habits.append(("regular checkins", "consistent checkins: You maintain a high consistency in logging daily mood checks."))
-        if journals.filter(created_at__date__gte=today - timezone.timedelta(days=6)).count() >= 4:
+        recent_journals = [j for j in journals if j.created_at.date() >= (today - timezone.timedelta(days=6))]
+        if len(recent_journals) >= 4:
             habits.append(("consistent journaling", "consistent journaling: You maintain routine written reflections, linking themes effectively."))
         from recommendation.models import Recommendation
         recent_completed_recs = Recommendation.objects.filter(user=user, completed=True, created_at__date__gte=today - timezone.timedelta(days=6)).count()
@@ -151,10 +152,11 @@ class AIInsightsService:
                 recovery_statement = f"You completed coping activities on {recs_8} of the last 8 days."
 
         if not recovery_statement:
+            journal_dates = set([j.created_at.date() for j in journals])
             streak_days = 0
             check_date = today
             while True:
-                if JournalEntry.objects.filter(user=user, created_at__date=check_date).exists():
+                if check_date in journal_dates:
                     streak_days += 1
                     check_date -= timezone.timedelta(days=1)
                 else:

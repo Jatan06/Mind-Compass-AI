@@ -103,10 +103,8 @@ export const Dashboard = () => {
     const recReason = todayRecommendation?.reason || [];
     const recommendation = todayRecommendation;
 
-    // Fetch fresh profile + checkins + journals + prediction on load
-    React.useEffect(() => {
-        refreshDashboardData();
-    }, []);
+    // Removed redundant refreshDashboardData() on mount to strictly avoid network duplication.
+    // Dashboard data is globally hydrated by AppContext initially and post-mutations.
 
     // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
     const getUTCDateString = () => new Date().toISOString().split('T')[0];

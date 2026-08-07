@@ -46,16 +46,14 @@ import { AICompanion } from '../components/AICompanion';
 export const Insights = () => {
     // Access AI insights, analytics data, loading flags, and refresh handler from global AppContext
     const { wellnessScore, aiInsightsData, insightsLoading, analyticsData, analyticsLoading, refreshDashboardData, userProfile } = useApp();
-    
+
     // Active view tab state: 'twin' (AI Emotional Twin) or 'analytics' (Progress Analytics)
     const [insightsTab, setInsightsTab] = useState('twin');
 
     const [error, setError] = useState('');
 
-    // Effect: Refresh all dashboard & insights metrics on component mount
-    useEffect(() => {
-        refreshDashboardData();
-    }, []);
+    // Removed duplicate refreshDashboardData() on mount to strictly avoid network duplication.
+    // Analytical data is globally hydrated by AppContext initially.
 
     // Global loading state flag
     const loading = (insightsLoading || analyticsLoading) && !aiInsightsData && !analyticsData;

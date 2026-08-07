@@ -29,6 +29,14 @@ import { useApp } from '../context/AppContext';
 import { activitiesAPI } from '../services/api';
 import { AmbientMusicPlayer } from '../components/AmbientMusicPlayer';
 import { audioEngine, getSoundscapeForCategory } from '../utils/soundscapes';
+import {
+    BreathingCircleWidget,
+    TextInputWidget,
+    ChecklistWidget,
+    SliderWidget,
+    ProgressTapWidget,
+    HoldReleaseWidget
+} from '../components/InteractiveWidgets';
 
 const categoryIcons = {
     'Breathing': <FiWind className="w-5 h-5" />,
@@ -55,21 +63,18 @@ const getCategoryIcon = (category) => {
 export const Wellness = () => {
     const { favorites, toggleFavorite, completeActivity, todayRecommendation, recLoading } = useApp();
 
-    const [activeView, setActiveView] = useState('list'); // 'list' | 'details' | 'feedback'
+    const [activeView, setActiveView] = useState('mission'); // 'mission' | 'session' | 'feedback'
     const [selectedActivity, setSelectedActivity] = useState(null);
-    const [categoryFilter, setCategoryFilter] = useState('All');
-    const [difficultyFilter, setDifficultyFilter] = useState('All');
-    const [durationFilter, setDurationFilter] = useState('All');
-    const [searchTerm, setSearchTerm] = useState('');
+    const [currentStep, setCurrentStep] = useState(0);
+    const [canProceed, setCanProceed] = useState(false);
 
     const [activities, setActivities] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     const todaysRecommendation = todayRecommendation?.activity || null;
-    const recReason = todayRecommendation?.reason
-        ? (Array.isArray(todayRecommendation.reason) ? todayRecommendation.reason.join(" ") : todayRecommendation.reason)
-        : "";
+    const recReasonSection1 = todayRecommendation?.reason?.section_1 || "";
+    const recReasonSection2 = todayRecommendation?.reason?.section_2 || "";
 
     // Timer States
     const [timeLeft, setTimeLeft] = useState(0);
@@ -82,6 +87,18 @@ export const Wellness = () => {
     const [moodImproved, setMoodImproved] = useState('Yes');
     const [feedbackComment, setFeedbackComment] = useState('');
     const [submittingFeedback, setSubmittingFeedback] = useState(false);
+    const [moodAfter, setMoodAfter] = useState(7);
+    const [stressAfter, setStressAfter] = useState(5);
+
+    useEffect(() => {
+        if (!selectedActivity || !selectedActivity.instructions) return;
+        const inst = selectedActivity.instructions[currentStep];
+        if (typeof inst === 'string' || inst?.type === 'static_text') {
+            setCanProceed(true);
+        } else {
+            setCanProceed(false);
+        }
+    }, [currentStep, selectedActivity]);
 
     useEffect(() => {
         let isMounted = true;
@@ -130,7 +147,7 @@ export const Wellness = () => {
             if ('wakeLock' in navigator) {
                 wakeLockRef.current = await navigator.wakeLock.request('screen');
             }
-        } catch (_) {}
+        } catch (_) { }
     };
 
     const exitFullscreen = async () => {
@@ -139,13 +156,13 @@ export const Wellness = () => {
                 if (document.exitFullscreen) await document.exitFullscreen();
                 else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
             }
-        } catch (_) {}
+        } catch (_) { }
         try {
             if (wakeLockRef.current) {
                 await wakeLockRef.current.release();
                 wakeLockRef.current = null;
             }
-        } catch (_) {}
+        } catch (_) { }
     };
 
     // Exit fullscreen if user presses Escape (browser does it automatically,
@@ -154,7 +171,7 @@ export const Wellness = () => {
         const onFsChange = () => {
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                 if (wakeLockRef.current) {
-                    wakeLockRef.current.release().catch(() => {});
+                    wakeLockRef.current.release().catch(() => { });
                     wakeLockRef.current = null;
                 }
             }
@@ -167,71 +184,43 @@ export const Wellness = () => {
         };
     }, []);
 
-    // Handle Category, Difficulty, Duration filter & Search
-    const filteredActivities = activities.filter(a => {
-        const matchesCategory = categoryFilter === 'All' || a.category.toLowerCase() === categoryFilter.toLowerCase();
-        const matchesDifficulty = difficultyFilter === 'All' || a.difficulty.toLowerCase() === difficultyFilter.toLowerCase();
+    // We no longer display the list or filters, keeping just fetching logically for fallback.
+    const hasActivities = activities.length > 0;
 
-        const mins = getDurationNum(a.duration);
-        const matchesDuration = durationFilter === 'All' ||
-            (durationFilter === '< 5 min' && mins < 5) ||
-            (durationFilter === '5-10 min' && mins >= 5 && mins <= 10) ||
-            (durationFilter === '> 10 min' && mins > 10);
-
-        const matchesSearch = a.title.toLowerCase().includes(searchTerm.toLowerCase());
-
-        return matchesCategory && matchesDifficulty && matchesDuration && matchesSearch;
-    });
-
-    // Timer Control Handlers
+    // Session Logic
     const startTimer = (activity) => {
         setSelectedActivity(activity);
-        const mins = getDurationNum(activity.duration) || 5;
-        const durSecs = mins * 60;
-        setTimeLeft(durSecs);
+        setCurrentStep(0);
         setIsTimerRunning(true);
-        setActiveView('details');
+        setActiveView('session');
         setResetKey(prev => prev + 1);
-        // Enter fullscreen + request wake lock (triggered by user click — always succeeds)
         enterFullscreen();
+
+        const soundscape = getSoundscapeForCategory(activity.category);
+        const mins = getDurationNum(activity.duration) || 5;
+        audioEngine.restart(soundscape, mins * 60);
     };
 
-
-    useEffect(() => {
-        if (activeView !== 'details') return;
-
-        let interval = null;
-        if (isTimerRunning && timeLeft > 0) {
-            interval = setInterval(() => {
-                setTimeLeft(prev => prev - 1);
-            }, 1000);
-        } else if (timeLeft === 0) {
-            setIsTimerRunning(false);
-            exitFullscreen();
-            setActiveView('feedback');
+    const handleNextStep = () => {
+        if (!selectedActivity || !selectedActivity.instructions) return;
+        if (currentStep < selectedActivity.instructions.length - 1) {
+            setCurrentStep(prev => prev + 1);
+        } else {
+            handleCompleteSession();
         }
-
-        return () => clearInterval(interval);
-    }, [isTimerRunning, timeLeft, activeView]);
-
-    const handleTimerPause = () => {
-        setIsTimerRunning(prev => {
-            const next = !prev;
-            if (next) audioEngine.resume();
-            else audioEngine.pause();
-            return next;
-        });
     };
 
-    const handleTimerReset = () => {
-        const mins = getDurationNum(selectedActivity.duration) || 5;
-        const durSecs = mins * 60;
-        setTimeLeft(durSecs);
-        setIsTimerRunning(true);
-        setResetKey(prev => prev + 1);
-        // Force restart music completely from 00:00
-        const soundscape = getSoundscapeForCategory(selectedActivity.category);
-        audioEngine.restart(soundscape, durSecs);
+    const handlePrevStep = () => {
+        if (currentStep > 0) {
+            setCurrentStep(prev => prev - 1);
+        }
+    };
+
+    const handleCompleteSession = () => {
+        setIsTimerRunning(false);
+        audioEngine.stop();
+        exitFullscreen();
+        setActiveView('feedback');
     };
 
 
@@ -253,15 +242,18 @@ export const Wellness = () => {
         try {
             const mins = getDurationNum(selectedActivity.duration) || 5;
             await completeActivity(selectedActivity.id, mins, {
-                satisfaction,
-                moodImproved,
-                comment: feedbackComment
+                mood_after: moodAfter,
+                stress_after: stressAfter,
+                comment: feedbackComment,
+                // Legacy fields preserved just in case
+                satisfaction: moodAfter >= 5 ? 5 : 3,
+                moodImproved: moodAfter >= 7 ? 'Yes' : 'No Change'
             });
             // Reset feedback form states
-            setSatisfaction(5);
-            setMoodImproved('Yes');
+            setMoodAfter(7);
+            setStressAfter(5);
             setFeedbackComment('');
-            setActiveView('list');
+            setActiveView('mission');
             setSelectedActivity(null);
             alert('Thank you for your feedback! Your activity history is updated.');
         } catch (err) {
@@ -284,8 +276,107 @@ export const Wellness = () => {
             <div className="flex-grow flex flex-col gap-6 text-left max-w-5xl mx-auto w-full">
 
                 <AnimatePresence mode="wait">
-                    {/* View 1: Activitiy Library & Recommendation Card */}
-                    {activeView === 'list' && (
+                    {/* View 1: Mission Intro */}
+                    {activeView === 'mission' && (
+                        <motion.div
+                            key="mission-view"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="flex flex-col items-center justify-center min-h-[60vh] space-y-8 max-w-4xl mx-auto"
+                        >
+                            {!recLoading && todaysRecommendation ? (
+                                <div className="space-y-12 w-full text-center">
+                                    <div className="space-y-4">
+                                        <div className="inline-flex items-center justify-center p-4 bg-primary/10 dark:bg-accent/15 rounded-full text-primary dark:text-accent mb-2">
+                                            {getCategoryIcon(todaysRecommendation.category)}
+                                        </div>
+                                        <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-text-dark dark:text-text-light">
+                                            Today's Wellness Mission
+                                        </h1>
+                                        <p className="text-base md:text-lg text-text-dark/70 dark:text-text-light/70 max-w-2xl mx-auto">
+                                            Your AI Coach has organized a personalized interactive session tailored to your current reflections and nervous system state.
+                                        </p>
+                                    </div>
+
+                                    <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-8 md:p-12 shadow-md relative overflow-hidden flex flex-col gap-8 text-left max-w-3xl mx-auto">
+                                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 dark:bg-accent/5 rounded-full filter blur-3xl pointer-events-none" />
+
+                                        <div>
+                                            <span className="text-[11px] uppercase font-bold tracking-widest text-secondary block mb-1">
+                                                Mission Title
+                                            </span>
+                                            <h3 className="text-2xl md:text-3xl font-bold text-text-dark dark:text-text-light">
+                                                {todaysRecommendation.title}
+                                            </h3>
+                                        </div>
+
+                                        <div className="bg-secondary/5 dark:bg-secondary/10 p-5 rounded-2xl border border-secondary/10">
+                                            <span className="text-[11px] uppercase font-bold tracking-widest text-secondary block mb-2">
+                                                Why This Mission?
+                                            </span>
+                                            <p className="text-sm md:text-base text-text-dark/80 dark:text-text-light/85 leading-relaxed">
+                                                {recReasonSection1 || "Suggested to help you center and relax today."}
+                                            </p>
+                                        </div>
+                                        <div className="bg-secondary/5 dark:bg-secondary/10 p-5 rounded-2xl border border-secondary/10 mt-4">
+                                            <span className="text-[11px] uppercase font-bold tracking-widest text-secondary block mb-2">
+                                                Alternative Considerations & Confidence
+                                            </span>
+                                            <p className="text-sm md:text-base text-text-dark/80 dark:text-text-light/85 leading-relaxed">
+                                                {recReasonSection2 || "No alternatives were evaluated."}
+                                            </p>
+                                            <div className="mt-4 pt-3 border-t border-secondary/10 flex items-center justify-between text-xs font-semibold text-text-dark/60 dark:text-text-light/60">
+                                                <span>Suitability Score Match </span>
+                                                <span className="text-primary font-bold">{Math.round(todayRecommendation.confidence * 100)}%</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-wrap items-center gap-6 py-2 border-y border-secondary/10">
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] uppercase font-bold tracking-widest text-text-dark/45 dark:text-text-light/50">Estimated Duration</span>
+                                                <span className="text-sm font-semibold flex items-center gap-1.5 mt-1"><FiClock className="w-4 h-4 text-primary" /> {todaysRecommendation.duration}</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] uppercase font-bold tracking-widest text-text-dark/45 dark:text-text-light/50">Intensity</span>
+                                                <span className="text-sm font-semibold flex items-center gap-1.5 mt-1"><FiAward className="w-4 h-4 text-primary" /> {todaysRecommendation.difficulty}</span>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] uppercase font-bold tracking-widest text-text-dark/45 dark:text-text-light/50">Format</span>
+                                                <span className="text-sm font-semibold flex items-center gap-1.5 mt-1"><FiCompass className="w-4 h-4 text-primary" /> Interactive Session</span>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            onClick={() => startTimer(todaysRecommendation)}
+                                            className="w-full inline-flex items-center justify-center gap-2 text-lg font-bold bg-primary hover:bg-primary-hover dark:bg-accent dark:hover:bg-accent-hover text-bg-light dark:text-bg-dark px-8 py-4 rounded-full transition-all cursor-pointer shadow-md mt-2 group animate-pulse hover:animate-none"
+                                        >
+                                            Begin Your Mission
+                                            <FiPlay className="w-5 h-5 fill-current group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : recLoading ? (
+                                <div className="py-20 text-center animate-pulse">Consulting AI Coach...</div>
+                            ) : (
+                                <div className="py-20 text-center text-text-dark/60">No missions scheduled for you at this time. Please log a daily check-in.</div>
+                            )}
+
+                            {/* Library Entry Point */}
+                            <div className="mt-12 text-center border-t border-secondary/10 pt-10 w-full max-w-4xl mx-auto">
+                                <h4 className="text-lg md:text-xl font-bold tracking-tight mb-4 text-text-dark dark:text-text-light">Need a different approach?</h4>
+                                <button
+                                    onClick={() => setActiveView('library')}
+                                    className="px-8 py-3 border border-secondary/30 rounded-full font-bold uppercase tracking-wider text-xs hover:bg-secondary/5 transition-colors cursor-pointer"
+                                >
+                                    Explore More Activities
+                                </button>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* View: Library (Manual Browsing) */}
+                    {activeView === 'library' && (
                         <motion.div
                             key="library-view"
                             initial={{ opacity: 0, y: 10 }}
@@ -293,217 +384,77 @@ export const Wellness = () => {
                             exit={{ opacity: 0, y: -10 }}
                             className="space-y-8"
                         >
-                            {/* Header */}
-                            <div>
-                                <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
-                                    Wellness Library
-                                </h1>
-                                <p className="text-sm md:text-base text-text-dark/65 dark:text-text-light/70 mt-1">
-                                    Find a moment of balance. Select guided breathing, stretching, or daily focus templates.
-                                </p>
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                                <div>
+                                    <h1 className="text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">Wellness Library</h1>
+                                    <p className="text-text-dark/60 dark:text-text-light/60 mt-1">Explore and manually select an activity.</p>
+                                </div>
+                                <button
+                                    onClick={() => setActiveView('mission')}
+                                    className="px-5 py-2.5 bg-card-light dark:bg-card-dark border border-secondary/20 rounded-xl hover:bg-secondary/5 flex items-center gap-2 text-sm font-bold shadow-sm transition-colors"
+                                >
+                                    <FiArrowLeft className="w-4 h-4" /> Back to Mission
+                                </button>
                             </div>
 
-                            {/* Recommended wellness activity */}
-                            {!recLoading && todaysRecommendation && (
-                                <div className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-8 shadow-sm relative overflow-hidden flex flex-col md:flex-row gap-6 items-center">
-                                    <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 dark:bg-accent/5 rounded-full filter blur-3xl pointer-events-none" />
-                                    <div className="p-4 bg-primary/10 dark:bg-accent/15 rounded-3xl text-primary dark:text-accent">
-                                        <FiCompass className="w-8 h-8 animate-spin-slow" />
-                                    </div>
-                                    <div className="flex-grow space-y-3">
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <span className="text-[10px] uppercase font-bold tracking-wider text-secondary">
-                                                TODAY’S CHOSEN RECOMMENDATION
-                                            </span>
-                                            <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded">
-                                                Fits Profile
-                                            </span>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {activities.map(act => (
+                                    <div key={act.id} className="bg-card-light dark:bg-card-dark p-6 rounded-3xl border border-secondary/15 flex flex-col justify-between hover:shadow-lg transition-transform hover:-translate-y-1 group relative overflow-hidden">
+                                        <div className="relative z-10">
+                                            <div className="w-12 h-12 bg-primary/10 dark:bg-accent/15 rounded-full flex items-center justify-center text-primary dark:text-accent mb-5">
+                                                {getCategoryIcon(act.category)}
+                                            </div>
+                                            <h3 className="font-bold text-xl mb-1 text-text-dark dark:text-text-light group-hover:text-primary dark:group-hover:text-accent transition-colors">{act.title}</h3>
+                                            <span className="text-[10px] uppercase font-bold tracking-widest text-secondary mb-4 block">{act.category}</span>
+                                            <p className="text-sm text-text-dark/70 dark:text-text-light/75 mb-6 line-clamp-3 leading-relaxed">{act.description}</p>
                                         </div>
-                                        <h3 className="text-xl font-bold text-text-dark dark:text-text-light">
-                                            {todaysRecommendation.title}
-                                        </h3>
-                                        <p className="text-sm text-text-dark/70 dark:text-text-light/75 leading-relaxed max-w-2xl">
-                                            {recReason || "Suggested to help you center and relax today."}
-                                        </p>
-                                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-text-dark/50 dark:text-text-light/50">
-                                            <span>Duration: {todaysRecommendation.duration}</span>
-                                            <span>Difficulty: {todaysRecommendation.difficulty}</span>
-                                            {todaysRecommendation.evidence_level && (
-                                                <span className="text-primary dark:text-accent font-semibold">Evidence Level: {todaysRecommendation.evidence_level}</span>
-                                            )}
+                                        <div className="relative z-10 flex items-center justify-between">
+                                            <div className="flex items-center gap-3 text-xs font-semibold text-text-dark/50 dark:text-text-light/50">
+                                                <span className="flex items-center gap-1"><FiClock className="w-3.5 h-3.5 text-primary" /> {act.duration}</span>
+                                            </div>
+                                            <button
+                                                onClick={() => startTimer(act)}
+                                                className="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center text-primary dark:text-accent font-semibold hover:bg-primary hover:text-white transition-all cursor-pointer shadow-sm"
+                                                title="Start Session"
+                                            >
+                                                <FiPlay className="w-4 h-4 fill-current ml-0.5" />
+                                            </button>
                                         </div>
+                                        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 dark:bg-accent/5 rounded-bl-full pointer-events-none group-hover:bg-primary/10 transition-colors" />
                                     </div>
-                                    <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-auto">
-                                        <button
-                                            onClick={() => startTimer(todaysRecommendation)}
-                                            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold bg-primary hover:bg-primary-hover dark:bg-accent dark:hover:bg-accent-hover text-bg-light dark:text-bg-dark px-5 py-2.5 rounded-full transition-all cursor-pointer shadow-sm animate-pulse"
-                                        >
-                                            Start Now
-                                            <FiPlay className="w-3.5 h-3.5 fill-current" />
-                                        </button>
-                                        <button
-                                            onClick={() => toggleFavorite(todaysRecommendation.id)}
-                                            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold border border-secondary/25 dark:border-secondary/10 bg-transparent hover:bg-secondary/5 text-text-dark dark:text-text-light px-5 py-2.5 rounded-full transition-all cursor-pointer"
-                                        >
-                                            {favorites.includes(todaysRecommendation.id) ? 'Favorited' : 'Save for Later'}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Section: Categories Filter */}
-                            <div className="space-y-4 pt-4 border-t border-secondary/10 dark:border-secondary/5">
-                                <div className="flex flex-wrap gap-2">
-                                    {categories.map((cat) => (
-                                        <button
-                                            key={cat}
-                                            onClick={() => setCategoryFilter(cat)}
-                                            className={`text-xs sm:text-sm px-4 py-2 rounded-full font-semibold transition-all duration-200 outline-none cursor-pointer
-                        ${categoryFilter === cat
-                                                    ? 'bg-secondary text-bg-light dark:bg-secondary dark:text-text-light shadow-sm font-bold'
-                                                    : 'bg-card-light dark:bg-card-dark border border-secondary/20 dark:border-secondary/10 hover:border-secondary/35 text-text-dark/75 dark:text-text-light/80'
-                                                }
-                      `}
-                                        >
-                                            {cat}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                {/* Filters & Search Row */}
-                                <div className="flex flex-col md:flex-row gap-4 items-center justify-between pt-2 border-t border-secondary/10 dark:border-secondary/5">
-                                    <input
-                                        type="text"
-                                        placeholder="Search by title..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="w-full md:w-64 rounded-full px-4 py-2 border outline-none bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light border-secondary/20 focus:border-secondary transition-all text-sm"
-                                    />
-                                    <div className="flex flex-wrap gap-2 w-full md:w-auto">
-                                        <select
-                                            value={difficultyFilter}
-                                            onChange={(e) => setDifficultyFilter(e.target.value)}
-                                            className="rounded-full px-4 py-2 border outline-none bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light border-secondary/20 text-xs font-semibold cursor-pointer"
-                                        >
-                                            <option value="All">All Difficulties</option>
-                                            <option value="Beginner">Beginner</option>
-                                            <option value="Intermediate">Intermediate</option>
-                                            <option value="Advanced">Advanced</option>
-                                        </select>
-                                        <select
-                                            value={durationFilter}
-                                            onChange={(e) => setDurationFilter(e.target.value)}
-                                            className="rounded-full px-4 py-2 border outline-none bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light border-secondary/20 text-xs font-semibold cursor-pointer"
-                                        >
-                                            <option value="All">All Durations</option>
-                                            <option value="< 5 min">&lt; 5 min</option>
-                                            <option value="5-10 min">5-10 min</option>
-                                            <option value="> 10 min">&gt; 10 min</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {loading ? (
-                                    <div className="py-20 text-center text-sm text-text-dark/50 mr-auto ml-auto dark:text-text-light/50">Loading activity library...</div>
-                                ) : error ? (
-                                    <div className="py-20 text-center text-sm text-red-500">{error}</div>
-                                ) : filteredActivities.length === 0 ? (
-                                    <div className="py-20 text-center text-sm text-text-dark/50 dark:text-text-light/50">No activities match your filters.</div>
-                                ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
-                                        {filteredActivities.map((act) => {
-                                            const isFav = favorites.includes(act.id);
-                                            return (
-                                                <div
-                                                    key={act.id}
-                                                    className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:shadow-md hover:scale-[1.01] transition-all duration-200 group text-left"
-                                                >
-                                                    <div>
-                                                        <div className="flex justify-between items-start mb-4">
-                                                            <div className="w-10 h-10 bg-secondary/15 dark:bg-secondary/10 text-primary dark:text-accent rounded-xl flex items-center justify-center">
-                                                                {getCategoryIcon(act.category)}
-                                                            </div>
-                                                            <button
-                                                                onClick={() => toggleFavorite(act.id)}
-                                                                className={`p-1.5 rounded-lg hover:bg-secondary/10 dark:hover:bg-secondary/5 transition-colors cursor-pointer`}
-                                                            >
-                                                                <FiHeart className={`w-5 h-5 ${isFav ? 'fill-red-500 text-red-500' : 'text-text-dark/45 dark:text-text-light/50'}`} />
-                                                            </button>
-                                                        </div>
-
-                                                        <span className="text-[10px] tracking-wider uppercase font-bold text-secondary">
-                                                            {act.category}
-                                                        </span>
-                                                        <h4 className="text-base font-bold text-text-dark dark:text-text-light mt-1 mb-2 group-hover:text-primary dark:group-hover:text-accent transition-colors">
-                                                            {act.title}
-                                                        </h4>
-                                                        <p className="text-xs sm:text-sm text-text-dark/70 dark:text-text-light/75 leading-relaxed line-clamp-3">
-                                                            {act.short_description || act.description}
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="flex items-center justify-between border-t border-secondary/10 dark:border-secondary/5 pt-4 mt-6">
-                                                        <div className="flex items-center gap-3 text-xs text-text-dark/50 dark:text-text-light/50">
-                                                            <span className="flex items-center gap-1"><FiClock /> {act.duration}</span>
-                                                            <span className="flex items-center gap-1"><FiAward /> {act.difficulty}</span>
-                                                        </div>
-                                                        <button
-                                                            onClick={() => startTimer(act)}
-                                                            className="p-2 bg-primary hover:bg-primary-hover dark:bg-accent dark:hover:bg-accent-hover text-bg-light dark:text-bg-dark rounded-xl flex items-center justify-center transition-colors cursor-pointer shadow-sm"
-                                                        >
-                                                            <FiPlay className="w-4 h-4 fill-current" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
+                                ))}
                             </div>
                         </motion.div>
                     )}
 
-                    {/* View 2: Guided Session Detail Player */}
-                    {activeView === 'details' && selectedActivity && (
+                    {/* View 2: Interactive Session Sequence */}
+                    {activeView === 'session' && selectedActivity && (
                         <motion.div
-                            key="details-view"
+                            key="session-view"
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.98 }}
-                            className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-3xl mx-auto w-full space-y-8"
+                            className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-4xl mx-auto w-full min-h-[70vh] flex flex-col justify-between"
                         >
-                            {/* Header / Back */}
+                            {/* Header Progress & Exit */}
                             <div className="flex items-center justify-between">
                                 <button
-                                    onClick={() => {
-                                        setIsTimerRunning(false);
-                                        audioEngine.stop();
-                                        exitFullscreen();
-                                        setActiveView('list');
-                                    }}
-                                    className="inline-flex items-center gap-1 text-sm font-semibold text-text-dark/65 hover:text-text-dark dark:text-text-light/65 dark:hover:text-text-light cursor-pointer"
+                                    onClick={handleSkipTimer}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-dark/50 hover:text-red-500 transition-colors cursor-pointer"
                                 >
-                                    <FiArrowLeft /> Back to Library
+                                    <FiX className="w-4 h-4" /> End Session
                                 </button>
-                                <span className="bg-secondary/15 dark:bg-secondary/10 text-primary dark:text-accent text-xs font-bold px-3 py-1 rounded-full text-center">
-                                    {selectedActivity.category}
-                                </span>
+                                <div className="text-center">
+                                    <span className="bg-secondary/15 dark:bg-secondary/10 text-primary dark:text-accent text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2">
+                                        {selectedActivity.title}
+                                    </span>
+                                </div>
+                                <div className="text-xs font-bold uppercase tracking-wider text-text-dark/50">
+                                    Step {currentStep + 1} / {selectedActivity.instructions.length}
+                                </div>
                             </div>
 
-                            {/* Session player details */}
-                            <div className="text-center space-y-4">
-                                <span className="text-[10px] uppercase font-bold tracking-wider text-secondary">
-                                    Difficulty: {selectedActivity.difficulty} | Duration: {selectedActivity.duration}
-                                </span>
-                                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
-                                    {selectedActivity.title}
-                                </h2>
-                                <p className="text-sm text-text-dark/65 dark:text-text-light/75 max-w-xl mx-auto leading-relaxed">
-                                    {selectedActivity.short_description || selectedActivity.description}
-                                </p>
-                            </div>
-
-                            {/* Background Ambient Music — plays for the exact timer duration */}
+                            {/* Background Ambient Music */}
                             <AmbientMusicPlayer
                                 key={resetKey}
                                 category={selectedActivity.category}
@@ -511,112 +462,81 @@ export const Wellness = () => {
                                 durationSeconds={(getDurationNum(selectedActivity.duration) || 5) * 60}
                             />
 
-
-                            {/* Interactive HUD Circle Timer */}
-                            <div className="py-6 flex flex-col items-center justify-center">
-                                <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-secondary/10 dark:border-secondary/5 flex flex-col items-center justify-center relative bg-secondary/5 dark:bg-secondary/5 shadow-inner">
-                                    {isTimerRunning && (
-                                        <motion.div
-                                            animate={{ scale: [1, 1.08, 1] }}
-                                            transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                            className="absolute inset-0 bg-primary/5 dark:bg-accent/5 rounded-full pointer-events-none"
-                                        />
-                                    )}
-
-                                    <div className="text-4xl sm:text-5xl font-mono font-bold tracking-tight text-text-dark dark:text-text-light select-none">
-                                        {formatTimer(timeLeft)}
-                                    </div>
-                                    <span className="text-[10px] tracking-widest uppercase text-text-dark/45 dark:text-text-light/50 font-bold mt-2">
-                                        {isTimerRunning ? 'IN PROGRESS' : 'PAUSED'}
-                                    </span>
-                                </div>
-
-                                {/* Controls */}
-                                <div className="flex items-center gap-4 mt-8">
-                                    <button
-                                        onClick={handleTimerReset}
-                                        className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                        title="Reset"
+                            {/* Interactive Main Step Content */}
+                            <div className="flex-grow flex flex-col items-center justify-center py-12 text-center relative px-4 text-balance">
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={`step-${currentStep}`}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="space-y-8 w-full"
                                     >
-                                        <FiRotateCcw className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        onClick={handleTimerPause}
-                                        className="p-4 bg-primary dark:bg-accent text-bg-light dark:text-bg-dark rounded-full hover:scale-105 shadow transition-all cursor-pointer"
-                                        title={isTimerRunning ? 'Pause' : 'Resume'}
-                                    >
-                                        {isTimerRunning ? <FiPause className="w-6 h-6 fill-current" /> : <FiPlay className="w-6 h-6 fill-current translate-x-0.5" />}
-                                    </button>
-                                    <button
-                                        onClick={handleSkipTimer}
-                                        className="p-3 bg-secondary/15 dark:bg-secondary/10 rounded-full hover:bg-secondary/25 transition-colors cursor-pointer text-text-dark dark:text-text-light"
-                                        title="Skip to Complete"
-                                    >
-                                        <FiSquare className="w-5 h-5 fill-current text-red-500" />
-                                    </button>
-                                </div>
+                                        <div className="mx-auto w-24 h-24 sm:w-32 sm:h-32 bg-primary/10 dark:bg-accent/10 rounded-full flex items-center justify-center text-primary dark:text-accent shadow-inner relative">
+                                            <motion.div
+                                                animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
+                                                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                                                className="absolute inset-0 bg-primary/20 dark:bg-accent/20 rounded-full blur-xl pointer-events-none"
+                                            />
+                                            {currentStep === 0 ? <FiCompass className="w-10 h-10" /> : <FiActivity className="w-10 h-10" />}
+                                        </div>
+
+                                        {(() => {
+                                            const inst = selectedActivity.instructions[currentStep];
+                                            if (typeof inst === 'string' || inst?.type === 'static_text') {
+                                                return (
+                                                    <p className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light leading-snug">
+                                                        {typeof inst === 'string' ? inst : inst.text}
+                                                    </p>
+                                                );
+                                            }
+
+                                            const type = inst.type;
+                                            const handleComplete = (isDone) => setCanProceed(isDone);
+
+                                            if (type === 'breathing_circle') return <BreathingCircleWidget instruction={inst} onComplete={handleComplete} />;
+                                            if (type === 'text_input') return <TextInputWidget instruction={inst} onComplete={handleComplete} />;
+                                            if (type === 'checklist') return <ChecklistWidget instruction={inst} onComplete={handleComplete} />;
+                                            if (type === 'slider') return <SliderWidget instruction={inst} onComplete={handleComplete} />;
+                                            if (type === 'progress_tap') return <ProgressTapWidget instruction={inst} onComplete={handleComplete} />;
+                                            if (type === 'hold_release') return <HoldReleaseWidget instruction={inst} onComplete={handleComplete} />;
+
+                                            return (
+                                                <p className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light leading-snug">
+                                                    {inst.text || "Continue..."}
+                                                </p>
+                                            );
+                                        })()}
+                                    </motion.div>
+                                </AnimatePresence>
                             </div>
 
-                            {/* Detailed Metadata Grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left border-t border-b border-secondary/10 dark:border-secondary/5 py-6">
-                                <div className="space-y-3">
-                                    {selectedActivity.clinical_purpose && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Clinical Purpose</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light leading-relaxed">{selectedActivity.clinical_purpose}</p>
-                                        </div>
-                                    )}
-                                    {selectedActivity.scientific_benefits && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Scientific Benefits</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light leading-relaxed">{selectedActivity.scientific_benefits}</p>
-                                        </div>
-                                    )}
-                                    {selectedActivity.evidence_level && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Evidence Level</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light"><span className="bg-primary/10 dark:bg-accent/15 px-2.5 py-0.5 rounded text-primary dark:text-accent font-bold mt-1 inline-block">{selectedActivity.evidence_level}</span></p>
-                                        </div>
-                                    )}
+                            {/* Persistent Controls */}
+                            <div className="flex items-center justify-between pt-6 border-t border-secondary/10 relative">
+                                <div className="absolute top-0 left-0 h-1 bg-secondary/10 w-full -mt-[1px]">
+                                    <motion.div
+                                        className="h-full bg-primary dark:bg-accent"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${((currentStep + 1) / selectedActivity.instructions.length) * 100}%` }}
+                                        transition={{ duration: 0.3 }}
+                                    />
                                 </div>
-                                <div className="space-y-3">
-                                    {selectedActivity.setting && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Setting</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light">{selectedActivity.setting}</p>
-                                        </div>
-                                    )}
-                                    {selectedActivity.format && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Format</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light">{selectedActivity.format}</p>
-                                        </div>
-                                    )}
-                                    {selectedActivity.equipment && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-secondary uppercase block">Equipment Required</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light">{selectedActivity.equipment}</p>
-                                        </div>
-                                    )}
-                                    {selectedActivity.precautions && (
-                                        <div>
-                                            <span className="text-[10px] font-bold text-amber-500 uppercase block">Precautions & Contraindications</span>
-                                            <p className="text-xs sm:text-sm text-text-dark dark:text-text-light leading-relaxed">{selectedActivity.precautions}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                                <button
+                                    onClick={handlePrevStep}
+                                    disabled={currentStep === 0}
+                                    className={`px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all ${currentStep === 0 ? 'opacity-30 cursor-not-allowed text-text-dark/50' : 'bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light hover:bg-secondary/10 cursor-pointer border border-secondary/20'}`}
+                                >
+                                    <FiArrowLeft className="w-4 h-4" /> Previous
+                                </button>
 
-                            {/* Guidelines instructions box */}
-                            <div className="bg-secondary/5 dark:bg-secondary/5 border border-secondary/15 dark:border-secondary/5 rounded-3xl p-6 text-left space-y-4">
-                                <h4 className="text-xs uppercase font-bold tracking-wider text-secondary">
-                                    Step-by-Step Instructions
-                                </h4>
-                                <ol className="space-y-2.5 text-xs sm:text-sm text-text-dark/80 dark:text-text-light/85 list-decimal pl-4 leading-relaxed font-normal">
-                                    {(selectedActivity.instructions || []).map((inst, i) => (
-                                        <li key={i}>{inst}</li>
-                                    ))}
-                                </ol>
+                                <button
+                                    onClick={handleNextStep}
+                                    disabled={!canProceed}
+                                    className={`px-8 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-md ${!canProceed ? 'opacity-40 cursor-not-allowed bg-secondary/50 text-text-dark/80' : 'bg-primary dark:bg-accent text-white hover:scale-105 cursor-pointer'}`}
+                                >
+                                    {currentStep === selectedActivity.instructions.length - 1 ? 'Complete Session' : 'Continue'}
+                                    {currentStep < selectedActivity.instructions.length - 1 && <FiPlay className="w-4 h-4 fill-current" />}
+                                </button>
                             </div>
                         </motion.div>
                     )}
@@ -630,33 +550,16 @@ export const Wellness = () => {
                             exit={{ opacity: 0, scale: 0.98 }}
                             className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-xl mx-auto w-full space-y-6"
                         >
-                            {/* Header controls: Back Arrow — top left, Close button — top right */}
-                            <div className="flex items-center justify-between">
-                                <button
-                                    onClick={() => {
-                                        // Resume/restart active activity view
-                                        setActiveView('details');
-                                        const mins = getDurationNum(selectedActivity.duration) || 5;
-                                        const durSecs = mins * 60;
-                                        setTimeLeft(durSecs);
-                                        setIsTimerRunning(true);
-                                        enterFullscreen();
-                                        setResetKey(prev => prev + 1);
-                                    }}
-                                    title="Back to session"
-                                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-secondary/10 dark:bg-secondary/5 hover:bg-secondary/20 dark:hover:bg-secondary/10 text-xs font-semibold text-text-dark dark:text-text-light transition-all cursor-pointer"
-                                >
-                                    <FiArrowLeft className="w-4 h-4" />
-                                    <span>Back to Session</span>
-                                </button>
+                            {/* Header controls: Close button — top right */}
+                            <div className="flex items-center justify-end">
                                 <button
                                     onClick={() => {
                                         audioEngine.stop();
                                         exitFullscreen();
-                                        setActiveView('list');
+                                        setActiveView('mission');
                                         setSelectedActivity(null);
                                     }}
-                                    title="Close and return to activities"
+                                    title="Close mission"
                                     className="p-2 rounded-xl hover:bg-secondary/10 dark:hover:bg-secondary/5 text-text-dark/50 dark:text-text-light/50 hover:text-text-dark dark:hover:text-text-light transition-colors cursor-pointer"
                                 >
                                     <FiX className="w-5 h-5" />
@@ -675,52 +578,46 @@ export const Wellness = () => {
                                 <p className="text-xs sm:text-sm text-text-dark/60 dark:text-text-light/65">
                                     How was your experience during "{selectedActivity.title}"?
                                 </p>
+                                <div className="mt-3 inline-block px-4 py-2 bg-primary/10 rounded-full">
+                                    <p className="text-xs font-bold text-primary dark:text-accent">
+                                        🌟 Great consistency. You are actively investing in your mental space.
+                                    </p>
+                                </div>
                             </div>
 
-                            <form onSubmit={handleFeedbackSubmit} className="space-y-6 text-left">
-                                {/* Stars ratings */}
-                                <div className="space-y-2 text-center">
-                                    <label className="text-[10px] uppercase font-bold tracking-wider text-text-dark/65 dark:text-text-light/60">
-                                        Was this activity helpful?
-                                    </label>
-                                    <div className="flex justify-center gap-2 pt-1">
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <button
-                                                key={star}
-                                                type="button"
-                                                onClick={() => setSatisfaction(star)}
-                                                className="p-1 focus:outline-none cursor-pointer hover:scale-110 transition-transform"
-                                            >
-                                                <FiStar className={`w-8 h-8 ${star <= satisfaction ? 'fill-amber-400 text-amber-400' : 'text-text-dark/30'}`} />
-                                            </button>
-                                        ))}
+                            <form onSubmit={handleFeedbackSubmit} className="space-y-8 text-left pt-2">
+                                {/* Quantitative Sliders (Phase 9) */}
+                                <div className="space-y-6">
+                                    <div className="bg-secondary/5 border border-secondary/10 p-5 rounded-2xl space-y-4">
+                                        <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-text-dark/65 dark:text-text-light/60">
+                                            <span>Mood Right Now</span>
+                                            <span className="text-primary dark:text-accent font-black text-sm">{moodAfter}/10</span>
+                                        </div>
+                                        <input
+                                            type="range" min="1" max="10" value={moodAfter}
+                                            onChange={(e) => setMoodAfter(parseInt(e.target.value))}
+                                            className="w-full h-3 bg-secondary/20 rounded-lg appearance-none cursor-pointer accent-primary"
+                                        />
+                                        <div className="flex justify-between text-xs text-text-dark/40 font-semibold">
+                                            <span>😞 Very Low</span>
+                                            <span>😊 Excellent</span>
+                                        </div>
                                     </div>
-                                </div>
 
-                                {/* Mood improved options */}
-                                <div className="space-y-3 pt-2">
-                                    <label className="text-[10px] uppercase font-bold tracking-wider text-text-dark/65 dark:text-text-light/60 block">
-                                        Did you feel better?
-                                    </label>
-                                    <div className="grid grid-cols-3 gap-3">
-                                        {['Yes', 'A Little', 'No Change'].map((opt) => {
-                                            const isSelected = moodImproved === opt;
-                                            return (
-                                                <button
-                                                    key={opt}
-                                                    type="button"
-                                                    onClick={() => setMoodImproved(opt)}
-                                                    className={`py-2 px-4 rounded-xl border text-xs sm:text-sm font-semibold transition-all focus:outline-none cursor-pointer text-center
-                             ${isSelected
-                                                            ? 'bg-secondary/15 border-secondary text-primary dark:text-accent font-bold scale-102'
-                                                            : 'bg-transparent border-secondary/10 dark:border-secondary/5 hover:border-secondary/20'
-                                                        }
-                           `}
-                                                >
-                                                    {opt === 'Yes' ? '😊 Yes' : opt === 'A Little' ? '🙂 A Little' : '😐 No Change'}
-                                                </button>
-                                            );
-                                        })}
+                                    <div className="bg-secondary/5 border border-secondary/10 p-5 rounded-2xl space-y-4">
+                                        <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-text-dark/65 dark:text-text-light/60">
+                                            <span>Stress / Tension</span>
+                                            <span className="text-red-500/80 dark:text-red-400 font-black text-sm">{stressAfter}/10</span>
+                                        </div>
+                                        <input
+                                            type="range" min="1" max="10" value={stressAfter}
+                                            onChange={(e) => setStressAfter(parseInt(e.target.value))}
+                                            className="w-full h-3 bg-secondary/20 rounded-lg appearance-none cursor-pointer accent-red-500"
+                                        />
+                                        <div className="flex justify-between text-xs text-text-dark/40 font-semibold">
+                                            <span>Calm</span>
+                                            <span>Overwhelmed</span>
+                                        </div>
                                     </div>
                                 </div>
 

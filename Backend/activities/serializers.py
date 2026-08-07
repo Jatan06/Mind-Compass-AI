@@ -71,10 +71,13 @@ class TherapyActivitySerializer(serializers.ModelSerializer):
 class ActivityFeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = ActivityFeedback
-        fields = ['id', 'user', 'activity', 'date', 'duration_minutes', 'satisfaction', 'mood_improved', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'activity', 'date', 'duration_minutes', 'satisfaction', 'mood_improved', 'mood_after', 'stress_after', 'comment', 'created_at', 'updated_at']
         read_only_fields = ['id', 'user', 'date', 'created_at', 'updated_at']
 
 class ActivityCompletionSerializer(serializers.Serializer):
     duration_minutes = serializers.IntegerField(min_value=1)
-    satisfaction = serializers.IntegerField(min_value=1, max_value=5)
-    mood_improved = serializers.CharField(max_length=50)
+    satisfaction = serializers.IntegerField(default=5, min_value=1, max_value=5)
+    mood_improved = serializers.CharField(max_length=50, default="Yes")
+    mood_after = serializers.IntegerField(required=False, allow_null=True)
+    stress_after = serializers.IntegerField(required=False, allow_null=True)
+    comment = serializers.CharField(required=False, allow_blank=True, allow_null=True)

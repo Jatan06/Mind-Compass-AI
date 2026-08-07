@@ -29,10 +29,15 @@ export const DailyCheckIn = () => {
         { value: 5, emoji: '🤩', label: 'Excellent', desc: 'Inspired, high energy' }
     ];
 
-    // Use UTC date to match the Django backend (TIME_ZONE = 'UTC')
-    const getUTCDateString = () => new Date().toISOString().split('T')[0];
+    // Use local timezone date to match the Django backend (timezone.localdate() uses local time offset if configured or UTC otherwise. 
+    // Here we compute physical local date for the user: YYYY-MM-DD
+    const getLocalDateString = () => {
+        const d = new Date();
+        const tzOffset = d.getTimezoneOffset() * 60000;
+        return (new Date(d - tzOffset)).toISOString().split('T')[0];
+    };
 
-    const todayStr = getUTCDateString();
+    const todayStr = getLocalDateString();
     const todaysCheckin = checkins ? checkins.find(c => c.date === todayStr) : null;
 
     React.useEffect(() => {
@@ -66,7 +71,7 @@ export const DailyCheckIn = () => {
 
         try {
             await addCheckin({
-                date: getUTCDateString(),
+                date: getLocalDateString(),
                 mood,
                 moodLabel: currentMoodObj.label,
                 stress,

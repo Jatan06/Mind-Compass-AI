@@ -130,9 +130,22 @@ export const LoginPage = () => {
         } else {
           localStorage.removeItem('remembered_email');
         }
-        await login(cleanEmail, password, rememberMe);
+        const res = await login(cleanEmail, password, rememberMe);
         setIsLoading(false);
-        navigate("/app");
+        const getLocalDateString = () => {
+          const d = new Date();
+          const tzOffset = d.getTimezoneOffset() * 60000;
+          return (new Date(d - tzOffset)).toISOString().split('T')[0];
+        };
+        const todayStr = getLocalDateString();
+        const hasCheckedInToday = res.dashboardData?.checkins?.some((c) => c.date === todayStr);
+        if (!hasCheckedInToday) {
+          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+          navigate("/app/checkin");
+        } else {
+          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+          navigate("/app");
+        }
       } catch (err) {
         setIsLoading(false);
         if (err.response && err.response.data && err.response.data.errors) {
@@ -300,9 +313,17 @@ export const LoginPage = () => {
       setFormError("");
       setSuccessMessage("");
       try {
-        await googleLogin(tokenResponse.access_token, null, null, rememberMe);
+        const res = await googleLogin(tokenResponse.access_token, null, null, rememberMe);
         setIsGoogleLoading(false);
-        navigate("/app");
+        const todayStr = new Date().toISOString().split('T')[0];
+        const hasCheckedInToday = res.dashboardData?.checkins?.some((c) => c.date === todayStr);
+        if (!hasCheckedInToday) {
+          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+          navigate("/app/checkin");
+        } else {
+          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+          navigate("/app");
+        }
       } catch (err) {
         setIsGoogleLoading(false);
         if (err.response && err.response.data && err.response.data.message) {
@@ -659,7 +680,7 @@ export const LoginPage = () => {
                       name="username"
                       id="reset-username-email"
                       value={forgotEmail}
-                      onChange={() => {}}
+                      onChange={() => { }}
                       autoComplete="username email"
                       style={{ position: 'absolute', opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: 'none' }}
                     />

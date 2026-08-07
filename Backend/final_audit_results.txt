@@ -1,0 +1,400 @@
+[Scenario 1: Happy - Sim] M:5 S:2 EN:8 SL:8
+Text: Had a wonderful day out with friends.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 2: Neutral - Sim] M:3 S:6 EN:5 SL:7
+Text: Just a normal day, nothing special.
+-> WINNER: Box Breathing (Score: 1.0)
+
+[Scenario 3: Sad - Sim] M:1 S:8 EN:2 SL:5
+Text: Feeling really down and hopeless today.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 4: Anxiety - Sim] M:2 S:9 EN:6 SL:4
+Text: My chest is tight and I can't stop worrying.
+-> WINNER: Sleep Worry Dump (Score: 33.2)
+
+[Scenario 5: Burnout - Sim] M:1 S:7 EN:1 SL:5
+Text: I have nothing left to give. Completely exhausted.
+-> WINNER: 5-4-3-2-1 Grounding (Score: 33.2)
+
+[Scenario 6: Exam Stress - Sim] M:2 S:10 EN:4 SL:4
+Text: Finals are tomorrow and I am panicking. I haven't studied enough.
+-> WINNER: Feet on Floor Grounding (Score: 33.2)
+
+[Scenario 7: Study Pressure - Sim] M:3 S:7 EN:4 SL:6
+Text: So many assignments due this week.
+-> WINNER: 4-7-8 Breathing (Score: 16.6)
+
+[Scenario 8: Family Conflict - Sim] M:2 S:8 EN:3 SL:5
+Text: Got into a massive fight with my parents.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 9: Relationship Problems - Sim] M:1 S:8 EN:2 SL:3
+Text: I think we are going to break up. It hurts so much.
+-> WINNER: Eisenhower Matrix (Score: 33.2)
+
+[Scenario 10: Friendship Issues - Sim] M:1 S:8 EN:4 SL:6
+Text: Felt completely ignored by my best friend today.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 11: Work Pressure - Sim] M:2 S:9 EN:4 SL:5
+Text: My boss demands too much. Deadlines everywhere.
+-> WINNER: Circle of Control Mapping (Score: 33.2)
+
+[Scenario 12: Digital Fatigue - Sim] M:3 S:6 EN:3 SL:5
+Text: Scrolling for 6 hours. My brain is fried.
+-> WINNER: Grayscale Screen Transition (Score: 16.6)
+
+[Scenario 13: Decision Fatigue - Sim] M:3 S:6 EN:3 SL:6
+Text: I just can't make another choice today.
+-> WINNER: Vagus Nerve Hatha Yoga (Score: 16.6)
+
+[Scenario 14: Poor Sleep - Sim] M:3 S:6 EN:1 SL:2
+Text: Tossed and turned all night. Can barely keep my eyes open.
+-> WINNER: Cognitive Shuffle (Score: 33.2)
+
+[Scenario 15: Low Energy - Sim] M:3 S:4 EN:1 SL:7
+Text: I just don't have the motivation to move.
+-> WINNER: Three Good Things (Score: 16.6)
+
+[Scenario 16: High Energy - Sim] M:5 S:3 EN:10 SL:8
+Text: I feel like I could run a marathon! So full of life.
+-> WINNER: Loving-Kindness Meditation (Score: 1.0)
+
+[Scenario 17: Low Productivity - Sim] M:2 S:5 EN:4 SL:7
+Text: I wasted the entire day procrastinating.
+-> WINNER: Somatic Shakeout (Score: 16.6)
+
+[Scenario 18: High Productivity - Sim] M:5 S:4 EN:8 SL:7
+Text: Got absolutely everything crossed off my list!
+-> WINNER: Zen Counting Meditation (Score: 1.0)
+
+[Scenario 19: Loneliness - Sim] M:1 S:7 EN:3 SL:6
+Text: Sitting alone in my room. Feels like nobody cares.
+-> WINNER: Paced Respiration (6 BPM) (Score: 33.2)
+
+[Scenario 20: Recovery - Sim] M:4 S:3 EN:6 SL:8
+Text: Finally starting to bounce back from last week.
+-> WINNER: Mindful Walking (Score: 1.0)
+
+[Scenario 21: Mixed Emotions - Sim] M:3 S:8 EN:5 SL:6
+Text: Excited for a new job, but terrified I will fail.
+-> WINNER: Alternate Nostril Breathing (Score: 16.6)
+
+[Scenario 22: Neg. Journal + Pos. Mood - Sim] M:5 S:4 EN:7 SL:7
+Text: It rained today and I ruined my shoes. Oh well.
+-> WINNER: Autogenic Training (Score: 16.6)
+
+[Scenario 23: Pos. Journal + Neg. Mood - Sim] M:1 S:7 EN:2 SL:4
+Text: The party was fun but I feel so empty inside.
+-> WINNER: Somatic Shakeout (Score: 33.2)
+
+[Scenario 24: Negation - Sim] M:4 S:2 EN:6 SL:7
+Text: I am not anxious anymore. The test is over.
+-> WINNER: Leaves on a Stream (Score: 1.0)
+
+[Scenario 25: Recovery Statements - Sim] M:3 S:5 EN:6 SL:8
+Text: I don't feel overwhelmed anymore. I can breathe.
+-> WINNER: Physiological Sigh (Score: 1.0)
+
+[Scenario 26: Happy - Sim] M:5 S:1 EN:8 SL:8
+Text: Had a wonderful day out with friends.
+-> WINNER: Gratitude Letter Writing (Score: 1.0)
+
+[Scenario 27: Neutral - Sim] M:4 S:7 EN:5 SL:7
+Text: Just a normal day, nothing special.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 28: Sad - Sim] M:1 S:5 EN:2 SL:5
+Text: Feeling really down and hopeless today.
+-> WINNER: 10-3-2-1-0 Sleep Protocol (Score: 16.6)
+
+[Scenario 29: Anxiety - Sim] M:3 S:9 EN:6 SL:4
+Text: My chest is tight and I can't stop worrying.
+-> WINNER: Sleep Worry Dump (Score: 33.2)
+
+[Scenario 30: Burnout - Sim] M:2 S:8 EN:1 SL:5
+Text: I have nothing left to give. Completely exhausted.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 31: Exam Stress - Sim] M:1 S:9 EN:4 SL:4
+Text: Finals are tomorrow and I am panicking. I haven't studied enough.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 32: Study Pressure - Sim] M:4 S:7 EN:4 SL:6
+Text: So many assignments due this week.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 33: Family Conflict - Sim] M:2 S:8 EN:3 SL:5
+Text: Got into a massive fight with my parents.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 34: Relationship Problems - Sim] M:1 S:9 EN:2 SL:3
+Text: I think we are going to break up. It hurts so much.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 35: Friendship Issues - Sim] M:3 S:8 EN:4 SL:6
+Text: Felt completely ignored by my best friend today.
+-> WINNER: Gratitude Jar Reflection (Score: 16.6)
+
+[Scenario 36: Work Pressure - Sim] M:1 S:10 EN:4 SL:5
+Text: My boss demands too much. Deadlines everywhere.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 37: Digital Fatigue - Sim] M:2 S:6 EN:3 SL:5
+Text: Scrolling for 6 hours. My brain is fried.
+-> WINNER: Grayscale Screen Transition (Score: 16.6)
+
+[Scenario 38: Decision Fatigue - Sim] M:3 S:8 EN:3 SL:6
+Text: I just can't make another choice today.
+-> WINNER: Eisenhower Matrix (Score: 33.2)
+
+[Scenario 39: Poor Sleep - Sim] M:2 S:6 EN:1 SL:2
+Text: Tossed and turned all night. Can barely keep my eyes open.
+-> WINNER: PMR for Sleep (Score: 33.2)
+
+[Scenario 40: Low Energy - Sim] M:3 S:5 EN:1 SL:7
+Text: I just don't have the motivation to move.
+-> WINNER: Mental Subtraction of Positive Events (Score: 16.6)
+
+[Scenario 41: High Energy - Sim] M:5 S:3 EN:10 SL:8
+Text: I feel like I could run a marathon! So full of life.
+-> WINNER: Brisk Mindful Walk (Score: 1.0)
+
+[Scenario 42: Low Productivity - Sim] M:1 S:6 EN:4 SL:7
+Text: I wasted the entire day procrastinating.
+-> WINNER: Opposite Action (Score: 16.6)
+
+[Scenario 43: High Productivity - Sim] M:5 S:5 EN:8 SL:7
+Text: Got absolutely everything crossed off my list!
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 44: Loneliness - Sim] M:1 S:5 EN:3 SL:6
+Text: Sitting alone in my room. Feels like nobody cares.
+-> WINNER: Isometric Muscle Release (Score: 16.6)
+
+[Scenario 45: Recovery - Sim] M:4 S:2 EN:6 SL:8
+Text: Finally starting to bounce back from last week.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 46: Mixed Emotions - Sim] M:3 S:8 EN:5 SL:6
+Text: Excited for a new job, but terrified I will fail.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 47: Neg. Journal + Pos. Mood - Sim] M:5 S:4 EN:7 SL:7
+Text: It rained today and I ruined my shoes. Oh well.
+-> WINNER: RAIN Technique (Score: 16.6)
+
+[Scenario 48: Pos. Journal + Neg. Mood - Sim] M:2 S:9 EN:2 SL:4
+Text: The party was fun but I feel so empty inside.
+-> WINNER: Somatic Shakeout (Score: 33.2)
+
+[Scenario 49: Negation - Sim] M:4 S:1 EN:6 SL:7
+Text: I am not anxious anymore. The test is over.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 50: Recovery Statements - Sim] M:3 S:2 EN:6 SL:8
+Text: I don't feel overwhelmed anymore. I can breathe.
+-> WINNER: MBSR Sitting Meditation (Score: 1.0)
+
+[Scenario 51: Happy - Sim] M:5 S:2 EN:8 SL:8
+Text: Had a wonderful day out with friends.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 52: Neutral - Sim] M:4 S:5 EN:5 SL:7
+Text: Just a normal day, nothing special.
+-> WINNER: Mindful Eating (Score: 1.0)
+
+[Scenario 53: Sad - Sim] M:1 S:6 EN:2 SL:5
+Text: Feeling really down and hopeless today.
+-> WINNER: Qi Gong Flow (Score: 16.6)
+
+[Scenario 54: Anxiety - Sim] M:2 S:9 EN:6 SL:4
+Text: My chest is tight and I can't stop worrying.
+-> WINNER: Sleep Worry Dump (Score: 33.2)
+
+[Scenario 55: Burnout - Sim] M:2 S:8 EN:1 SL:5
+Text: I have nothing left to give. Completely exhausted.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 56: Exam Stress - Sim] M:1 S:10 EN:4 SL:4
+Text: Finals are tomorrow and I am panicking. I haven't studied enough.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 57: Study Pressure - Sim] M:3 S:7 EN:4 SL:6
+Text: So many assignments due this week.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 58: Family Conflict - Sim] M:2 S:7 EN:3 SL:5
+Text: Got into a massive fight with my parents.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 59: Relationship Problems - Sim] M:2 S:7 EN:2 SL:3
+Text: I think we are going to break up. It hurts so much.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 60: Friendship Issues - Sim] M:1 S:8 EN:4 SL:6
+Text: Felt completely ignored by my best friend today.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 61: Work Pressure - Sim] M:3 S:9 EN:4 SL:5
+Text: My boss demands too much. Deadlines everywhere.
+-> WINNER: Eisenhower Matrix (Score: 33.2)
+
+[Scenario 62: Digital Fatigue - Sim] M:1 S:6 EN:3 SL:5
+Text: Scrolling for 6 hours. My brain is fried.
+-> WINNER: Grayscale Screen Transition (Score: 16.6)
+
+[Scenario 63: Decision Fatigue - Sim] M:3 S:6 EN:3 SL:6
+Text: I just can't make another choice today.
+-> WINNER: Vagus Nerve Hatha Yoga (Score: 16.6)
+
+[Scenario 64: Poor Sleep - Sim] M:2 S:7 EN:1 SL:2
+Text: Tossed and turned all night. Can barely keep my eyes open.
+-> WINNER: Cognitive Shuffle (Score: 33.2)
+
+[Scenario 65: Low Energy - Sim] M:3 S:4 EN:1 SL:7
+Text: I just don't have the motivation to move.
+-> WINNER: Three Good Things (Score: 16.6)
+
+[Scenario 66: High Energy - Sim] M:5 S:4 EN:10 SL:8
+Text: I feel like I could run a marathon! So full of life.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 67: Low Productivity - Sim] M:1 S:6 EN:4 SL:7
+Text: I wasted the entire day procrastinating.
+-> WINNER: Emotion Wheel Mapping (Score: 16.6)
+
+[Scenario 68: High Productivity - Sim] M:5 S:5 EN:8 SL:7
+Text: Got absolutely everything crossed off my list!
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 69: Loneliness - Sim] M:1 S:5 EN:3 SL:6
+Text: Sitting alone in my room. Feels like nobody cares.
+-> WINNER: Temperature TIPP Reset (Score: 16.6)
+
+[Scenario 70: Recovery - Sim] M:4 S:4 EN:6 SL:8
+Text: Finally starting to bounce back from last week.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 71: Mixed Emotions - Sim] M:4 S:6 EN:5 SL:6
+Text: Excited for a new job, but terrified I will fail.
+-> WINNER: The 3-Minute Breathing Space (Score: 1.0)
+
+[Scenario 72: Neg. Journal + Pos. Mood - Sim] M:5 S:5 EN:7 SL:7
+Text: It rained today and I ruined my shoes. Oh well.
+-> WINNER: Autogenic Training (Score: 16.6)
+
+[Scenario 73: Pos. Journal + Neg. Mood - Sim] M:2 S:7 EN:2 SL:4
+Text: The party was fun but I feel so empty inside.
+-> WINNER: Somatic Shakeout (Score: 33.2)
+
+[Scenario 74: Negation - Sim] M:4 S:4 EN:6 SL:7
+Text: I am not anxious anymore. The test is over.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 75: Recovery Statements - Sim] M:4 S:3 EN:6 SL:8
+Text: I don't feel overwhelmed anymore. I can breathe.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 76: Happy - Sim] M:5 S:2 EN:8 SL:8
+Text: Had a wonderful day out with friends.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 77: Neutral - Sim] M:3 S:5 EN:5 SL:7
+Text: Just a normal day, nothing special.
+-> WINNER: CBT Thought Record (Score: 1.0)
+
+[Scenario 78: Sad - Sim] M:1 S:6 EN:2 SL:5
+Text: Feeling really down and hopeless today.
+-> WINNER: Cognitive Shuffle (Score: 16.6)
+
+[Scenario 79: Anxiety - Sim] M:2 S:9 EN:6 SL:4
+Text: My chest is tight and I can't stop worrying.
+-> WINNER: Sleep Worry Dump (Score: 33.2)
+
+[Scenario 80: Burnout - Sim] M:2 S:10 EN:1 SL:5
+Text: I have nothing left to give. Completely exhausted.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 81: Exam Stress - Sim] M:2 S:10 EN:4 SL:4
+Text: Finals are tomorrow and I am panicking. I haven't studied enough.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 82: Study Pressure - Sim] M:4 S:7 EN:4 SL:6
+Text: So many assignments due this week.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 83: Family Conflict - Sim] M:2 S:10 EN:3 SL:5
+Text: Got into a massive fight with my parents.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 84: Relationship Problems - Sim] M:1 S:10 EN:2 SL:3
+Text: I think we are going to break up. It hurts so much.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 85: Friendship Issues - Sim] M:3 S:6 EN:4 SL:6
+Text: Felt completely ignored by my best friend today.
+-> WINNER: Three Good Things (Score: 16.6)
+
+[Scenario 86: Work Pressure - Sim] M:1 S:10 EN:4 SL:5
+Text: My boss demands too much. Deadlines everywhere.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 87: Digital Fatigue - Sim] M:2 S:8 EN:3 SL:5
+Text: Scrolling for 6 hours. My brain is fried.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 88: Decision Fatigue - Sim] M:2 S:7 EN:3 SL:6
+Text: I just can't make another choice today.
+-> WINNER: Ice Cube Sensory Reset (Score: 33.2)
+
+[Scenario 89: Poor Sleep - Sim] M:3 S:5 EN:1 SL:2
+Text: Tossed and turned all night. Can barely keep my eyes open.
+-> WINNER: Cognitive Shuffle (Score: 33.2)
+
+[Scenario 90: Low Energy - Sim] M:2 S:4 EN:1 SL:7
+Text: I just don't have the motivation to move.
+-> WINNER: Three Good Things (Score: 16.6)
+
+[Scenario 91: High Energy - Sim] M:5 S:4 EN:10 SL:8
+Text: I feel like I could run a marathon! So full of life.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 92: Low Productivity - Sim] M:3 S:6 EN:4 SL:7
+Text: I wasted the entire day procrastinating.
+-> WINNER: Eisenhower Matrix (Score: 16.6)
+
+[Scenario 93: High Productivity - Sim] M:5 S:5 EN:8 SL:7
+Text: Got absolutely everything crossed off my list!
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 94: Loneliness - Sim] M:2 S:5 EN:3 SL:6
+Text: Sitting alone in my room. Feels like nobody cares.
+-> WINNER: Three Good Things (Score: 16.6)
+
+[Scenario 95: Recovery - Sim] M:4 S:4 EN:6 SL:8
+Text: Finally starting to bounce back from last week.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 96: Mixed Emotions - Sim] M:4 S:9 EN:5 SL:6
+Text: Excited for a new job, but terrified I will fail.
+-> WINNER: Box Breathing (Score: 16.6)
+
+[Scenario 97: Neg. Journal + Pos. Mood - Sim] M:4 S:4 EN:7 SL:7
+Text: It rained today and I ruined my shoes. Oh well.
+-> WINNER: Autogenic Training (Score: 16.6)
+
+[Scenario 98: Pos. Journal + Neg. Mood - Sim] M:1 S:10 EN:2 SL:4
+Text: The party was fun but I feel so empty inside.
+-> WINNER: Somatic Shakeout (Score: 33.2)
+
+[Scenario 99: Negation - Sim] M:4 S:1 EN:6 SL:7
+Text: I am not anxious anymore. The test is over.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
+[Scenario 100: Recovery Statements - Sim] M:5 S:2 EN:6 SL:8
+Text: I don't feel overwhelmed anymore. I can breathe.
+-> WINNER: Body Scan Meditation (Score: 1.0)
+
