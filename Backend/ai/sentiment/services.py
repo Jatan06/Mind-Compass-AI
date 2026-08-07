@@ -1,4 +1,7 @@
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+try:
+    from nltk.sentiment.vader import SentimentIntensityAnalyzer
+except ImportError:
+    SentimentIntensityAnalyzer = None
 from ai.utils.preprocessing import preprocess_text
 
 class SentimentAnalysisService:
@@ -6,8 +9,11 @@ class SentimentAnalysisService:
 
     @classmethod
     def get_sia(cls):
-        if cls._sia is None:
-            cls._sia = SentimentIntensityAnalyzer()
+        if cls._sia is None and SentimentIntensityAnalyzer is not None:
+            try:
+                cls._sia = SentimentIntensityAnalyzer()
+            except Exception:
+                cls._sia = None
         return cls._sia
 
     @classmethod
@@ -59,7 +65,10 @@ class SentimentAnalysisService:
         nlp_res = analyze_text_nlp(text)
 
         sia = cls.get_sia()
-        vader_scores = sia.polarity_scores(cleaned_text)
+        if sia:
+            vader_scores = sia.polarity_scores(cleaned_text)
+        else:
+            vader_scores = {"pos": 0.0, "neu": 1.0, "neg": 0.0, "compound": 0.0}
 
         return {
             "sentiment": nlp_res["sentiment"],

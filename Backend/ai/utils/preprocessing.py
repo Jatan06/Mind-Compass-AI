@@ -1,9 +1,30 @@
 import re
 import string
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+try:
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    from nltk.stem import WordNetLemmatizer
+    from nltk.sentiment.vader import SentimentIntensityAnalyzer
+except ImportError:
+    def word_tokenize(text):
+        return re.findall(r'\b\w+\b|[^\w\s]', text)
+
+    class DummyStopwords:
+        @staticmethod
+        def words(lang='english'):
+            return {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "he", "him", "his", "she", "her", "it", "its", "they", "them", "their", "what", "which", "who", "whom", "this", "that", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once"}
+
+    stopwords = DummyStopwords()
+
+    class WordNetLemmatizer:
+        def lemmatize(self, word, pos='n'):
+            return word.lower()
+
+    class SentimentIntensityAnalyzer:
+        def polarity_scores(self, text):
+            return {"pos": 0.0, "neu": 1.0, "neg": 0.0, "compound": 0.0}
+
 
 EMOTION_KEYWORDS = {
     "Happy": {"happy", "glad", "joy", "joyful", "cheerful", "content", "contentment", "delight", "pleased", "celebrate", "smile", "laugh", "good", "great"},

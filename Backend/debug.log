@@ -23347,3 +23347,727 @@ INFO 2026-08-07 16:53:13,481 log 16676 7608 "GET /api/recommendation/today/ HTTP
 INFO 2026-08-07 16:53:14,066 log 16676 18060 "GET /api/ai/insights/ HTTP/1.1" 200 863
 INFO 2026-08-07 16:53:14,677 log 16676 29516 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
 INFO 2026-08-07 16:53:29,534 log 16676 29516 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:32:29,044 log 16676 8984 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:32:29,291 log 16676 6540 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:32:30,617 log 16676 3344 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:32:31,909 log 16676 6540 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:32:32,860 log 16676 3344 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:32:32,955 log 16676 16568 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:32:33,039 log 16676 23648 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:32:33,705 log 16676 8984 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:32:34,226 log 16676 6540 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:32:36,058 log 16676 16568 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:32:36,905 log 16676 3344 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:32:38,835 log 16676 6540 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:32:39,450 log 16676 23648 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:32:39,590 log 16676 8984 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:32:41,667 log 16676 31332 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:32:56,334 log 16676 31332 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:33:46,053 log 16676 15420 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:33:48,723 log 16676 15420 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:42:16,855 log 16676 5100 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:42:17,723 log 16676 29352 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:42:18,672 log 16676 29556 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:42:19,218 log 16676 10676 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:42:19,974 log 16676 29352 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:42:20,187 log 16676 9276 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:42:21,006 log 16676 25244 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:42:21,138 log 16676 29556 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:42:21,457 log 16676 10676 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:42:22,712 log 16676 29352 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:42:23,424 log 16676 29556 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:42:24,226 log 16676 9276 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:42:26,045 log 16676 29556 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:42:27,014 log 16676 25244 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:42:27,612 log 16676 10676 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:42:29,200 log 16676 29352 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:42:31,785 log 16676 5100 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:42:46,818 log 16676 5100 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:43:24,960 log 16676 6412 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:43:25,101 log 16676 29076 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:43:25,153 log 16676 17680 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:43:27,234 log 16676 11448 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:43:27,447 log 16676 17680 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:43:28,208 log 16676 30760 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:43:28,865 log 16676 30292 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:43:29,144 log 16676 6412 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:43:29,806 log 16676 11448 "GET /api/journal/ HTTP/1.1" 200 24094
+INFO 2026-08-07 17:43:30,261 log 16676 17680 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 17:43:30,881 log 16676 30760 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 17:43:31,849 log 16676 6412 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 17:43:33,991 log 16676 30292 "GET /api/recommendation/today/ HTTP/1.1" 200 3018
+INFO 2026-08-07 17:43:35,343 log 16676 30760 "GET /api/insights/ HTTP/1.1" 200 753
+INFO 2026-08-07 17:43:35,495 log 16676 11448 "GET /api/ai/prediction/ HTTP/1.1" 200 801
+INFO 2026-08-07 17:43:36,618 log 16676 17680 "GET /api/ai/insights/ HTTP/1.1" 200 857
+INFO 2026-08-07 17:43:39,852 log 16676 29076 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 17:43:54,839 log 16676 29076 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+ERROR 2026-08-07 19:17:01,119 log 16676 14272 Internal Server Error: /api/ai/prediction/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 497, in dispatch
+    self.initial(request, *args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 414, in initial
+    self.perform_authentication(request)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 324, in perform_authentication
+    request.user
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\request.py", line 231, in user
+    self._authenticate()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\request.py", line 384, in _authenticate
+    user_auth_tuple = authenticator.authenticate(self)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework_simplejwt\authentication.py", line 51, in authenticate
+    return self.get_user(validated_token), validated_token
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework_simplejwt\authentication.py", line 132, in get_user
+    user = self.user_model.objects.get(**{api_settings.USER_ID_FIELD: user_id})
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 635, in get
+    num = len(clone)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 372, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 19:17:01,133 log 16676 21848 Internal Server Error: /api/insights/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 497, in dispatch
+    self.initial(request, *args, **kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 414, in initial
+    self.perform_authentication(request)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 324, in perform_authentication
+    request.user
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\request.py", line 231, in user
+    self._authenticate()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\request.py", line 384, in _authenticate
+    user_auth_tuple = authenticator.authenticate(self)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework_simplejwt\authentication.py", line 51, in authenticate
+    return self.get_user(validated_token), validated_token
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework_simplejwt\authentication.py", line 132, in get_user
+    user = self.user_model.objects.get(**{api_settings.USER_ID_FIELD: user_id})
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 635, in get
+    num = len(clone)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 372, in __len__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 19:17:01,221 log 16676 12104 Internal Server Error: /api/ai/insights/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\ai\views.py", line 98, in get
+    result = AIInsightsService.generate_insights(request.user)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\ai\insights\services.py", line 20, in generate_insights
+    mood_count = mood_logs.count()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 610, in count
+    return self.query.get_count(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 656, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 638, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 19:17:01,252 log 16676 10888 Internal Server Error: /api/recommendation/today/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\recommendation\views.py", line 21, in get
+    has_mood = MoodLog.objects.filter(user=request.user, date=today).exists()
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 1337, in exists
+    return self.query.has_results(using=self.db)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\query.py", line 686, in has_results
+    return compiler.has_results()
+           ~~~~~~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1592, in has_results
+    return bool(self.execute_sql(SINGLE))
+                ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 19:17:01,325 log 16676 8568 Internal Server Error: /api/activity-feedback/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\activities\views.py", line 32, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+ERROR 2026-08-07 19:17:01,349 log 16676 27764 Internal Server Error: /api/activities/
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\views\generic\base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\activities\views.py", line 14, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+                    ^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 390, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 2000, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\query.py", line 95, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1624, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\utils.py", line 94, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\.venv\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+INFO 2026-08-07 19:32:01,770 autoreload 16676 14424 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\ai\apps.py changed, reloading.
+INFO 2026-08-07 19:32:13,371 autoreload 15328 25468 Watching for file changes with StatReloader
+INFO 2026-08-07 19:34:14,020 log 15328 21940 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,030 log 15328 24324 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,037 log 15328 29580 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,084 log 15328 21940 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,085 log 15328 31272 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,162 log 15328 19388 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,166 log 15328 24324 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,167 log 15328 21940 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,177 log 15328 29580 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,178 log 15328 18868 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,181 log 15328 31272 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,344 log 15328 19388 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,361 log 15328 24324 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,362 log 15328 21940 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,366 log 15328 29580 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,399 log 15328 18868 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,400 log 15328 19388 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:14,400 log 15328 31272 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,217 log 15328 23420 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,287 log 15328 23420 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,298 log 15328 29980 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,454 log 15328 11648 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,534 log 15328 23420 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,535 log 15328 30888 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,550 log 15328 29980 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,563 log 15328 11648 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,618 log 15328 23420 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,619 log 15328 30888 "OPTIONS /api/ai/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,620 log 15328 18484 "OPTIONS /api/recommendation/today/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,652 log 15328 29980 "OPTIONS /api/ai/prediction/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,654 log 15328 23420 "OPTIONS /api/profile/?today=2026-08-07 HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,718 log 15328 11648 "OPTIONS /api/insights/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,729 log 15328 30888 "OPTIONS /api/mood/history/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,730 log 15328 18484 "OPTIONS /api/journal/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,731 log 15328 20492 "OPTIONS /api/activities/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:17,769 log 15328 29980 "OPTIONS /api/activity-feedback/ HTTP/1.1" 200 0
+INFO 2026-08-07 19:34:20,537 log 15328 29980 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:34:20,537 log 15328 23420 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:34:20,633 log 15328 20492 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:34:21,893 log 15328 30888 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:34:22,869 log 15328 29980 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:34:24,320 log 15328 18484 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:34:25,467 log 15328 20492 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:34:26,338 log 15328 23420 "GET /api/ai/prediction/ HTTP/1.1" 200 810
+INFO 2026-08-07 19:34:27,653 log 15328 29980 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:34:28,265 log 15328 30888 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:34:29,884 log 15328 29980 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:34:30,129 log 15328 18484 "GET /api/ai/prediction/ HTTP/1.1" 200 810
+INFO 2026-08-07 19:34:30,458 log 15328 23420 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:34:30,812 log 15328 30888 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:34:32,445 log 15328 18484 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:34:32,676 log 15328 11648 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:34:32,865 log 15328 29980 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:34:41,394 log 15328 20492 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:34:44,170 autoreload 15328 25468 B:\Work\Coding Projects\Web Projects\Mind-Compass-AI\Backend\ai\sentiment\services.py changed, reloading.
+INFO 2026-08-07 19:35:14,935 autoreload 17452 26176 Watching for file changes with StatReloader
+INFO 2026-08-07 19:35:26,392 log 17452 1480 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:26,688 log 17452 19696 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:35:26,896 log 17452 30312 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:35:28,723 log 17452 19616 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:35:29,218 log 17452 30312 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:29,358 log 17452 2580 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:35:29,988 log 17452 15516 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:35:31,236 log 17452 19616 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:35:31,489 log 17452 30312 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:35:33,114 log 17452 19696 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:35:33,438 log 17452 2580 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:35:34,685 log 17452 15516 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:35:37,309 log 17452 19616 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:35:43,117 log 17452 15516 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:45,037 log 17452 26116 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:35:45,465 log 17452 15516 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:35:45,951 log 17452 2580 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:35:47,032 log 17452 19696 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:35:47,682 log 17452 30312 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:35:47,982 log 17452 15516 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:48,130 log 17452 26116 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:35:50,304 log 17452 19696 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:35:50,551 log 17452 2580 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:35:52,779 log 17452 19696 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:52,802 log 17452 30312 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:35:53,160 log 17452 2580 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:35:54,842 log 17452 26116 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:35:55,272 log 17452 15516 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:35:55,275 log 17452 19696 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:35:57,668 log 17452 2580 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:35:58,448 log 17452 15516 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:35:58,967 log 17452 30312 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:35:59,016 log 17452 19616 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:36:00,834 log 17452 26116 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:36:01,468 log 17452 15516 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:36:01,732 log 17452 30312 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:36:02,714 log 17452 19696 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:36:03,297 log 17452 19616 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:36:03,869 log 17452 2580 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:36:07,477 log 17452 19696 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:36:09,229 log 17452 19616 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:36:10,477 log 17452 2580 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:36:15,629 log 17452 26116 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:36:16,432 log 17452 15516 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:36:16,880 log 17452 30312 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:36:22,867 log 17452 15516 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:36:23,303 log 17452 2580 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:36:23,431 log 17452 26116 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:36:25,182 log 17452 9816 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:36:26,386 log 17452 26116 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:36:26,907 log 17452 23660 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:36:27,469 log 17452 2580 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:36:27,593 log 17452 9816 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:36:28,800 log 17452 26116 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:36:29,576 log 17452 15516 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:36:29,620 log 17452 23660 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:36:30,662 log 17452 9816 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:36:32,434 log 17452 2580 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:36:33,933 log 17452 15516 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:36:35,052 log 17452 26116 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:36:35,928 log 17452 30312 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:36:36,199 log 17452 23660 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:36:50,561 log 17452 30312 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:38:15,095 log 17452 15176 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:38:15,584 log 17452 1220 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:38:16,383 log 17452 11756 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:38:17,681 log 17452 16836 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:38:18,638 log 17452 11756 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:38:18,879 log 17452 27616 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:38:19,677 log 17452 1220 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:38:20,042 log 17452 16836 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:38:21,610 log 17452 11756 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:38:21,731 log 17452 15176 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:38:23,971 log 17452 27616 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:38:24,069 log 17452 16836 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:38:25,673 log 17452 1220 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:38:27,745 log 17452 12236 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:38:28,158 log 17452 15176 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:38:42,464 log 17452 12236 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:45:54,469 log 17452 27144 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:45:57,537 log 17452 13780 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:49:16,791 log 17452 20080 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:49:17,030 log 17452 21580 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:49:17,300 log 17452 28292 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:49:17,366 log 17452 11300 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:49:19,627 log 17452 31368 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:49:20,033 log 17452 11300 "GET /api/mood/history/ HTTP/1.1" 200 13882
+INFO 2026-08-07 19:49:21,270 log 17452 28292 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:49:21,872 log 17452 31368 "GET /api/activity-feedback/ HTTP/1.1" 200 15131
+INFO 2026-08-07 19:49:22,445 log 17452 20080 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:49:22,678 log 17452 11300 "GET /api/journal/ HTTP/1.1" 200 24499
+INFO 2026-08-07 19:49:23,305 log 17452 21580 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:49:24,507 log 17452 28292 "GET /api/activities/ HTTP/1.1" 200 93094
+INFO 2026-08-07 19:49:26,650 log 17452 20080 "GET /api/insights/ HTTP/1.1" 200 780
+INFO 2026-08-07 19:49:26,718 log 17452 31368 "GET /api/recommendation/today/ HTTP/1.1" 200 2419
+INFO 2026-08-07 19:49:28,625 log 17452 11300 "GET /api/ai/prediction/ HTTP/1.1" 200 804
+INFO 2026-08-07 19:49:29,718 log 17452 10900 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
+INFO 2026-08-07 19:49:29,724 log 17452 21580 "GET /api/ai/insights/ HTTP/1.1" 200 867
+INFO 2026-08-07 19:49:44,990 log 17452 10900 "GET /api/profile/?today=2026-08-07 HTTP/1.1" 200 599
