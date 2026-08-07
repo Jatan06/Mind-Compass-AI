@@ -55,20 +55,7 @@ export const ZenCountingStreak = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiAward className="w-4 h-4" /> Zen Breath Streak Counter
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Zen Breath Counting Game'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Focus on your exhalation and tap the button to count from 1 to 10 without losing concentration.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Streak Counter Canvas */}
             <div className="w-full bg-bg-light dark:bg-bg-dark rounded-3xl border border-secondary/15 p-8 flex flex-col items-center justify-center space-y-4">
                 <div className="flex gap-6 text-xs font-bold text-text-dark/60 dark:text-text-light/60 uppercase tracking-widest">

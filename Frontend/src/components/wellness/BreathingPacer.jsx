@@ -144,20 +144,7 @@ export const BreathingPacer = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-2xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary dark:text-accent text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiWind className="w-4 h-4" /> Visual Breathing Pacer
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Interactive Breath Work'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Follow the glowing visual orb to sync your breathing rhythm and calm your nervous system.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-2xl mx-auto w-full text-center space-y-6">
             {/* Pattern Selector */}
             <div className="flex flex-wrap items-center justify-center gap-2">
                 {Object.entries(BREATHING_TECHNIQUES).map(([key, tech]) => (

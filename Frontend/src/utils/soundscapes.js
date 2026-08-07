@@ -166,34 +166,41 @@ class CategorySoundEngine {
 
     setVolume(val) {
         this.volume = Math.max(0, Math.min(1, val));
+        console.log(`[SoundEngine] setVolume(${val}) -> linear: ${this.volume}, db: ${this._linToDB(this.volume)}`);
         if (this.masterVol) {
-            const db = this.isMuted ? -Infinity : this._linToDB(this.volume);
+            const db = this._linToDB(this.volume);
             this.masterVol.volume.rampTo(db, 0.1);
         }
     }
 
     setMuted(muted) {
         this.isMuted = muted;
-        this.setVolume(this.volume);
+        console.log(`[SoundEngine] setMuted(${muted})`);
+        if (this.masterVol) {
+            this.masterVol.mute = muted;
+        }
     }
 
     pause() {
+        console.log(`[SoundEngine] Pausing playback for "${this.currentSoundscape?.title || 'Unknown'}"`);
         this.isPlaying = false;
         if (this.masterVol) {
-            this.masterVol.volume.cancelScheduledValues(Tone.now());
-            this.masterVol.volume.setValueAtTime(-Infinity, Tone.now());
+            this.masterVol.mute = true;
         }
-        Tone.Transport.pause();
+        try {
+            Tone.Transport.pause();
+        } catch (_) { }
     }
 
     resume() {
+        console.log(`[SoundEngine] Resuming playback for "${this.currentSoundscape?.title || 'Unknown'}"`);
         this.isPlaying = true;
         if (this.masterVol) {
-            const db = this.isMuted ? -Infinity : this._linToDB(this.volume);
-            this.masterVol.volume.cancelScheduledValues(Tone.now());
-            this.masterVol.volume.setValueAtTime(db, Tone.now());
+            this.masterVol.mute = this.isMuted;
         }
-        Tone.Transport.start();
+        try {
+            Tone.Transport.start();
+        } catch (_) { }
     }
 
     stop() {
@@ -235,7 +242,7 @@ class CategorySoundEngine {
     }
 
     async play(soundscape, durationSeconds = 300) {
-
+        console.log('[SoundEngine] Executing play()...');
         await this._ensureStarted();
         this.stop();
 
@@ -243,10 +250,13 @@ class CategorySoundEngine {
         this.currentSoundscape = sound;
         this.isPlaying = true;
 
-        this.masterVol = this._reg(new Tone.Volume(this.isMuted ? -Infinity : this._linToDB(this.volume)).toDestination());
+        const dbVal = this._linToDB(this.volume);
+        console.log(`[SoundEngine] Creating Master Volume node -> linear: ${this.volume}, db: ${dbVal}, muted: ${this.isMuted}`);
+        this.masterVol = this._reg(new Tone.Volume(dbVal).toDestination());
+        this.masterVol.mute = this.isMuted;
         Tone.Transport.start();
 
-
+        console.log(`[SoundEngine] Triggering generator for soundType: "${sound.soundType}"...`);
 
         switch (sound.soundType) {
             case 'breath_swell': this._genBreathSwell(); break;
@@ -272,14 +282,15 @@ class CategorySoundEngine {
 
     // 1. Breathing — Pink noise breath swell (4 s in / 4 s out LFO)
     _genBreathSwell() {
+        console.log('[SoundEngine Generator] -> _genBreathSwell (Pink Noise LFO)');
         const noise = this._reg(new Tone.Noise('pink'));
-        const filter = this._reg(new Tone.Filter(400, 'lowpass'));
-        const vol = this._reg(new Tone.Volume(-12));
-        const lfo = this._reg(new Tone.LFO({ frequency: 0.125, min: -40, max: -8, type: 'sine' }));
+        const filter = this._reg(new Tone.Filter(450, 'lowpass'));
+        const gainNode = this._reg(new Tone.Gain(0.3));
+        const lfo = this._reg(new Tone.LFO({ frequency: 0.125, min: 0.05, max: 0.85, type: 'sine' }));
+        lfo.connect(gainNode.gain);
         noise.connect(filter);
-        filter.connect(vol);
-        vol.connect(this.masterVol);
-        lfo.connect(vol.volume);
+        filter.connect(gainNode);
+        gainNode.connect(this.masterVol);
         noise.start();
         lfo.start();
     }
@@ -339,33 +350,35 @@ class CategorySoundEngine {
 
     // 4. Sleep Hygiene — Soft rain (pink noise) + slow ocean swell (brown noise LFO)
     _genRainOcean() {
+        console.log('[SoundEngine Generator] -> _genRainOcean (Pink Noise + Ocean LFO)');
         const rain = this._reg(new Tone.Noise('pink'));
         const rainHP = this._reg(new Tone.Filter({ frequency: 1200, type: 'highpass' }));
-        const rainVol = this._reg(new Tone.Volume(-18));
+        const rainVol = this._reg(new Tone.Volume(-12));
         rain.connect(rainHP);
         rainHP.connect(rainVol);
         rainVol.connect(this.masterVol);
         rain.start();
 
         const ocean = this._reg(new Tone.Noise('brown'));
-        const oceanLP = this._reg(new Tone.Filter({ frequency: 300, type: 'lowpass' }));
-        const oceanVol = this._reg(new Tone.Volume(-14));
-        const waveLFO = this._reg(new Tone.LFO({ frequency: 1 / 12, min: -32, max: -10, type: 'sine' }));
-        waveLFO.connect(oceanVol.volume);
+        const oceanLP = this._reg(new Tone.Filter({ frequency: 350, type: 'lowpass' }));
+        const oceanGain = this._reg(new Tone.Gain(0.2));
+        const waveLFO = this._reg(new Tone.LFO({ frequency: 1 / 12, min: 0.05, max: 0.8, type: 'sine' }));
+        waveLFO.connect(oceanGain.gain);
         ocean.connect(oceanLP);
-        oceanLP.connect(oceanVol);
-        oceanVol.connect(this.masterVol);
+        oceanLP.connect(oceanGain);
+        oceanGain.connect(this.masterVol);
         ocean.start();
         waveLFO.start();
     }
 
     // 5. Gratitude — Warm piano arpeggios (C pentatonic)
     _genPianoArpeggios() {
+        console.log('[SoundEngine Generator] -> _genPianoArpeggios (Piano Loop)');
         const pad = this._reg(new Tone.PolySynth(Tone.Synth, {
             oscillator: { type: 'sine' },
             envelope: { attack: 2, decay: 1, sustain: 0.8, release: 3 }
         }));
-        pad.volume.value = -26;
+        pad.volume.value = -20;
         pad.connect(this.masterVol);
         pad.triggerAttack(['C3', 'G3', 'E3']);
 
@@ -376,7 +389,7 @@ class CategorySoundEngine {
         const reverb = this._reg(new Tone.Reverb({ decay: 3, wet: 0.45 }));
         piano.connect(reverb);
         reverb.connect(this.masterVol);
-        piano.volume.value = -12;
+        piano.volume.value = -8;
 
         const notes = ['C4', 'E4', 'G4', 'A4', 'C5', 'E5', 'G5'];
         let idx = 0;
@@ -391,9 +404,10 @@ class CategorySoundEngine {
 
     // 6. Journaling — Cozy rain + warm AM chord hum
     _genLofiRain() {
+        console.log('[SoundEngine Generator] -> _genLofiRain (Pink Noise + Chord)');
         const rain = this._reg(new Tone.Noise('pink'));
         const rainBP = this._reg(new Tone.Filter({ frequency: 1800, type: 'bandpass', Q: 0.4 }));
-        const rainVol = this._reg(new Tone.Volume(-20));
+        const rainVol = this._reg(new Tone.Volume(-14));
         rain.connect(rainBP);
         rainBP.connect(rainVol);
         rainVol.connect(this.masterVol);
@@ -405,13 +419,14 @@ class CategorySoundEngine {
             modulation: { type: 'sine' },
             modulationEnvelope: { attack: 2, decay: 0, sustain: 1, release: 4 }
         }));
-        chord.volume.value = -24;
+        chord.volume.value = -18;
         chord.connect(this.masterVol);
         chord.triggerAttack('C3');
     }
 
     // 7. Physical Activity — Kalimba pluck pulse
     _genKalimbaPulse() {
+        console.log('[SoundEngine Generator] -> _genKalimbaPulse (Kalimba Pluck Loop)');
         const kalimba = this._reg(new Tone.Synth({
             oscillator: { type: 'triangle' },
             envelope: { attack: 0.001, decay: 0.9, sustain: 0, release: 0.8 }
@@ -419,13 +434,13 @@ class CategorySoundEngine {
         const reverb = this._reg(new Tone.Reverb({ decay: 1.5, wet: 0.3 }));
         kalimba.connect(reverb);
         reverb.connect(this.masterVol);
-        kalimba.volume.value = -10;
+        kalimba.volume.value = -6;
 
         const pad = this._reg(new Tone.Synth({
             oscillator: { type: 'sine' },
             envelope: { attack: 2, decay: 0, sustain: 1, release: 3 }
         }));
-        pad.volume.value = -28;
+        pad.volume.value = -20;
         pad.connect(this.masterVol);
         pad.triggerAttack('C3');
 
@@ -442,16 +457,17 @@ class CategorySoundEngine {
 
     // 8. Relaxation — Deep ocean swells (10 s cycle)
     _genOceanSwells() {
+        console.log('[SoundEngine Generator] -> _genOceanSwells (Ocean Swells LFO)');
         const ocean = this._reg(new Tone.Noise('brown'));
-        const lp = this._reg(new Tone.Filter({ frequency: 250, type: 'lowpass' }));
-        const vol = this._reg(new Tone.Volume(-12));
-        const waveLFO = this._reg(new Tone.LFO({ frequency: 0.1, min: -30, max: -8, type: 'sine' }));
-        waveLFO.connect(vol.volume);
-        const filterLFO = this._reg(new Tone.LFO({ frequency: 0.08, min: 120, max: 350 }));
+        const lp = this._reg(new Tone.Filter({ frequency: 300, type: 'lowpass' }));
+        const oceanGain = this._reg(new Tone.Gain(0.3));
+        const waveLFO = this._reg(new Tone.LFO({ frequency: 0.1, min: 0.05, max: 0.85, type: 'sine' }));
+        waveLFO.connect(oceanGain.gain);
+        const filterLFO = this._reg(new Tone.LFO({ frequency: 0.08, min: 150, max: 450 }));
         filterLFO.connect(lp.frequency);
         ocean.connect(lp);
-        lp.connect(vol);
-        vol.connect(this.masterVol);
+        lp.connect(oceanGain);
+        oceanGain.connect(this.masterVol);
         ocean.start();
         waveLFO.start();
         filterLFO.start();

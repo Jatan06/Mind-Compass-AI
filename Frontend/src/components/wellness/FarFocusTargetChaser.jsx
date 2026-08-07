@@ -56,20 +56,7 @@ export const FarFocusTargetChaser = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-500 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiSun className="w-4 h-4" /> 20-20-20 Eye Strain Reset
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Far-Focus Eye Chaser'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Look away from text and follow the smooth glowing target orb for 20 seconds to relax your eye muscles.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Interactive Eye Tracking Canvas */}
             <div className="w-full relative h-64 bg-slate-950 rounded-3xl border border-secondary/20 p-4 overflow-hidden flex items-center justify-center shadow-inner">
                 {/* Floating Target Orb */}

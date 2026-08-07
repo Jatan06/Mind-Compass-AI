@@ -52,20 +52,7 @@ export const WorryShredder = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6 overflow-hidden">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiTrash2 className="w-4 h-4" /> Thought Shredder & Catharsis
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Worry Release Shredder'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Type out what is stressing you out right now and release it visually to free your working memory.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6 overflow-hidden">
             {/* Input & Release Animations */}
             <div className="w-full relative min-h-[220px] flex items-center justify-center">
                 <AnimatePresence mode="wait">
@@ -78,7 +65,7 @@ export const WorryShredder = ({ activity, onComplete }) => {
                             className="w-full space-y-4"
                         >
                             {/* Mode Selectors */}
-                            <div className="flex items-center justify-center gap-2">
+                            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
                                 {[
                                     { id: 'shred', label: '✂️ Shred Paper' },
                                     { id: 'burn', label: '🔥 Burn Away' },

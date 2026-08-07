@@ -85,20 +85,7 @@ export const GroundingWizard = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiCompass className="w-4 h-4" /> 5-4-3-2-1 Grounding Wizard
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || '5-4-3-2-1 Sensory Grounding'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Anchor your mind to the physical present moment and interrupt racing anxiety thoughts.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Progress Bar */}
             <div className="w-full space-y-1">
                 <div className="flex justify-between text-xs font-semibold text-text-dark/60 dark:text-text-light/60 px-1">

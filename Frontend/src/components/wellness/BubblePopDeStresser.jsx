@@ -76,20 +76,7 @@ export const BubblePopDeStresser = ({ activity, onComplete }) => {
     const progressPercent = Math.round((totalPoppedInGrid / GRID_SIZE) * 100);
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiSmile className="w-4 h-4" /> Tactile Fidget Reliever
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Stress Pop Matrix'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Click or tap the glowing bubbles to burst nervous energy and release physical tension.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* Stress Relief Progress Bar */}
             <div className="w-full space-y-1">
                 <div className="flex justify-between text-xs font-semibold text-text-dark/60 dark:text-text-light/60 px-1">
@@ -106,7 +93,7 @@ export const BubblePopDeStresser = ({ activity, onComplete }) => {
             </div>
 
             {/* 5x5 Bubble Matrix */}
-            <div className="grid grid-cols-5 gap-3 p-4 bg-secondary/5 rounded-3xl border border-secondary/10">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-3 p-2.5 sm:p-4 bg-secondary/5 rounded-3xl border border-secondary/10">
                 {bubbles.map(bubble => (
                     <motion.button
                         key={bubble.id}

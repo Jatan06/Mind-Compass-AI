@@ -54,20 +54,7 @@ export const ZenRiverThoughts = ({ activity, onComplete }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 md:p-8 bg-card-light dark:bg-card-dark rounded-[2.5rem] border border-secondary/20 shadow-lg max-w-xl mx-auto w-full text-center space-y-6">
-            {/* Header */}
-            <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 text-teal-500 text-xs font-bold uppercase tracking-wider mb-2">
-                    <FiActivity className="w-4 h-4" /> River of Thoughts Canvas
-                </div>
-                <h2 className="text-2xl font-bold text-text-dark dark:text-text-light">
-                    {activity?.title || 'Leaves on a Stream River'}
-                </h2>
-                <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/70 mt-1 max-w-md mx-auto">
-                    Place your thoughts onto floating river leaves and tap them to watch them gently float downstream away from you.
-                </p>
-            </div>
-
+        <div className="flex flex-col items-center justify-center py-4 max-w-xl mx-auto w-full text-center space-y-6">
             {/* River Canvas Display */}
             <div className="w-full relative h-64 bg-gradient-to-b from-emerald-900/20 via-teal-900/30 to-cyan-950 rounded-3xl border border-secondary/20 p-4 overflow-hidden flex flex-col justify-between shadow-inner">
                 {/* Gentle Water Currents */}
@@ -80,32 +67,29 @@ export const ZenRiverThoughts = ({ activity, onComplete }) => {
                             <motion.div
                                 key={leaf.id}
                                 initial={{ x: -100, opacity: 0 }}
-                                animate={{ x: [0, 10, 0], opacity: 1 }}
-                                exit={{ x: 300, opacity: 0, scale: 0.5 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                exit={{ x: 200, opacity: 0 }}
                                 transition={{ duration: 0.8 }}
                                 onClick={() => handleReleaseLeaf(leaf.id)}
-                                className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 px-4 py-2 rounded-full text-xs font-semibold shadow-md cursor-pointer hover:bg-emerald-500/30 hover:scale-105 transition-all mx-1"
+                                className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 px-4 py-2 rounded-full text-xs font-semibold w-fit mx-auto cursor-pointer hover:bg-emerald-500/30 transition-all shadow-md active:scale-95"
                             >
-                                🍃 <span>{leaf.text}</span>
-                                <span className="text-[10px] text-emerald-400 font-bold ml-1">Tap to Release 🌊</span>
+                                🍃 "{leaf.text}" <span className="text-[10px] opacity-60">(tap to float)</span>
                             </motion.div>
                         ))}
                     </AnimatePresence>
-
                     {leaves.length === 0 && (
-                        <div className="py-12 text-xs text-teal-300/60 font-mono italic">
-                            ✨ All leaves have floated down the river. Your mind is quiet and calm.
-                        </div>
+                        <p className="text-xs text-teal-200/50 italic">The stream is calm. Add a thought below to place it on a leaf.</p>
                     )}
                 </div>
 
-                <div className="text-[10px] text-teal-200/50 font-bold uppercase tracking-widest z-10">
+                {/* Status bar */}
+                <div className="relative z-10 text-[11px] text-teal-200/70 font-medium">
                     Thoughts Released Downstream: <span className="text-teal-300 font-extrabold">{releasedCount}</span>
                 </div>
             </div>
 
             {/* Input Form */}
-            <div className="flex gap-2 w-full">
+            <div className="flex flex-col sm:flex-row gap-2 w-full">
                 <input
                     type="text"
                     value={thoughtInput}

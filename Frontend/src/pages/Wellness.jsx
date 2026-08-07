@@ -454,41 +454,57 @@ export const Wellness = () => {
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.98 }}
-                            className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2.5rem] p-6 md:p-10 shadow-sm max-w-4xl mx-auto w-full min-h-[70vh] flex flex-col justify-between"
+                            className="bg-card-light dark:bg-card-dark border border-secondary/15 dark:border-secondary/5 rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 md:p-10 shadow-sm max-w-4xl mx-auto w-full min-h-[70vh] flex flex-col justify-between"
                         >
-                            {/* Header Progress & Exit */}
-                            <div className="flex items-center justify-between">
+                            {/* Clean Top Navigation Bar */}
+                            <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4 border-b border-secondary/10 dark:border-secondary/5 pb-4">
                                 <button
                                     onClick={handleSkipTimer}
-                                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-dark/50 hover:text-red-500 transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-dark/60 dark:text-text-light/60 hover:text-red-500 transition-colors cursor-pointer"
                                 >
                                     <FiX className="w-4 h-4" /> End Session
                                 </button>
-                                <div className="text-center">
-                                    <span className="bg-secondary/15 dark:bg-secondary/10 text-primary dark:text-accent text-xs font-bold px-4 py-1.5 rounded-full inline-flex items-center gap-2">
-                                        {selectedActivity.title}
+                                
+                                <div className="text-center flex flex-col items-center min-w-0">
+                                    <span className="bg-secondary/15 dark:bg-secondary/10 text-primary dark:text-accent text-[10px] sm:text-[11px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5 truncate">
+                                        {selectedActivity.category} • {selectedActivity.difficulty}
                                     </span>
+                                    <h3 className="text-sm sm:text-lg font-bold tracking-tight text-text-dark dark:text-text-light mt-1 truncate max-w-[200px] sm:max-w-none">
+                                        {selectedActivity.title}
+                                    </h3>
                                 </div>
-                                <div className="text-xs font-bold uppercase tracking-wider text-text-dark/50">
-                                    Step {currentStep + 1} / {selectedActivity.instructions.length}
+
+                                <div className="flex items-center gap-2 sm:gap-3">
+                                    {/* Live Header Countdown Timer */}
+                                    <div className="bg-primary/10 dark:bg-accent/15 border border-primary/20 dark:border-accent/20 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full flex items-center gap-2">
+                                        <button
+                                            onClick={handleTimerPause}
+                                            className="text-primary dark:text-accent hover:scale-110 transition-transform cursor-pointer"
+                                            title={isTimerRunning ? 'Pause Timer' : 'Resume Timer'}
+                                        >
+                                            {isTimerRunning ? <FiPause className="w-3.5 h-3.5 fill-current" /> : <FiPlay className="w-3.5 h-3.5 fill-current translate-x-0.5" />}
+                                        </button>
+                                        <span className="font-mono text-xs sm:text-sm font-bold text-primary dark:text-accent tracking-wide">
+                                            {formatTimer(timeLeft)}
+                                        </span>
+                                    </div>
+
+                                    {/* Step count badge (if in Step mode) */}
+                                    {sessionViewMode === 'steps' && (
+                                        <div className="text-xs font-bold uppercase tracking-wider text-text-dark/50 hidden sm:block">
+                                            Step {currentStep + 1} / {selectedActivity.instructions?.length || 1}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* Session player details */}
-                            <div className="text-center space-y-4">
-                                <span className="text-[10px] uppercase font-bold tracking-wider text-secondary">
-                                    Difficulty: {selectedActivity.difficulty} | Duration: {selectedActivity.duration}
-                                </span>
-                                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-text-dark dark:text-text-light">
-                                    {selectedActivity.title}
-                                </h2>
-                                <p className="text-sm text-text-dark/65 dark:text-text-light/75 max-w-xl mx-auto leading-relaxed">
-                                    {selectedActivity.short_description || selectedActivity.description}
-                                </p>
-                            </div>
+                            {/* Activity Short Description */}
+                            <p className="text-xs sm:text-sm text-text-dark/65 dark:text-text-light/75 max-w-xl mx-auto text-center leading-relaxed py-2">
+                                {selectedActivity.short_description || selectedActivity.description}
+                            </p>
 
-                            {/* Mode Switcher Pill */}
-                            <div className="flex justify-center items-center gap-2 border-b border-secondary/10 dark:border-secondary/5 pb-4">
+                            {/* Mode Switcher Pill (2 Clean Modes: Interactive & Step-by-Step) */}
+                            <div className="flex flex-wrap justify-center items-center gap-2 border-b border-secondary/10 dark:border-secondary/5 pb-4">
                                 <button
                                     onClick={() => setSessionViewMode('interactive')}
                                     className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${sessionViewMode === 'interactive'
@@ -499,13 +515,13 @@ export const Wellness = () => {
                                     🎮 Interactive Experience
                                 </button>
                                 <button
-                                    onClick={() => setSessionViewMode('timer')}
-                                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${sessionViewMode === 'timer'
+                                    onClick={() => setSessionViewMode('steps')}
+                                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${sessionViewMode === 'steps'
                                             ? 'bg-primary dark:bg-accent text-white dark:text-bg-dark shadow-sm'
                                             : 'bg-secondary/10 text-text-dark/70 dark:text-text-light/70 hover:bg-secondary/20'
                                         }`}
                                 >
-                                    ⏱️ Guided Timer Session
+                                    📋 Step-by-Step Guide
                                 </button>
                             </div>
                             {/* Background Ambient Music */}
