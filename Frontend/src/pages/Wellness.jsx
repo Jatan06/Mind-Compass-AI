@@ -211,15 +211,36 @@ export const Wellness = () => {
     const startTimer = (activity) => {
         setSelectedActivity(activity);
         setCurrentStep(0);
+        const mins = getDurationNum(activity.duration) || 5;
+        setTimeLeft(mins * 60);
         setIsTimerRunning(true);
         setActiveView('session');
         setResetKey(prev => prev + 1);
         enterFullscreen();
 
         const soundscape = getSoundscapeForCategory(activity.category);
-        const mins = getDurationNum(activity.duration) || 5;
         audioEngine.restart(soundscape, mins * 60);
     };
+
+    // Session countdown timer effect
+    useEffect(() => {
+        let timer = null;
+        if (isTimerRunning && timeLeft > 0) {
+            timer = setInterval(() => {
+                setTimeLeft(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        handleCompleteSession();
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => {
+            if (timer) clearInterval(timer);
+        };
+    }, [isTimerRunning, timeLeft]);
 
     const handleNextStep = () => {
         if (!selectedActivity || !selectedActivity.instructions) return;
@@ -641,33 +662,35 @@ export const Wellness = () => {
                                 </div>
                             )}
 
-                            {/* Persistent Controls */}
-                            <div className="flex items-center justify-between pt-6 border-t border-secondary/10 relative">
-                                <div className="absolute top-0 left-0 h-1 bg-secondary/10 w-full -mt-[1px]">
-                                    <motion.div
-                                        className="h-full bg-primary dark:bg-accent"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${((currentStep + 1) / selectedActivity.instructions.length) * 100}%` }}
-                                        transition={{ duration: 0.3 }}
-                                    />
-                                </div>
-                                <button
-                                    onClick={handlePrevStep}
-                                    disabled={currentStep === 0}
-                                    className={`px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all ${currentStep === 0 ? 'opacity-30 cursor-not-allowed text-text-dark/50' : 'bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light hover:bg-secondary/10 cursor-pointer border border-secondary/20'}`}
-                                >
-                                    <FiArrowLeft className="w-4 h-4" /> Previous
-                                </button>
+                            {/* Step Navigation Controls (Only displayed in Step-by-Step Guide mode) */}
+                            {sessionViewMode === 'steps' && (
+                                <div className="flex items-center justify-between pt-6 border-t border-secondary/10 relative">
+                                    <div className="absolute top-0 left-0 h-1 bg-secondary/10 w-full -mt-[1px]">
+                                        <motion.div
+                                            className="h-full bg-primary dark:bg-accent"
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${((currentStep + 1) / (selectedActivity?.instructions?.length || 1)) * 100}%` }}
+                                            transition={{ duration: 0.3 }}
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={handlePrevStep}
+                                        disabled={currentStep === 0}
+                                        className={`px-5 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all ${currentStep === 0 ? 'opacity-30 cursor-not-allowed text-text-dark/50' : 'bg-card-light dark:bg-card-dark text-text-dark dark:text-text-light hover:bg-secondary/10 cursor-pointer border border-secondary/20'}`}
+                                    >
+                                        <FiArrowLeft className="w-4 h-4" /> Previous
+                                    </button>
 
-                                <button
-                                    onClick={handleNextStep}
-                                    disabled={!canProceed}
-                                    className={`px-8 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-md ${!canProceed ? 'opacity-40 cursor-not-allowed bg-secondary/50 text-text-dark/80' : 'bg-primary dark:bg-accent text-white hover:scale-105 cursor-pointer'}`}
-                                >
-                                    {currentStep === selectedActivity.instructions.length - 1 ? 'Complete Session' : 'Continue'}
-                                    {currentStep < selectedActivity.instructions.length - 1 && <FiPlay className="w-4 h-4 fill-current" />}
-                                </button>
-                            </div>
+                                    <button
+                                        onClick={handleNextStep}
+                                        disabled={!canProceed}
+                                        className={`px-8 py-3 rounded-xl text-sm font-bold flex items-center gap-2 transition-all shadow-md ${!canProceed ? 'opacity-40 cursor-not-allowed bg-secondary/50 text-text-dark/80' : 'bg-primary dark:bg-accent text-white hover:scale-105 cursor-pointer'}`}
+                                    >
+                                        {currentStep === (selectedActivity?.instructions?.length || 1) - 1 ? 'Complete Session' : 'Continue'}
+                                        {currentStep < (selectedActivity?.instructions?.length || 1) - 1 && <FiPlay className="w-4 h-4 fill-current" />}
+                                    </button>
+                                </div>
+                            )}
                         </motion.div>
                     )}
 
