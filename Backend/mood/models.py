@@ -26,7 +26,11 @@ class MoodLog(models.Model):
 
     class Meta:
         ordering = ['-date', '-created_at']
-        unique_together = ('user', 'date') # Throttle to max one log per day
+        unique_together = ('user', 'date')  # Throttle to max one log per day
+        indexes = [
+            models.Index(fields=['user', 'date'], name='moodlog_user_date_idx'),
+            models.Index(fields=['user', '-date'], name='moodlog_user_date_desc_idx'),
+        ]
 
     def __str__(self):
         return f"{self.user} - Mood {self.mood} on {self.date}"

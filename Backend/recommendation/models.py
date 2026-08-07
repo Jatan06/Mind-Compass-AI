@@ -40,6 +40,10 @@ class Recommendation(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'is_active'], name='rec_user_active_idx'),
+            models.Index(fields=['user', 'created_at'], name='rec_user_created_idx'),
+        ]
 
     def __str__(self):
         status = "Active" if self.is_active else "Historical"

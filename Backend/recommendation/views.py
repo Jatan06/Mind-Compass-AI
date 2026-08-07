@@ -20,6 +20,11 @@ class TodayRecommendationView(APIView):
         
         has_mood = MoodLog.objects.filter(user=request.user, date=today).exists()
         has_journal = JournalEntry.objects.filter(user=request.user, created_at__date=today).exists()
+
+        # Fetch today's mood and journal once here — attach to rec instance so the
+        # serializer's to_representation() can reuse them without extra DB queries (avoids N+1)
+        today_mood_log = MoodLog.objects.filter(user=request.user, date=today).first() if has_mood else None
+        today_journal = JournalEntry.objects.filter(user=request.user, created_at__date=today).first() if has_journal else None
         
         # Build yesterday's recommendation details
         yesterday_data = None
@@ -69,6 +74,9 @@ class TodayRecommendationView(APIView):
                     "status": "locked",
                     "yesterday_recommendation": yesterday_data
                 }, status=status.HTTP_200_OK)
+            # Attach prefetched today data so serializer skips extra DB queries
+            rec._today_mood_log = today_mood_log
+            rec._today_journal = None
             serializer = RecommendationSerializer(rec)
             data = serializer.data
             
@@ -97,6 +105,9 @@ class TodayRecommendationView(APIView):
         rec = RecommendationService.get_today_recommendation(request.user)
         if not rec:
             return Response({'detail': 'No recommendations found.'}, status=status.HTTP_404_NOT_FOUND)
+        # Attach prefetched today data so serializer skips extra DB queries
+        rec._today_mood_log = today_mood_log
+        rec._today_journal = today_journal
         serializer = RecommendationSerializer(rec)
         data = serializer.data
         

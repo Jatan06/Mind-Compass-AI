@@ -73,8 +73,10 @@ export const Wellness = () => {
     const [error, setError] = useState('');
 
     const todaysRecommendation = todayRecommendation?.activity || null;
-    const recReasonSection1 = todayRecommendation?.reason?.section_1 || "";
-    const recReasonSection2 = todayRecommendation?.reason?.section_2 || "";
+    // reason is an array of strings from the API — join the first two bullets for display
+    const recReasonArray = Array.isArray(todayRecommendation?.reason) ? todayRecommendation.reason : [];
+    const recReasonSection1 = recReasonArray.length > 0 ? recReasonArray[0] : "";
+    const recReasonSection2 = recReasonArray.length > 1 ? recReasonArray.slice(1).join(" ") : "";
 
     // Timer States
     const [timeLeft, setTimeLeft] = useState(0);
@@ -328,7 +330,7 @@ export const Wellness = () => {
                                             </p>
                                             <div className="mt-4 pt-3 border-t border-secondary/10 flex items-center justify-between text-xs font-semibold text-text-dark/60 dark:text-text-light/60">
                                                 <span>Suitability Score Match </span>
-                                                <span className="text-primary font-bold">{Math.round(todayRecommendation.confidence * 100)}%</span>
+                                                <span className="text-primary font-bold">{todayRecommendation.confidence}%</span>
                                             </div>
                                         </div>
 

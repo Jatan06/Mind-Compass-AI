@@ -924,6 +924,9 @@ class Command(BaseCommand):
     help = "Seed database with 51 evidence-based therapy activities idempotently."
 
     def handle(self, *args, **options):
+        import time
+        from django.db import connection
+
         self.stdout.write("Starting database seeding for TherapyActivity...")
         created_count = 0
         updated_count = 0
@@ -942,30 +945,49 @@ class Command(BaseCommand):
                 rationale=act["rationale"],
                 evidence=act["evidence"]
             )
-            
+
             meta = ACTIVITY_METADATA.get(act["id"], {})
-            obj, created = TherapyActivity.objects.update_or_create(
-                id=act["id"],
-                defaults={
-                    "title": act["title"],
-                    "category": act["category"],
-                    "duration": act["duration"],
-                    "difficulty": act["difficulty"],
-                    "description": desc,
-                    "instructions": act["instructions"],
-                    "mood_range": meta.get("mood_range", []),
-                    "stress_range": meta.get("stress_range", []),
-                    "topics": meta.get("topics", []),
-                    "emotions": meta.get("emotions", []),
-                }
-            )
-            
-            if created:
-                created_count += 1
-                self.stdout.write(f"Created: {act['title']} ({act['id']})")
-            else:
-                updated_count += 1
-                self.stdout.write(f"Updated: {act['title']} ({act['id']})")
+            defaults = {
+                "title": act["title"],
+                "category": act["category"],
+                "duration": act["duration"],
+                "difficulty": act["difficulty"],
+                "description": desc,
+                "instructions": act["instructions"],
+                "mood_range": meta.get("mood_range", []),
+                "stress_range": meta.get("stress_range", []),
+                "topics": meta.get("topics", []),
+                "emotions": meta.get("emotions", []),
+            }
+
+            # Retry each activity up to 3 times on connection failure
+            for attempt in range(3):
+                try:
+                    # Close stale connection before each write so Django reopens it
+                    connection.close()
+                    obj, created = TherapyActivity.objects.update_or_create(
+                        id=act["id"],
+                        defaults=defaults,
+                    )
+                    if created:
+                        created_count += 1
+                        self.stdout.write(f"Created: {act['title']} ({act['id']})")
+                    else:
+                        updated_count += 1
+                        self.stdout.write(f"Updated: {act['title']} ({act['id']})")
+                    break  # success — move to next activity
+                except Exception as e:
+                    self.stdout.write(
+                        self.style.WARNING(
+                            f"Attempt {attempt + 1} failed for {act['id']}: {e}"
+                        )
+                    )
+                    if attempt < 2:
+                        time.sleep(2)
+                    else:
+                        self.stdout.write(
+                            self.style.ERROR(f"Skipping {act['id']} after 3 failed attempts.")
+                        )
 
         self.stdout.write(
             self.style.SUCCESS(

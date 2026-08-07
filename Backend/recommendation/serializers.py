@@ -38,8 +38,15 @@ class RecommendationSerializer(serializers.ModelSerializer):
             from django.utils import timezone
             
             today = timezone.localdate()
-            mood_log = MoodLog.objects.filter(user=instance.user, date=today).first()
-            journal = JournalEntry.objects.filter(user=instance.user, created_at__date=today).first()
+
+            # Use prefetched attributes if the view set them (avoids N+1 when serializing lists)
+            mood_log = getattr(instance, '_today_mood_log', 'UNSET')
+            if mood_log == 'UNSET':
+                mood_log = MoodLog.objects.filter(user=instance.user, date=today).first()
+
+            journal = getattr(instance, '_today_journal', 'UNSET')
+            if journal == 'UNSET':
+                journal = JournalEntry.objects.filter(user=instance.user, created_at__date=today).first()
             
             # Format topics beautifully
             themes = journal.analysis.get('themes', []) if journal and journal.analysis else []

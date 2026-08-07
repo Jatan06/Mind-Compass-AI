@@ -268,9 +268,14 @@ export const RegisterPage = () => {
       setIsGoogleLoading(true);
       setFormError("");
       try {
-        await googleLogin(tokenResponse.access_token);
+        const res = await googleLogin(tokenResponse.access_token);
         setIsGoogleLoading(false);
-        navigate("/app");
+        const todayStr = new Date().toISOString().split('T')[0];
+        const hasCheckedInToday = Array.isArray(res.dashboardData?.checkins)
+          ? res.dashboardData.checkins.some((c) => c.date === todayStr)
+          : false;
+        sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
+        navigate(hasCheckedInToday ? '/app' : '/app/checkin', { replace: true });
       } catch (err) {
         setIsGoogleLoading(false);
         if (err.response && err.response.data && err.response.data.message) {

@@ -142,6 +142,10 @@ export const AppProvider = ({ children }) => {
      * Updates check-ins, journals, activities, AI recommendations, AI predictions, insights, and analytics.
      */
     const refreshDashboardData = useCallback(async () => {
+        if (!token) {
+            return { checkins: [] };
+        }
+
         try {
             setRecLoading(true);
             setPredictionLoading(true);

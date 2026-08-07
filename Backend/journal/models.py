@@ -22,6 +22,9 @@ class JournalEntry(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', 'created_at'], name='journal_user_created_idx'),
+        ]
 
     def __str__(self):
         text_str = str(self.text) if self.text else ""

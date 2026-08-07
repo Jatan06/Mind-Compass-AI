@@ -40,7 +40,6 @@ import {
 } from 'recharts';
 import { PageTransition } from '../components/PageTransition';
 import { useApp } from '../context/AppContext';
-import { insightsAPI, aiAPI } from '../services/api';
 import { AICompanion } from '../components/AICompanion';
 
 export const Insights = () => {

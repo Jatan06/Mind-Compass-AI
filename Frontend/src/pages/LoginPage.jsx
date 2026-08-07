@@ -132,19 +132,15 @@ export const LoginPage = () => {
         }
         const res = await login(cleanEmail, password, rememberMe);
         setIsLoading(false);
-        const getLocalDateString = () => {
-          const d = new Date();
-          const tzOffset = d.getTimezoneOffset() * 60000;
-          return (new Date(d - tzOffset)).toISOString().split('T')[0];
-        };
-        const todayStr = getLocalDateString();
-        const hasCheckedInToday = res.dashboardData?.checkins?.some((c) => c.date === todayStr);
+        const todayStr = new Date().toISOString().split('T')[0];
+        const hasCheckedInToday = Array.isArray(res.dashboardData?.checkins)
+          ? res.dashboardData.checkins.some((c) => c.date === todayStr)
+          : false;
+        sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
         if (!hasCheckedInToday) {
-          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-          navigate("/app/checkin");
+          navigate('/app/checkin', { replace: true });
         } else {
-          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-          navigate("/app");
+          navigate('/app', { replace: true });
         }
       } catch (err) {
         setIsLoading(false);
@@ -316,13 +312,14 @@ export const LoginPage = () => {
         const res = await googleLogin(tokenResponse.access_token, null, null, rememberMe);
         setIsGoogleLoading(false);
         const todayStr = new Date().toISOString().split('T')[0];
-        const hasCheckedInToday = res.dashboardData?.checkins?.some((c) => c.date === todayStr);
+        const hasCheckedInToday = Array.isArray(res.dashboardData?.checkins)
+          ? res.dashboardData.checkins.some((c) => c.date === todayStr)
+          : false;
+        sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
         if (!hasCheckedInToday) {
-          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-          navigate("/app/checkin");
+          navigate('/app/checkin', { replace: true });
         } else {
-          sessionStorage.setItem('has_checked_daily_checkin_redirect', 'true');
-          navigate("/app");
+          navigate('/app', { replace: true });
         }
       } catch (err) {
         setIsGoogleLoading(false);

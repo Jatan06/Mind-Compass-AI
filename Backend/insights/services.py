@@ -6,28 +6,22 @@ from journal.models import JournalEntry
 class InsightsService:
     @classmethod
     def get_user_analytics(cls, user):
-        recent_moods = MoodLog.objects.filter(user=user).order_by('-date')[:7]
-        if len(recent_moods) < 3:
-            return {
-                "insufficient_data": True
-            }
-            
-        aggs = MoodLog.objects.filter(user=user).aggregate(
-            Avg('mood'), Avg('stress'), Avg('sleep')
-        )
-        avg_mood = aggs['mood__avg'] or 3.0
-        avg_stress = aggs['stress__avg'] or 5.0
-        avg_sleep = aggs['sleep__avg'] or 7.0
-        
-        # Calculate trend using actual historical progression comparing earlier logs with recent logs
+        # Single query for last 14 logs — covers trend + daily display + aggregates
         logs = list(MoodLog.objects.filter(user=user).order_by('-date')[:14])
+        if len(logs) < 3:
+            return {"insufficient_data": True}
+
+        # Compute aggregates from in-memory list (avoids extra DB round-trips)
+        avg_mood   = sum(l.mood   for l in logs) / len(logs)
+        avg_stress = sum(l.stress for l in logs) / len(logs)
+        avg_sleep  = sum(float(l.sleep) for l in logs) / len(logs)
+
+        # Trend: compare first half vs second half
         total_logs = len(logs)
         if total_logs >= 4:
             mid = total_logs // 2
-            recent_set = logs[:mid]
-            older_set = logs[mid:]
-            recent_avg = sum([m.mood for m in recent_set]) / len(recent_set)
-            older_avg = sum([m.mood for m in older_set]) / len(older_set)
+            recent_avg = sum(m.mood for m in logs[:mid])  / mid
+            older_avg  = sum(m.mood for m in logs[mid:])  / (total_logs - mid)
             delta = recent_avg - older_avg
             if delta > 0.5:
                 trend = "Improving Stability"
@@ -40,44 +34,40 @@ class InsightsService:
         else:
             trend = "Stable"
 
-        # Calculate dynamic Recovery Spectrum evidence statement
+        # Recovery statement from in-memory logs
         journals_14 = list(JournalEntry.objects.filter(user=user).order_by('-created_at')[:14])
         recovery_statement = ""
-        if len(logs) >= 4:
-            mid = len(logs) // 2
-            recent_stress = sum([m.stress for m in logs[:mid]]) / mid
-            older_stress = sum([m.stress for m in logs[mid:]]) / (len(logs) - mid)
+        if total_logs >= 4:
+            mid = total_logs // 2
+            recent_stress = sum(m.stress for m in logs[:mid]) / mid
+            older_stress  = sum(m.stress for m in logs[mid:]) / (total_logs - mid)
             if older_stress > recent_stress and older_stress > 0:
                 reduction_pct = int(((older_stress - recent_stress) / older_stress) * 100)
                 if reduction_pct >= 5:
                     recovery_statement = f"Your stress has reduced by {reduction_pct}% over the last two weeks."
-            
             if not recovery_statement and len(journals_14) >= 3:
-                moods = [m.mood for m in logs]
-                mean_mood = sum(moods) / len(moods)
-                variance = sum((x - mean_mood) ** 2 for x in moods) / len(moods)
+                mean_mood = avg_mood
+                variance = sum((l.mood - mean_mood) ** 2 for l in logs) / len(logs)
                 if variance < 0.6:
                     recovery_statement = "Regular journaling has been associated with steadier mood ratings during the past week."
-            
             if not recovery_statement:
-                recent_mood = sum([m.mood for m in logs[:mid]]) / mid
-                older_mood = sum([m.mood for m in logs[mid:]]) / (len(logs) - mid)
+                recent_mood = sum(m.mood for m in logs[:mid]) / mid
+                older_mood  = sum(m.mood for m in logs[mid:]) / (total_logs - mid)
                 if recent_mood > older_mood:
                     recovery_statement = "Your average mood has improved over the last two weeks."
-        
         if not recovery_statement:
             recovery_statement = "Continue logging your progress to unlock personalized recovery insights."
 
-        # Fetch recent journal tags/keywords to populate themes
-        recent_journals = JournalEntry.objects.filter(user=user)[:5]
+        # Themes from recent journals (already fetched above)
+        recent_journals = journals_14[:5]
         themes_map = {}
         for entry in recent_journals:
-            themes = entry.analysis.get("themes", [])
-            for theme in themes:
+            for theme in entry.analysis.get("themes", []):
                 themes_map[theme] = themes_map.get(theme, 0) + 1
-        
         themes_data = [{"theme": k, "value": v} for k, v in themes_map.items()]
 
+        # Use last 7 logs for daily trends chart (already in memory from our 14-log fetch)
+        recent_moods = logs[:7]
         daily_trends = []
         for log in reversed(recent_moods):
             daily_trends.append({
@@ -90,9 +80,9 @@ class InsightsService:
 
         return {
             "summary": {
-                "averageMood": round(float(avg_mood), 1),
+                "averageMood":   round(float(avg_mood),   1),
                 "averageStress": round(float(avg_stress), 1),
-                "averageSleep": round(float(avg_sleep), 1),
+                "averageSleep":  round(float(avg_sleep),  1),
                 "moodTrend": trend
             },
             "recoverySpectrum": recovery_statement,

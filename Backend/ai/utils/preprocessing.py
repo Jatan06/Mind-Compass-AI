@@ -187,7 +187,10 @@ def analyze_sentence_nlp(sentence_text, lemmatizer):
     sentence_raw_words = word_tokenize(sentence_text_lower)
     sentence_words = [w.strip(string.punctuation) for w in sentence_raw_words if w.strip(string.punctuation)]
     for topic, kws in TOPIC_KEYWORDS.items():
-        if any(w in kws or lemmatizer.lemmatize(w) in kws for w in sentence_words) or any(kw in sentence_text_lower for kw in kws):
+        # Use only token-level matching (exact word or lemma) to prevent substring
+        # false positives like "final" matching inside "finally", or "learn" inside
+        # "learned" triggering the "study" topic on gratitude/recovery journals.
+        if any(w in kws or lemmatizer.lemmatize(w) in kws for w in sentence_words):
             topics.append(topic)
             
     recovery_detected = False

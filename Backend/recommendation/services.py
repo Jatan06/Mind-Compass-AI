@@ -123,22 +123,28 @@ class RecommendationService:
                 if has_theme_overlap:
                     similar_journals_count += 1
 
-            # Search EmotionAnalysis (Module 4 request)
+            # Emotion matching uses ONLY today's journal emotion.
+            # Historical emotions (past 30 days) must NOT influence today's activity selection —
+            # they caused overfitting to old onboarding-period emotions (e.g. exam anxiety
+            # from weeks ago bleeding into a gratitude journal day).
             from ai.models import EmotionAnalysis
-            recent_emotions_qs = EmotionAnalysis.objects.filter(
-                journal_entry__user=user,
-                created_at__date__gte=today - timezone.timedelta(days=30)
-            )
-            recent_primary_emotions = [ea.primary_emotion.lower() for ea in recent_emotions_qs]
+            today_emotion_qs = EmotionAnalysis.objects.filter(
+                journal_entry=journal_entry
+            ) if journal_entry else EmotionAnalysis.objects.none()
+            recent_primary_emotions = [ea.primary_emotion.lower() for ea in today_emotion_qs]
 
-        # Gather activity feedback metrics for this user
-        feedbacks = ActivityFeedback.objects.filter(user=user)
+        # Gather activity feedback metrics and recent recommendation history once for the user
+        feedbacks = list(ActivityFeedback.objects.filter(user=user).select_related('activity'))
         activity_fb_map = {}
         for fb in feedbacks:
             act_id = fb.activity_id
             if act_id not in activity_fb_map:
                 activity_fb_map[act_id] = []
             activity_fb_map[act_id].append(fb)
+
+        recent_recommendations = list(
+            Recommendation.objects.filter(user=user).select_related('activity').order_by('-created_at')
+        )
 
         # Calculate scores for all activities in database
         activities = list(TherapyActivity.objects.all())
@@ -234,11 +240,14 @@ class RecommendationService:
                     if "gratitude" in act.category.lower() or "lonely" in act.emotions or "relationship" in act.topics or "family" in act.topics or "social" in act.topics:
                         mood_match += 1.0
 
-            if goals:
+            # Goal-based bias: only apply a small nudge (0.2) when today's journal
+            # has NO detected topics of its own. If today's journal already has topics,
+            # the user's current state is clear and the onboarding profile must not interfere.
+            if goals and not journal_themes:
                 if any("sleep" in g for g in goals) and ("sleep" in act.topics or "sleep" in act.category.lower() or "sleep" in act.title.lower()):
-                    mood_match += 0.8
+                    mood_match += 0.2
                 if any("stress" in g or "anxi" in g for g in goals) and ("Anxiety" in act.emotions or "Stress" in act.emotions or "breathing" in act.category.lower() or "stress" in act.topics or "grounding" in act.category.lower()):
-                    mood_match += 0.8
+                    mood_match += 0.2
 
             # Evaluate Emotion Match
             for emotion in recent_primary_emotions:
@@ -314,14 +323,14 @@ class RecommendationService:
                 theme_reasons.append(f"Recent emotion analysis detected patterns of negative emotions like {', '.join(sorted(list(set(recent_primary_emotions))))}.")
 
             # Historical Processing
-            past_completed = Recommendation.objects.filter(user=user, activity=act, completed=True)
-            past_all = Recommendation.objects.filter(user=user, activity=act)
-            if past_all.exists():
-                completion_rate = past_completed.count() / past_all.count()
+            past_completed = [r for r in recent_recommendations if r.activity_id == act.id and r.completed]
+            past_all = [r for r in recent_recommendations if r.activity_id == act.id]
+            if past_all:
+                completion_rate = len(past_completed) / len(past_all)
             
             avg_impr = None
-            if past_completed.exists():
-                avg_impr = past_completed.aggregate(models.Avg('improvement_score'))['improvement_score__avg']
+            if past_completed:
+                avg_impr = sum(r.improvement_score or 0.0 for r in past_completed) / len(past_completed)
                 if avg_impr is not None:
                     historical_success = min(1.0, max(0.0, avg_impr / 3.0))
                     if avg_impr >= 1.5:
@@ -357,11 +366,9 @@ class RecommendationService:
             if avg_satisfaction is not None and not (matched_themes_activity and similar_journals_count > 0):
                 feedback_reasons.append(f"You completed this activity successfully and rated it {int(avg_satisfaction)}/5.")
 
-            ignored_recs = Recommendation.objects.filter(
-                user=user, activity=act, completed=False, created_at__date__gte=today - timezone.timedelta(days=3)
-            )
-            if ignored_recs.exists():
-                skip_penalty = min(1.0, ignored_recs.count() / 3.0)
+            ignored_recs = [r for r in recent_recommendations if r.activity_id == act.id and not r.completed and r.created_at.date() >= today - timezone.timedelta(days=3)]
+            if ignored_recs:
+                skip_penalty = min(1.0, len(ignored_recs) / 3.0)
 
             # CALCULATE ACTUAL SCORE EXCLUSIVELY VIA SUITABILITY
             organic = (mood_match + emotion_match + topic_match + historical_success + user_preference + completion_rate) - (skip_penalty + recent_repetition)
@@ -406,7 +413,7 @@ class RecommendationService:
                 skip_rate = (act.agg_total_recommendations - act.agg_completed) / act.agg_total_recommendations if act.agg_total_recommendations > 0 else 0.0
 
             # 6. Less recent repetition
-            last_rec = Recommendation.objects.filter(user=user, activity=act).order_by('-created_at').first()
+            last_rec = next((r for r in recent_recommendations if r.activity_id == act.id), None)
             if last_rec:
                 days_since_last_rec = (today - last_rec.created_at.date()).days
             else:
@@ -461,8 +468,8 @@ class RecommendationService:
         rec_trigger = today_text[:200] if today_text else ""
 
         # Activity success rate calculation
-        total_p = Recommendation.objects.filter(user=user, activity=selected_act, created_at__date__lt=today).count()
-        completed_p = Recommendation.objects.filter(user=user, activity=selected_act, completed=True, created_at__date__lt=today).count()
+        total_p = sum(1 for r in recent_recommendations if r.activity_id == selected_act.id and r.created_at.date() < today)
+        completed_p = sum(1 for r in recent_recommendations if r.activity_id == selected_act.id and r.completed and r.created_at.date() < today)
         if total_p > 0:
             rate_p = int((completed_p / total_p) * 100)
             success_rate_str = f"{rate_p}%"
@@ -559,9 +566,15 @@ class RecommendationService:
 
         # Gather journal evidence summary
         if not is_quick and journal_entry:
-            # Check for study topic
+            # Check for study topic — require actual study/exam words in the raw text
+            # to avoid false positives from "learn" in gratitude or recovery journals.
+            STUDY_EXPLICIT_WORDS = {"exam", "exams", "midterm", "final", "grade", "quiz", "test", "cramming", "study", "homework", "assignment", "lecture", "class", "university", "college", "school"}
             journal_items = []
-            if "study" in journal_topics or "exam" in journal_topics or "exams" in journal_topics:
+            has_real_study = (
+                ("study" in journal_topics or "exam" in journal_topics or "exams" in journal_topics)
+                and any(w in journal_entry.text.lower() for w in STUDY_EXPLICIT_WORDS)
+            )
+            if has_real_study:
                 has_academic_distress = journal_neg or (mood_log and mood_log.stress >= 7)
                 if has_academic_distress:
                     if any(w in journal_entry.text.lower() for w in ["academic", "exam", "midterm", "final", "grade"]):
@@ -829,9 +842,15 @@ class RecommendationService:
                 return "Stay hydrated today."
                 
         # Primary topic determination
+        # For study, require actual study/exam words directly in the text to avoid
+        # false positives from "learn" in gratitude/recovery journals.
+        STUDY_EXPLICIT = {"exam", "exams", "midterm", "final", "grade", "quiz", "test", "cramming", "study", "homework", "assignment", "lecture", "class", "university", "college", "school"}
         has_work = "work" in detected_topics or "career" in detected_topics
         has_sleep = "sleep" in detected_topics
-        has_study = "study" in detected_topics or "exam" in detected_topics or "exams" in detected_topics
+        has_study = (
+            ("study" in detected_topics or "exam" in detected_topics or "exams" in detected_topics)
+            and any(w in text_lower for w in STUDY_EXPLICIT)
+        )
         has_family = "family" in detected_topics
         has_friends = "friends" in detected_topics
         has_exercise = "exercise" in detected_topics

@@ -59,18 +59,16 @@ export const AppLayout = () => {
     }, [isAuthenticated, authLoading, isOnboarded, isOnboardingPage, navigate]);
 
     // Daily Check-in Reminder Effect: Redirects users to check-in if not yet completed today
-    // Daily Check-in Reminder Effect: Redirects users to check-in if not yet completed today
     React.useEffect(() => {
-        if (!authLoading && isAuthenticated && isOnboarded) {
+        // Wait for auth AND initial data load to complete before checking check-in status.
+        // isInitialLoading guards against the race condition where checkins array is still
+        // empty during session hydration — without this, users get redirected to /app/checkin
+        // on every page refresh even if they already checked in today.
+        if (!authLoading && !isInitialLoading && isAuthenticated && isOnboarded) {
             const hasRedirected = sessionStorage.getItem('has_checked_daily_checkin_redirect');
             if (!hasRedirected && userProfile?.notifications?.dailyCheckin !== false) {
-                const getLocalDateString = () => {
-                    const d = new Date();
-                    const tzOffset = d.getTimezoneOffset() * 60000;
-                    return (new Date(d - tzOffset)).toISOString().split('T')[0];
-                };
-                const todayStr = getLocalDateString();
-                const hasCheckedInToday = checkins && checkins.some(c => c.date === todayStr);
+                const todayStr = new Date().toISOString().split('T')[0];
+                const hasCheckedInToday = Array.isArray(checkins) && checkins.some(c => c.date === todayStr);
 
                 // If user is directly loading the dashboard and hasn't checked in, prompt them once
                 if (!hasCheckedInToday && location.pathname === '/app') {
@@ -81,7 +79,7 @@ export const AppLayout = () => {
                 }
             }
         }
-    }, [isAuthenticated, authLoading, isOnboarded, userProfile, checkins, location.pathname, navigate]);
+    }, [isAuthenticated, authLoading, isInitialLoading, isOnboarded, userProfile, checkins, location.pathname, navigate]);
 
     // Main navigation menu items configuration
     const menuItems = [
