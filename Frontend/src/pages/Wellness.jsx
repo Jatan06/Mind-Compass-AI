@@ -247,6 +247,17 @@ export const Wellness = () => {
         setIsTimerRunning(prev => !prev);
     };
 
+    const handleTimerReset = () => {
+        const mins = getDurationNum(selectedActivity?.duration) || 5;
+        setTimeLeft(mins * 60);
+        setIsTimerRunning(true);
+        setResetKey(prev => prev + 1);
+        if (selectedActivity) {
+            const soundscape = getSoundscapeForCategory(selectedActivity.category);
+            audioEngine.restart(soundscape, mins * 60);
+        }
+    };
+
     const handleSkipTimer = () => {
         setIsTimerRunning(false);
         audioEngine.stop();
