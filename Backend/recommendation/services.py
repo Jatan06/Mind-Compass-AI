@@ -394,21 +394,21 @@ class RecommendationService:
                         emotion_match_score += 1
 
             # 3. Higher historical success
-            if past_completed.exists():
+            if past_completed:
                 user_success = avg_impr if avg_impr is not None else 0.0
             else:
                 user_success = act.agg_avg_improvement
 
             # 4. Higher completion rate
-            if past_all.exists():
-                comp_rate = past_completed.count() / past_all.count()
+            if past_all:
+                comp_rate = len(past_completed) / len(past_all)
             else:
                 comp_rate = act.agg_completed / act.agg_started if act.agg_started > 0 else 0.0
 
             # 5. Lower skip rate
-            if past_all.exists():
-                past_skipped = past_all.filter(completed=False)
-                skip_rate = past_skipped.count() / past_all.count()
+            if past_all:
+                past_skipped = [r for r in past_all if not r.completed]
+                skip_rate = len(past_skipped) / len(past_all)
             else:
                 skip_rate = (act.agg_total_recommendations - act.agg_completed) / act.agg_total_recommendations if act.agg_total_recommendations > 0 else 0.0
 

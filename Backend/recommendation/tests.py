@@ -21,16 +21,17 @@ class RecommendationServiceTestCase(TestCase):
             'act-15': {'title': '10-3-2-1-0 Sleep Protocol', 'stress': [1,10], 'mood': [1,10], 'topics': ['sleep', 'insomnia', 'night']},
             'act-16': {'title': 'PMR', 'stress': [1,10], 'mood': [1,10], 'topics': ['sleep', 'insomnia', 'rest']},
             'act-17': {'title': 'Three Good Things', 'stress': [1,10], 'mood': [1,10], 'topics': ['gratitude', 'happy']},
-            'act-33': {'title': '5-4-3-2-1 Grounding', 'stress': [1,10], 'mood': [1,10], 'topics': ['anxiety', 'panic', 'overwhelmed', 'grounding']},
+            'act-33': {'title': '5-4-3-2-1 Grounding', 'stress': [1,10], 'mood': [1,10], 'topics': ['anxiety', 'panic', 'overwhelmed', 'grounding'], 'emotions': ['anxiety', 'panic', 'overwhelmed', 'calm', 'neutral']},
             'act-37': {'title': 'Somatic Shakeout', 'stress': [1,10], 'mood': [1,10], 'topics': ['energy', 'fatigue', 'tired']}
         }
         
         self.acts = {}
         for s, conf in act_configs.items():
+            cat = "Grounding" if s == 'act-33' else ("Mindfulness" if s not in ['act-15', 'act-16'] else "Sleep Hygiene")
             self.acts[s] = TherapyActivity.objects.create(
                 id=s,
                 title=conf['title'],
-                category="Mindfulness" if s not in ['act-15', 'act-16'] else "Sleep Hygiene",
+                category=cat,
                 duration="10 mins",
                 difficulty="Easy",
                 description="Test activity description",
@@ -38,7 +39,7 @@ class RecommendationServiceTestCase(TestCase):
                 stress_range=conf['stress'],
                 mood_range=conf['mood'],
                 topics=conf['topics'],
-                emotions=["calm", "neutral"]
+                emotions=conf.get('emotions', ["calm", "neutral"])
             )
 
     def test_returns_none_if_data_missing(self):
