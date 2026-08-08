@@ -21,7 +21,8 @@ import {
     FiMail, 
     FiTwitter, 
     FiLinkedin, 
-    FiFacebook 
+    FiFacebook,
+    FiMessageSquare
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
@@ -109,6 +110,12 @@ export const ShareModal = ({ isOpen, onClose, shareUrl, title, text }) => {
             icon: <FiMail className="w-5 h-5 text-amber-500" />,
             bgColor: 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400',
             href: `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareText}\n\n${urlToShare}`)}`,
+        },
+        {
+            name: 'Feedback',
+            icon: <FiMessageSquare className="w-5 h-5 text-purple-500" />,
+            bgColor: 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400',
+            href: `https://mail.google.com/mail/?view=cm&fs=1&to=mindcompassai01@gmail.com&su=${encodeURIComponent('MindCompass AI User Feedback')}&body=${encodeURIComponent('Hi MindCompass AI Team,\n\nI would like to share the following feedback about MindCompass AI:\n\n')}`,
         },
     ];
 

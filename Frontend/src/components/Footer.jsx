@@ -16,13 +16,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LogoIcon } from './Logo';
-import { FiHeart, FiShare2, FiGithub } from 'react-icons/fi';
+import { FiHeart, FiShare2, FiGithub, FiMessageSquare } from 'react-icons/fi';
 import { ShareModal } from './ShareModal';
 
 export const Footer = () => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     // Dynamic year calculation for copyright notice
     const currentYear = new Date().getFullYear();
+
+    // Feedback email parameters pre-configured for Gmail compose / mailto
+    const feedbackEmail = 'mindcompassai01@gmail.com';
+    const feedbackSubject = encodeURIComponent('MindCompass AI User Feedback');
+    const feedbackBody = encodeURIComponent('Hi MindCompass AI Team,\n\nI would like to share the following feedback about MindCompass AI:\n\n');
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${feedbackEmail}&su=${feedbackSubject}&body=${feedbackBody}`;
 
     return (
       <footer className="w-full bg-bg-light dark:bg-bg-dark border-t border-secondary/15 dark:border-secondary/5 transition-all duration-300">
@@ -49,8 +55,8 @@ export const Footer = () => {
                 journey.
               </p>
 
-              {/* GitHub Link & Share Action Button */}
-              <div className="flex items-center gap-3 pt-2">
+              {/* GitHub Link, Share & Share Feedback Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
                   href="https://github.com/Jatan06/Mind-Compass-AI"
                   target="_blank"
@@ -64,13 +70,25 @@ export const Footer = () => {
                 <button
                   type="button"
                   onClick={() => setIsShareModalOpen(true)}
-                  className="p-2 rounded-full text-text-dark/65 dark:text-text-light/65 hover:text-primary dark:hover:text-accent hover:bg-secondary/10 dark:hover:bg-secondary/5 transition-all cursor-pointer outline-none flex items-center gap-2 text-xs font-semibold"
+                  className="p-2 px-3 rounded-full text-text-dark/65 dark:text-text-light/65 hover:text-primary dark:hover:text-accent hover:bg-secondary/10 dark:hover:bg-secondary/5 transition-all cursor-pointer outline-none flex items-center gap-2 text-xs font-semibold border border-secondary/15 dark:border-secondary/10 hover:border-secondary/40"
                   aria-label="Share MindCompass AI"
                   title="Share MindCompass AI"
                 >
-                  <FiShare2 className="w-5 h-5" />
+                  <FiShare2 className="w-4 h-4" />
                   <span>Share</span>
                 </button>
+
+                <a
+                  href={gmailComposeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 px-3 rounded-full text-text-dark/65 dark:text-text-light/65 hover:text-primary dark:hover:text-accent hover:bg-secondary/10 dark:hover:bg-secondary/5 transition-all cursor-pointer outline-none flex items-center gap-2 text-xs font-semibold border border-secondary/15 dark:border-secondary/10 hover:border-secondary/40"
+                  aria-label="Share Feedback"
+                  title="Send feedback directly to mindcompassai01@gmail.com via Gmail"
+                >
+                  <FiMessageSquare className="w-4 h-4" />
+                  <span>Feedback</span>
+                </a>
               </div>
             </div>
 
